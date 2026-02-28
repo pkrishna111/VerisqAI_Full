@@ -1,0 +1,24 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# Environment
+appsettings.Development.json
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
