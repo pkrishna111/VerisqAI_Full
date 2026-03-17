@@ -1,0 +1,178 @@
+1️⃣ BRANCH POLICY (NON-NEGOTIABLE)
+Allowed branches
+Branch	Purpose	Who can touch
+main	Stable, merged code only	Lead only (merge)
+feature/*	New features	Everyone
+fix/*	Bug fixes	Everyone
+experiment/*	Temporary testing	Optional
+
+❌ master is banned
+❌ Direct commits to main are banned
+
+2️⃣ DAILY WORK START RULE (MANDATORY)
+
+Before touching ANY file, run:
+
+git checkout main
+git pull origin main
+
+
+❗ If you skip this, conflicts are your fault.
+
+3️⃣ STARTING NEW WORK (STRICT FLOW)
+Step 1: Create a fresh branch
+git checkout -b feature/<short-description>
+
+
+Examples:
+
+git checkout -b feature/auth-ui
+git checkout -b feature/vendor-table
+
+Step 2: Work normally
+
+Code
+
+Test locally
+
+Save files
+
+4️⃣ COMMIT RULES (THIS MATTERS)
+❌ Bad commits
+fix
+update
+changes
+
+✅ Good commits
+Add vendor table UI
+Fix login validation bug
+Refactor API service layer
+
+Commit command
+git add .
+git commit -m "Clear meaningful message"
+
+5️⃣ PUSH RULE (NEVER PUSH MAIN)
+git push origin feature/<branch-name>
+
+
+Example:
+
+git push origin feature/auth-ui
+
+6️⃣ MERGE PROCESS (ONLY VIA GITHUB)
+NEVER merge locally into main
+Correct merge flow:
+
+Push feature branch
+
+Open GitHub → Pull Request
+
+Target branch → main
+
+Review
+
+Merge
+
+Delete feature branch
+
+This keeps history clean and auditable.
+
+7️⃣ AFTER MERGE (EVERYONE MUST DO THIS)
+git checkout main
+git pull origin main
+
+
+This resets your system to latest stable code.
+
+8️⃣ CONFLICT HANDLING (REAL RULES)
+If conflict appears:
+
+❌ Do NOT panic
+❌ Do NOT force push
+
+Correct steps:
+
+Open conflicted file
+
+Choose correct code
+
+Remove conflict markers
+
+Save
+
+Run:
+
+git add <file>
+git commit -m "Resolve merge conflict"
+
+9️⃣ EMERGENCY RECOVERY COMMANDS (SAFE USE)
+See what changed
+git status
+git diff
+
+Undo local changes (NOT PUSHED)
+git checkout -- .
+
+Undo last commit (local only)
+git reset --soft HEAD~1
+
+🔒 10️⃣ LOCKDOWN RULES (PROJECT SAFETY)
+
+Once team is stable, do this on GitHub:
+
+Protect main
+
+Require pull request
+
+Disable force push
+
+Require review (optional)
+
+This prevents disasters.
+
+11️⃣ TEAM ETIQUETTE (NON-TECH BUT CRITICAL)
+
+One feature = one branch
+
+Small commits > big commits
+
+No WhatsApp code sharing
+
+If unsure → ask before pushing
+
+12️⃣ QUICK DAILY CHECKLIST (COPY THIS)
+☐ checkout main
+☐ pull latest
+☐ create feature branch
+☐ code
+☐ commit
+☐ push
+☐ PR
+☐ merge
+☐ pull main
+
+FINAL RECOMMENDATION (IMPORTANT)
+
+Since your project includes:
+
+React (Vite)
+
+Possibly .NET backend later
+
+👉 Single repo is OK for now
+👉 Split frontend/backend later if team grows
+
+NEXT (OPTIONAL BUT STRONGLY ADVISED)
+
+If you want, I can:
+
+Create a Git rules README for your repo
+
+Define branch naming enforcement
+
+Design repo structure for React + .NET
+
+Simulate a real conflict & resolution drill
+
+Tell me which one you want next.
