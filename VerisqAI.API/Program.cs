@@ -10,18 +10,16 @@ using VerisqAI.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//for db context
+// DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("VerisqDb"));
 
-//for identity configuration
+// Identity
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -29,30 +27,10 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-//for jwt configuration
+// Token Service
 builder.Services.AddScoped<ITokenService, TokenService>();
 
-var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await VerisqAI.API.Seed.DbSeeder
-        .SeedRolesAndAdminAsync(services);
-}
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-
-
-//settings for jwt token
+// JWT SETTINGS
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("JwtSettings"));
 
@@ -62,6 +40,16 @@ var jwtSettings = builder.Configuration
 
 var key = Encoding.UTF8.GetBytes(jwtSettings!.Secret);
 
+//TOTP Service 
+builder.Services.AddScoped<ITotpService, TotpService>();
+
+//Email Service
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+// JWT Authentication
 builder.Services
     .AddAuthentication(options =>
     {
@@ -72,8 +60,9 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
-        options.RequireHttpsMetadata = false; // true in production
+        options.RequireHttpsMetadata = false;
         options.SaveToken = true;
+
         options.TokenValidationParameters =
             new TokenValidationParameters
             {
@@ -90,6 +79,24 @@ builder.Services
                 ClockSkew = TimeSpan.Zero
             };
     });
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await VerisqAI.API.Seed.DbSeeder
+        .SeedRolesAndAdminAsync(services);
+}
+
+// Middleware pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
