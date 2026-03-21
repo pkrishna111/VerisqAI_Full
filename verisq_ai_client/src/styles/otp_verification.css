@@ -1,0 +1,433 @@
+/* ============================================================
+   File: Otp_verification.css
+   All class names are prefixed with: Otp_verification_
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* ── CSS Variables ── */
+:root {
+  --Otp_verification_primary: #6366f1;
+  --Otp_verification_primary_dark: #4f46e5;
+  --Otp_verification_primary_light: rgba(99, 102, 241, 0.12);
+  --Otp_verification_primary_glow: rgba(99, 102, 241, 0.4);
+  --Otp_verification_success: #22c55e;
+  --Otp_verification_success_bg: rgba(34, 197, 94, 0.1);
+  --Otp_verification_text_900: #0f172a;
+  --Otp_verification_text_500: #64748b;
+  --Otp_verification_text_400: #94a3b8;
+  --Otp_verification_border: #e2e8f0;
+  --Otp_verification_bg: #f0f4ff;
+  --Otp_verification_card_bg: #ffffff;
+  --Otp_verification_input_bg: #f8fafc;
+  --Otp_verification_radius_card: 22px;
+  --Otp_verification_radius_input: 11px;
+  --Otp_verification_shadow_card: 0 24px 64px rgba(15, 23, 42, 0.11),
+    0 6px 20px rgba(99, 102, 241, 0.1);
+  --Otp_verification_shadow_btn: 0 4px 16px var(--Otp_verification_primary_glow);
+  --Otp_verification_font: "Plus Jakarta Sans", sans-serif;
+}
+
+/* ── Root / Page ── */
+.Otp_verification_root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--Otp_verification_bg);
+  font-family: var(--Otp_verification_font);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background blobs ── */
+.Otp_verification_blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+.Otp_verification_blob_tr {
+  width: 500px;
+  height: 500px;
+  top: -180px;
+  right: -180px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.18) 0%,
+    transparent 65%
+  );
+}
+
+.Otp_verification_blob_bl {
+  width: 420px;
+  height: 420px;
+  bottom: -140px;
+  left: -140px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.12) 0%,
+    transparent 65%
+  );
+}
+
+/* ── Dot grid ── */
+.Otp_verification_dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, #c7d2fe 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Trial pill (fixed top-right) ── */
+.Otp_verification_trial_pill {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--Otp_verification_primary);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  padding: 8px 15px;
+  border-radius: 100px;
+  box-shadow: var(--Otp_verification_shadow_btn);
+  z-index: 999;
+}
+
+.Otp_verification_trial_icon {
+  font-size: 12px;
+}
+
+/* ── Card ── */
+.Otp_verification_card {
+  background: var(--Otp_verification_card_bg);
+  border-radius: var(--Otp_verification_radius_card);
+  box-shadow: var(--Otp_verification_shadow_card);
+  width: 100%;
+  max-width: 448px;
+  overflow: hidden;
+  animation: Otp_verification_slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes Otp_verification_slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Card top accent bar ── */
+.Otp_verification_card_top_accent {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--Otp_verification_primary) 0%,
+    #a5b4fc 100%
+  );
+}
+
+/* ── Logo ── */
+.Otp_verification_logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 30px 36px 0;
+}
+
+.Otp_verification_logo_icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.Otp_verification_logo_icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.Otp_verification_logo_text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.Otp_verification_logo_name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--Otp_verification_text_900);
+  letter-spacing: 0.07em;
+  line-height: 1;
+}
+
+.Otp_verification_logo_sub {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: var(--Otp_verification_text_400);
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+/* ── Step wrapper ── */
+.Otp_verification_step {
+  padding: 28px 36px 34px;
+  animation: Otp_verification_stepFade 0.3s ease both;
+}
+
+@keyframes Otp_verification_stepFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Heading & description ── */
+.Otp_verification_heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--Otp_verification_text_900);
+  text-align: center;
+  margin: 0 0 10px;
+  letter-spacing: -0.3px;
+}
+
+.Otp_verification_desc {
+  font-size: 14px;
+  color: var(--Otp_verification_text_500);
+  text-align: center;
+  line-height: 1.65;
+  margin: 0 0 26px;
+}
+
+.Otp_verification_email_highlight {
+  font-weight: 600;
+  color: var(--Otp_verification_primary);
+  word-break: break-all;
+}
+
+/* ── Field group ── */
+.Otp_verification_field_group {
+  margin-bottom: 20px;
+}
+
+.Otp_verification_field_label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--Otp_verification_text_900);
+  margin-bottom: 8px;
+}
+
+.Otp_verification_field_input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1.5px solid var(--Otp_verification_border);
+  border-radius: var(--Otp_verification_radius_input);
+  font-size: 14px;
+  font-family: var(--Otp_verification_font);
+  color: var(--Otp_verification_text_900);
+  background: var(--Otp_verification_input_bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.Otp_verification_field_input::placeholder {
+  color: var(--Otp_verification_text_400);
+}
+
+.Otp_verification_field_input:focus {
+  border-color: var(--Otp_verification_primary);
+  box-shadow: 0 0 0 3.5px var(--Otp_verification_primary_light);
+  background: #fff;
+}
+
+.Otp_verification_field_hint {
+  display: block;
+  margin-top: 7px;
+  font-size: 12px;
+  color: var(--Otp_verification_text_400);
+}
+
+/* ── Primary Button ── */
+.Otp_verification_primary_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  padding: 14px;
+  background: var(--Otp_verification_primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--Otp_verification_font);
+  border: none;
+  border-radius: var(--Otp_verification_radius_input);
+  cursor: pointer;
+  box-shadow: var(--Otp_verification_shadow_btn);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+  margin-bottom: 20px;
+  letter-spacing: 0.01em;
+}
+
+.Otp_verification_primary_btn:hover:not(:disabled) {
+  background: var(--Otp_verification_primary_dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--Otp_verification_primary_glow);
+}
+
+.Otp_verification_primary_btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.Otp_verification_primary_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.Otp_verification_btn_icon {
+  flex-shrink: 0;
+}
+
+/* ── Spinner ── */
+.Otp_verification_spinner {
+  display: inline-block;
+  width: 19px;
+  height: 19px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: Otp_verification_spin 0.65s linear infinite;
+}
+
+@keyframes Otp_verification_spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Footer note ── */
+.Otp_verification_footer_note {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--Otp_verification_text_500);
+  margin: 0;
+}
+
+.Otp_verification_text_link {
+  color: var(--Otp_verification_primary);
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.Otp_verification_text_link:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+.Otp_verification_reset_btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-family: var(--Otp_verification_font);
+}
+
+/* ── Sent badge ── */
+.Otp_verification_sent_badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto 18px;
+  padding: 6px 15px;
+  background: var(--Otp_verification_success_bg);
+  color: var(--Otp_verification_success);
+  font-size: 12.5px;
+  font-weight: 700;
+  border-radius: 100px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* ── OTP input group ── */
+.Otp_verification_otp_group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.Otp_verification_otp_cell {
+  width: 48px;
+  height: 56px;
+  border: 1.5px solid var(--Otp_verification_border);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  font-family: var(--Otp_verification_font);
+  color: var(--Otp_verification_text_900);
+  background: var(--Otp_verification_input_bg);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s,
+    transform 0.15s;
+  caret-color: var(--Otp_verification_primary);
+}
+
+.Otp_verification_otp_cell:focus {
+  border-color: var(--Otp_verification_primary);
+  box-shadow: 0 0 0 3.5px var(--Otp_verification_primary_light);
+  background: #fff;
+  transform: translateY(-3px);
+}
+
+.Otp_verification_otp_cell_filled {
+  border-color: var(--Otp_verification_primary);
+  background: var(--Otp_verification_primary_light);
+  color: var(--Otp_verification_primary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .Otp_verification_logo,
+  .Otp_verification_step {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .Otp_verification_otp_cell {
+    width: 40px;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 10px;
+  }
+
+  .Otp_verification_otp_group {
+    gap: 7px;
+  }
+
+  .Otp_verification_heading {
+    font-size: 20px;
+  }
+}
