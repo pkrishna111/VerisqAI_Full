@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using VerisqAI.API.Configurations;
 using VerisqAI.API.Data;
@@ -76,7 +77,10 @@ builder.Services
                 IssuerSigningKey =
                     new SymmetricSecurityKey(key),
 
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+
+                //to set role properly
+                RoleClaimType = ClaimTypes.Role
             };
     });
 

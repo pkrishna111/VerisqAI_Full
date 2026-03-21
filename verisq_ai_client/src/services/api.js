@@ -34,6 +34,7 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
     //this will auto logout if token is invalid
     if (res.status === 401) {
+        console.error("Unauthorized - token invalid");
         localStorage.removeItem("token");
         window.location.href = "/";
         return;

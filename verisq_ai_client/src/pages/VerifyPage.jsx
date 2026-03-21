@@ -16,11 +16,14 @@ function VerifyPage() {
   const [message, setMessage] = useState("");
 
   // STEP 1 → Confirm email automatically
+  const hasCalled = useRef(false);
+
   useEffect(() => {
-    if (email && token) {
+    if (email && token && !hasCalled.current) {
+      hasCalled.current = true;
       confirmEmail();
     }
-  }, []);
+  }, [email, token]);
 
   const confirmEmail = async () => {
     try {
