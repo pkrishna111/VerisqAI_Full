@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 const API_BASE = "https://localhost:7183";
@@ -15,12 +15,16 @@ function VerifyPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // ✅ ADD THIS (prevents double API call)
+  const called = useRef(false);
+
   // STEP 1 → Confirm email automatically
   const hasCalled = useRef(false);
 
   useEffect(() => {
-    if (email && token && !hasCalled.current) {
-      hasCalled.current = true;
+
+    if (email && token && !called.current) {
+      called.current = true;   // ✅ block second call
       confirmEmail();
     }
   }, [email, token]);
