@@ -1,11 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using VerisqAI.API.Data;
-using VerisqAI.API.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using VerisqAI.API.Configurations;
+using VerisqAI.API.Data;
+using VerisqAI.API.Models;
 using VerisqAI.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,6 +80,18 @@ builder.Services
             };
     });
 
+//For connecting Frontend to Api
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+    policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -98,6 +110,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//to enable CORS
+app.UseCors("AllowFrontend");
+
+//for jwt authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
