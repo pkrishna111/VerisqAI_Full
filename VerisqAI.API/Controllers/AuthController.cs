@@ -61,7 +61,7 @@ namespace VerisqAI.API.Controllers
                 .GenerateEmailConfirmationTokenAsync(user);
 
             var confirmUrl =
-                $"https://app.verisq.ai/mini-dashboard?email={dto.Email}&token={Uri.EscapeDataString(token)}";
+ $"http://localhost:5173/verify?email={dto.Email}&token={Uri.EscapeDataString(token)}";
 
             // Email sending code
             var body = $@"
