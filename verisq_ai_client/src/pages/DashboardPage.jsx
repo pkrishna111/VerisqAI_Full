@@ -13,17 +13,16 @@ function DashboardPage() {
   const [usedVendors, setUsedVendors] = useState(2);
   const maxVendors = 5;
 
-  //to test api with token by using service of api helper (service/api.js --> apiRequest())
+  //to handle token
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const fetchData = async () => {
       try {
         const res = await apiRequest("/api/dashboard/vendors");
-        console.log("Protected Data:", res);
       } catch (err) {
-        console.error(err);
+        console.error("ERROR:", err);
       }
     };
-
     fetchData();
   }, []);
 

@@ -11,7 +11,16 @@ namespace VerisqAI.API.Controllers
         [HttpGet("vendors")]
         public IActionResult GetVendors()
         {
-            return Ok("Protected Vendor Data");
+            var user = HttpContext.User.Identity?.Name;
+            var claims = HttpContext.User.Claims;
+
+            return Ok(new
+            {
+                message = "Protected Vendor Data",
+                user,
+                claims = claims.Select(c => new { c.Type, c.Value })
+            });
+            //return Ok("Protected Vendor Data");
         }
     }
 }

@@ -26,7 +26,14 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>   //creating own auth
+{
+    options.DefaultPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // Token Service
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -119,6 +126,7 @@ app.UseCors("AllowFrontend");
 
 //for jwt authentication
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
