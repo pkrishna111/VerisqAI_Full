@@ -78,8 +78,7 @@ namespace VerisqAI.API.Controllers
             //registration done
             return Ok(new
             {
-                message = "Registration successful. Check email.",
-                confirmUrl
+                message = "Registration successful. Check email."
             });
         }
 
