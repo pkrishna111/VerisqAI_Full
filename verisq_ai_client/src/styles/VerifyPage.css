@@ -1,0 +1,98 @@
+/* Page Layout */
+.verify-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Card */
+.verify-card {
+  width: 360px;
+  padding: 30px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  border-top: 4px solid #2563eb; /* PRIMARY COLOR */
+}
+
+/* Logo */
+.verify-logo {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2563eb;
+}
+
+/* Title */
+.verify-title {
+  margin: 10px 0;
+  font-size: 22px;
+}
+
+/* Subtitle */
+.verify-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 15px;
+}
+
+/* Message Box */
+.verify-message {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* Email Text */
+.verify-email {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+/* OTP Input */
+.verify-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  letter-spacing: 6px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.verify-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Button */
+.verify-button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb; /* PRIMARY COLOR */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.verify-button:hover {
+  background: #1d4ed8;
+}
+
+.verify-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

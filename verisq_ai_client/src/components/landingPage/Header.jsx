@@ -10,7 +10,7 @@ function Header() {
 
         {/* Right: Navigation */}
         <nav className="landing-header-nav">
-          <a href="#" className="nav-link">How It Works</a>
+          <a href="#how-it-works" className="nav-link">How It Works</a>
           <a href="#" className="nav-link">LiveThreat Scorecards</a>
           <a href="#" className="nav-link">Auto Questionnaires</a>
           <a href="#" className="nav-link">Risk Tiering</a>

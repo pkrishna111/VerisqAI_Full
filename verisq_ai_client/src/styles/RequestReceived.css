@@ -1,0 +1,81 @@
+/* Page */
+.success-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Card */
+.success-card {
+  width: 420px;
+  padding: 40px 30px;
+  border-radius: 14px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Check Icon */
+.success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Title */
+.success-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+/* Text */
+.success-text {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Info Box */
+.info-box {
+  background: #f1f5f9;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+.info-title {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: #94a3b8;
+}
+
+/* Button */
+.success-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb; /* PRIMARY COLOR */
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.success-button:hover {
+  background: #1d4ed8;
+}
