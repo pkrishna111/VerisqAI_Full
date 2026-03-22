@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 using VerisqAI.API.Configurations;
 using VerisqAI.API.Data;
@@ -25,7 +26,14 @@ builder.Services
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>   //creating own auth
+{
+    options.DefaultPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // Token Service
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -76,7 +84,10 @@ builder.Services
                 IssuerSigningKey =
                     new SymmetricSecurityKey(key),
 
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+
+                //to set role properly
+                RoleClaimType = ClaimTypes.Role
             };
     });
 
@@ -115,6 +126,7 @@ app.UseCors("AllowFrontend");
 
 //for jwt authentication
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
