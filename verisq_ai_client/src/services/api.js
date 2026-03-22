@@ -22,18 +22,19 @@ export const registerUser = async (data) => {
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
     const token = localStorage.getItem("token");
-
+    
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method,
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            ...(token && { Authorization: `Bearer ${token}` })
         },
         body: body ? JSON.stringify(body) : null
     });
 
     //this will auto logout if token is invalid
     if (res.status === 401) {
+        console.error("Unauthorized - token invalid");
         localStorage.removeItem("token");
         window.location.href = "/";
         return;
