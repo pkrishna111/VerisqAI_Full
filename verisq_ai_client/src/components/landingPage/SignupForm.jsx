@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Zap, ArrowRight, ShieldCheck } from "lucide-react";
 import { registerUser } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 function SignupForm() {
+
+     const navigate = useNavigate(); 
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -34,6 +37,8 @@ function SignupForm() {
             setMessage("Registration successful. Check your email.");
 
             console.log(result);
+
+             navigate(`/request-received?email=${formData.email}`);
 
         } catch (error) {
             setMessage(error.message);
