@@ -1,0 +1,368 @@
+/* ============================================================
+   HowItWorks.css
+   Naming convention: Howitworks_[element]
+   ============================================================ */
+
+#Howitworks_main {
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#Howitworks_hero {
+  text-align: center;
+  padding: 48px 24px 24px;
+  max-width: 680px;
+  margin: 0 auto;
+  margin-top: 4%;
+}
+
+#Howitworks_hero_title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+#Howitworks_hero_subtitle {
+  font-size: 0.975rem;
+  color: #64748b;
+  line-height: 1.65;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   STEPS SECTION
+   ============================================================ */
+#Howitworks_steps_section {
+  padding: 16px 24px 48px;
+}
+
+#Howitworks_steps_container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.Howitworks_step_card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 22px;
+  padding: 28px 0;
+}
+
+.Howitworks_step_divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 0;
+}
+
+.Howitworks_step_number {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-top: 2px;
+}
+
+.Howitworks_step_orange { background-color: #f97316; }
+.Howitworks_step_blue   { background-color: #3b82f6; }
+.Howitworks_step_green  { background-color: #22c55e; }
+.Howitworks_step_purple { background-color: #8b5cf6; }
+
+.Howitworks_step_content {
+  flex: 1;
+  min-width: 0;
+}
+
+.Howitworks_step_title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.Howitworks_step_desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.7;
+  margin: 0 0 12px 0;
+}
+
+.Howitworks_step_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.Howitworks_badge_icon {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.Howitworks_badge_orange {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.Howitworks_badge_blue {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.Howitworks_badge_green {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* ============================================================
+   WHAT'S INCLUDED — 3 CARDS SINGLE ROW
+   ============================================================ */
+#Howitworks_included_section {
+  background: #f8fafc;
+  padding: 48px 24px 56px;
+}
+
+#Howitworks_included_inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#Howitworks_included_title {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+#Howitworks_included_subtitle {
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+/* ── Single row: 3 equal columns, 1 row ── */
+#Howitworks_included_cards_wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Card ── */
+div.Howitworks_included_card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px 22px 28px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+div.Howitworks_included_card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+  transform: translateY(-3px);
+}
+
+/* ── Icon box ── */
+div.Howitworks_included_icon_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Card title h4 ── */
+div.Howitworks_included_card h4.Howitworks_included_card_title {
+  display: block;
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+/* ── Card subtitle p ── */
+div.Howitworks_included_card p.Howitworks_included_card_sub {
+  display: block;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+/* ── List ── */
+div.Howitworks_included_card ul.Howitworks_included_list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+div.Howitworks_included_card ul.Howitworks_included_list li {
+  display: block;
+  position: relative;
+  font-size: 0.855rem;
+  color: #334155;
+  line-height: 1.55;
+  padding-left: 20px;
+}
+
+div.Howitworks_included_card ul.Howitworks_included_list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #22c55e;
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  #Howitworks_included_cards_wrap {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  /* Make 3rd card full width on 2-col layout */
+  div.Howitworks_included_card:last-child {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 540px) {
+  #Howitworks_included_cards_wrap {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  div.Howitworks_included_card:last-child {
+    grid-column: unset;
+    max-width: 100%;
+  }
+}
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+#Howitworks_cta_section {
+  background: #0f172a;
+  padding: 60px 24px 56px;
+  text-align: center;
+}
+
+#Howitworks_cta_title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+#Howitworks_cta_subtitle {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+#Howitworks_cta_btn {
+  display: inline-block;
+  background: #f97316;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 13px 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+#Howitworks_cta_btn:hover {
+  background: #ea6200;
+  transform: translateY(-2px);
+}
+
+#Howitworks_cta_powered {
+  margin-top: 18px;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+#Howitworks_cta_powered strong {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* ============================================================
+   RESPONSIVE — GENERAL
+   ============================================================ */
+@media (max-width: 600px) {
+  .Howitworks_step_card {
+    gap: 14px;
+    padding: 20px 0;
+  }
+
+  #Howitworks_hero {
+    padding: 36px 20px 20px;
+  }
+
+  #Howitworks_steps_section {
+    padding: 12px 20px 40px;
+  }
+
+  #Howitworks_included_section {
+    padding: 40px 20px 48px;
+  }
+
+  #Howitworks_cta_section {
+    padding: 48px 20px 44px;
+  }
+}

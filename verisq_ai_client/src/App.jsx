@@ -5,6 +5,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Otp_verification from './pages/otp_verification'
 import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import RequestReceived from './pages/RequestReceived'
+import Howitworks from './pages/Howitworks'
 
 
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/otp_verification" element={<Otp_verification/>}/>
        <Route path="/request-received" element={<RequestReceived />} />
+       <Route path="how-it-works" element={<Howitworks/>}/>
         <Route 
         path="/dashboard" 
         element={
