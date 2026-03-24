@@ -1,6 +1,12 @@
 import '../styles/Howitworks.css'
-import Header from "../components/landingPage/Header"
+import "../styles/Scorecards.css"   // ✅ added for CTA reuse
 
+import Header from "../components/landingPage/Header"
+import Footer from "../components/landingPage/Footer"
+
+/* =========================
+   STEPS DATA
+========================= */
 const STEPS = [
   {
     number: '1',
@@ -27,75 +33,63 @@ const STEPS = [
     number: '4',
     color: 'purple',
     title: 'View Scores & Send AI Assessments',
-    desc: 'Each vendor receives a security rating (250–900), letter grade (A–F), and detailed findings across risk vectors like TLS/SSL, open ports, DNS, and more. Optionally send AI-powered security questionnaires to your vendors — upload existing attestations and Verisq AI will pre-fill responses.',
+    desc: 'Each vendor receives a security rating (250–900), letter grade (A–F), and detailed findings across risk vectors like TLS/SSL, open ports, DNS, and more. Optionally send AI-powered security questionnaires to your vendors.',
     badge: { variant: 'blue', icon: '✦', text: 'AI pre-fills assessments from uploaded SOC/PEN reports' },
   },
   {
     number: '5',
     color: 'orange',
     title: 'Upgrade or Share PDF Reports',
-    desc: "Download professional PDF scorecards to share with stakeholders. When you're ready for unlimited vendors, continuous monitoring, and the full Verisq AI TPRM platform — upgrade with one click.",
+    desc: "Download professional PDF scorecards to share with stakeholders.",
     badge: null,
   },
 ]
 
-/* Only 3 cards — single row */
+/* =========================
+   INCLUDED CARDS
+========================= */
 const INCLUDED = [
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
+    icon: <span>🛡️</span>,
     title: 'Verisq LiveThreat™ Scorecards',
     sub: 'Full security ratings for up to 5 vendors',
     items: [
       '250–900 rating scale with A–F grades',
-      'Risk vector breakdown (TLS, DNS, Ports, etc.)',
+      'Risk vector breakdown',
       'Downloadable PDF reports',
       'External attack surface discovery',
     ],
   },
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-      </svg>
-    ),
+    icon: <span>📄</span>,
     title: 'AI-Powered Questionnaires',
     sub: 'Smart vendor security assessments',
     items: [
       'Send assessments to vendor contacts',
       'Upload SOC/PEN reports for AI pre-fill',
-      'Verisq AI analyzes attestations automatically',
+      'Automatic analysis',
       'Faster vendor response times',
     ],
   },
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2">
-        <line x1="18" y1="20" x2="18" y2="10" />
-        <line x1="12" y1="20" x2="12" y2="4" />
-        <line x1="6"  y1="20" x2="6"  y2="14" />
-      </svg>
-    ),
+    icon: <span>📊</span>,
     title: 'Risk Intelligence',
     sub: 'Actionable security insights',
     items: [
-      'High/Critical finding alerts',
-      'Vulnerability severity breakdown',
+      'High/Critical alerts',
+      'Vulnerability breakdown',
       'Remediation guidance',
-      'Ransomware risk indicators',
+      'Ransomware indicators',
     ],
   },
 ]
 
+/* =========================
+   STEP CARD
+========================= */
 function StepCard({ number, color, title, desc, badge, isLast }) {
   return (
     <>
-        <Header/>
-
       <div className="Howitworks_step_card">
         <div className={`Howitworks_step_number Howitworks_step_${color}`}>
           {number}
@@ -116,6 +110,9 @@ function StepCard({ number, color, title, desc, badge, isLast }) {
   )
 }
 
+/* =========================
+   INCLUDED CARD
+========================= */
 function IncludedCard({ icon, title, sub, items }) {
   return (
     <div className="Howitworks_included_card">
@@ -131,22 +128,48 @@ function IncludedCard({ icon, title, sub, items }) {
   )
 }
 
+/* =========================
+   REUSED CTA (FROM SCORECARDS)
+========================= */
+function CtaSection() {
+  return (
+    <section className="scorecards-cta">
+      <div className="scorecards-container">
+        <h2 className="scorecards-cta__title">
+          Don't Be Larry. Start Today.
+        </h2>
+        <p className="scorecards-cta__sub">
+          See where your vendors really stand — in minutes, not months.
+        </p>
+        <a href="#" className="scorecards-btn scorecards-btn--white">
+          Try 5 Vendors for Free →
+        </a>
+      </div>
+    </section>
+  )
+}
+
+/* =========================
+   MAIN COMPONENT
+========================= */
 function HowItWorks() {
   return (
     <main id="Howitworks_main">
 
-      {/* Hero */}
+      {/* ✅ FIXED: Header moved here */}
+      <Header />
+
+      {/* HERO */}
       <section id="Howitworks_hero">
         <h1 id="Howitworks_hero_title">
           How the Verisq LiveThreat™ Trial Works
         </h1>
         <p id="Howitworks_hero_subtitle">
-          Five steps from sign-up to actionable vendor risk intelligence — no
-          credit card, no commitment.
+          Five steps from sign-up to actionable vendor risk intelligence.
         </p>
       </section>
 
-      {/* Steps */}
+      {/* STEPS */}
       <section id="Howitworks_steps_section">
         <div id="Howitworks_steps_container">
           {STEPS.map((step, index) => (
@@ -159,14 +182,14 @@ function HowItWorks() {
         </div>
       </section>
 
-      {/* What's Included — 3 cards single row */}
+      {/* INCLUDED */}
       <section id="Howitworks_included_section">
         <div id="Howitworks_included_inner">
           <h2 id="Howitworks_included_title">
             What's Included in Your Free Trial
           </h2>
           <p id="Howitworks_included_subtitle">
-            Everything you need to evaluate your vendor risk posture — completely free
+            Everything you need to evaluate vendor risk
           </p>
           <div id="Howitworks_included_cards_wrap">
             {INCLUDED.map((card) => (
@@ -176,18 +199,10 @@ function HowItWorks() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section id="Howitworks_cta_section">
-        <h2 id="Howitworks_cta_title">Don't Be Larry. Start Today.</h2>
-        <p id="Howitworks_cta_subtitle">
-          See where your vendors really stand — in minutes, not months.
-        </p>
-        <a href="#" id="Howitworks_cta_btn">→ Try 5 Vendors for Free</a>
-        <p id="Howitworks_cta_powered">
-          Powered by <strong>Verisq.AI</strong>
-        </p>
-      </section>
+      {/* ✅ NEW CTA (MATCHED WITH SCORECARD) */}
+      <CtaSection />
 
+      <Footer />
     </main>
   )
 }

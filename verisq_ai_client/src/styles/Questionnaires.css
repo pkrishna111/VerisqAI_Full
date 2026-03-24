@@ -1,0 +1,590 @@
+/* =============================================
+   Questionnaires.css
+   File: Questionnaires.css
+   All class names prefixed: Questionnaires-
+   Primary Color: #2563eb replaces orange
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ── Variables ─────────────────────────────── */
+:root {
+  --q-primary:       #2563eb;
+  --q-primary-dark:  #1d4ed8;
+  --q-primary-light: #3b82f6;
+  --q-primary-pale:  #eff6ff;
+  --q-strike-red:    #ef4444;
+  --q-dark:          #0f172a;
+  --q-dark-navy:     #1e2d4a;
+  --q-gray-600:      #475569;
+  --q-gray-400:      #94a3b8;
+  --q-gray-100:      #f1f5f9;
+  --q-border:        #e2e8f0;
+  --q-white:         #ffffff;
+  --q-peach-bg:      #fdf3ee;   /* numbers section background */
+  --q-font:          'Inter', sans-serif;
+  --q-radius-sm:     8px;
+  --q-radius-md:     16px;
+  --q-radius-lg:     20px;
+  --q-shadow-card:   0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  --q-shadow-demo:   0 20px 60px rgba(15,23,42,0.15), 0 4px 16px rgba(15,23,42,0.08);
+  --q-transition:    0.22s ease;
+}
+
+/* ── Page wrapper ──────────────────────────── */
+.Questionnaires-page {
+  font-family: var(--q-font);
+  color: var(--q-dark);
+  background: var(--q-white);
+  overflow-x: hidden;
+  margin-top: 4%;
+}
+
+/* ── Container ─────────────────────────────── */
+.Questionnaires-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* =============================================
+   SECTION 1 — HERO
+   Layout: two-column grid
+   Left: chip + title + subtitle + stats
+   Right: demo card (floats)
+   ============================================= */
+.Questionnaires-hero {
+  background: #f8f9fb;
+  padding: 64px 0 80px;
+}
+
+/* ▸ Two-column grid */
+.Questionnaires-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Left column */
+/* .Questionnaires-hero-left {} */
+
+/* Right column */
+.Questionnaires-hero-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Breadcrumb chip ───────────────────────── */
+.Questionnaires-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--q-white);
+  color: var(--q-dark);
+  border: 1.5px solid var(--q-border);
+  border-radius: 100px;
+  padding: 6px 14px 6px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+
+.Questionnaires-chip-icon {
+  color: var(--q-primary);
+  font-size: 0.9rem;
+}
+
+/* ── Hero title ────────────────────────────── */
+.Questionnaires-hero-title {
+  font-size: clamp(2.1rem, 3.2vw, 2.85rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--q-dark);
+  margin: 0 0 20px;
+}
+
+.Questionnaires-hero-title-accent {
+  color: var(--q-primary);
+  display: block;
+}
+
+/* ── Hero subtitle ─────────────────────────── */
+.Questionnaires-hero-subtitle {
+  font-size: 1rem;
+  color: var(--q-gray-600);
+  line-height: 1.72;
+  margin: 0 0 40px;
+  max-width: 430px;
+}
+
+/* ── Stats row ─────────────────────────────── */
+.Questionnaires-stats {
+  display: flex;
+  gap: 44px;
+}
+
+.Questionnaires-stat-val {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: var(--q-primary);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.Questionnaires-stat-label {
+  font-size: 0.78rem;
+  color: var(--q-gray-600);
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* ── Demo card ─────────────────────────────── */
+.Questionnaires-demo-card {
+  background: var(--q-white);
+  border-radius: var(--q-radius-lg);
+  box-shadow: var(--q-shadow-demo);
+  border: 1px solid var(--q-border);
+  overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  animation: Questionnaires-float 5s ease-in-out infinite;
+}
+
+@keyframes Questionnaires-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+.Questionnaires-demo-header {
+  background: var(--q-primary);
+  padding: 18px 22px 14px;
+}
+
+.Questionnaires-demo-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.Questionnaires-demo-header-title {
+  color: var(--q-white);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.Questionnaires-demo-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.Questionnaires-demo-progress-track {
+  flex: 1;
+  height: 7px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.Questionnaires-demo-progress-fill {
+  height: 100%;
+  width: 85%;
+  background: var(--q-white);
+  border-radius: 10px;
+}
+
+.Questionnaires-demo-progress-label {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.Questionnaires-demo-body {
+  padding: 0;
+}
+
+.Questionnaires-demo-qrow {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--q-border);
+}
+
+.Questionnaires-demo-qrow:last-child {
+  border-bottom: none;
+}
+
+.Questionnaires-demo-qtext {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--q-dark);
+  margin-bottom: 10px;
+}
+
+.Questionnaires-demo-qnum {
+  color: var(--q-primary);
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.Questionnaires-demo-answer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.Questionnaires-demo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--q-primary);
+  color: var(--q-white);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.Questionnaires-demo-tag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.7);
+}
+
+.Questionnaires-demo-ans-text {
+  font-size: 0.82rem;
+  color: var(--q-dark);
+}
+
+.Questionnaires-demo-ans-src {
+  color: var(--q-gray-600);
+  font-style: italic;
+}
+
+/* =============================================
+   SECTION 2 — HOW QFX WORKS
+   4 equal cards, centered icon + text
+   White bg
+   ============================================= */
+.Questionnaires-how {
+  background: var(--q-white);
+  padding: 88px 0;
+}
+
+.Questionnaires-section-title {
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  font-weight: 800;
+  color: var(--q-dark);
+  text-align: center;
+  margin: 0 0 10px;
+  letter-spacing: -0.025em;
+}
+
+.Questionnaires-section-sub {
+  font-size: 0.98rem;
+  color: var(--q-gray-600);
+  text-align: center;
+  margin: 0 auto 54px;
+  max-width: 420px;
+  line-height: 1.65;
+}
+
+.Questionnaires-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.Questionnaires-step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 36px 20px 30px;
+  border-radius: var(--q-radius-md);
+  border: 1px solid var(--q-border);
+  background: var(--q-white);
+  transition: box-shadow var(--q-transition), transform var(--q-transition);
+}
+
+.Questionnaires-step-card:hover {
+  box-shadow: var(--q-shadow-card);
+  transform: translateY(-3px);
+}
+
+.Questionnaires-step-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--q-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 22px;
+  transition: background var(--q-transition);
+}
+
+.Questionnaires-step-card:hover .Questionnaires-step-icon {
+  background: var(--q-primary-pale);
+}
+
+.Questionnaires-step-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--q-dark);
+  margin: 0 0 10px;
+}
+
+.Questionnaires-step-desc {
+  font-size: 0.84rem;
+  color: var(--q-gray-600);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* =============================================
+   SECTION 3 — WHY QFX CHANGES EVERYTHING
+   2×2 grid, icon LEFT + text RIGHT
+   Light gray background
+   ============================================= */
+.Questionnaires-why {
+  background: var(--q-white);
+  padding: 88px 0;
+}
+
+.Questionnaires-why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.Questionnaires-why-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px 24px;
+  border-radius: var(--q-radius-md);
+  border: 1px solid var(--q-border);
+  background: var(--q-white);
+  transition: box-shadow var(--q-transition), transform var(--q-transition), border-color var(--q-transition);
+}
+
+.Questionnaires-why-card:hover {
+  box-shadow: var(--q-shadow-card);
+  border-color: rgba(37,99,235,0.18);
+  transform: translateY(-2px);
+}
+
+.Questionnaires-why-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--q-radius-sm);
+  background: var(--q-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  flex-shrink: 0;
+  transition: background var(--q-transition);
+}
+
+.Questionnaires-why-card:hover .Questionnaires-why-icon {
+  background: var(--q-primary-pale);
+}
+
+.Questionnaires-why-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--q-dark);
+  margin: 0 0 8px;
+}
+
+.Questionnaires-why-desc {
+  font-size: 0.85rem;
+  color: var(--q-gray-600);
+  line-height: 1.68;
+  margin: 0;
+}
+
+/* =============================================
+   SECTION 4 — THE NUMBERS DON'T LIE
+   Peach/cream background (no card wrapper)
+   3-column: strikethrough above, big value below
+   ============================================= */
+.Questionnaires-numbers {
+  background: var(--q-peach-bg);
+  padding: 88px 0;
+}
+
+.Questionnaires-numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.Questionnaires-number-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 20px;
+}
+
+/* Strikethrough old value — red */
+.Questionnaires-number-old {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--q-strike-red);
+  text-decoration: line-through;
+  text-decoration-color: var(--q-strike-red);
+  text-decoration-thickness: 2px;
+  margin-bottom: 2px;
+}
+
+/* Big new value */
+.Questionnaires-number-new {
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: var(--q-primary);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+/* Description below */
+.Questionnaires-number-desc {
+  font-size: 0.83rem;
+  color: var(--q-gray-600);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* =============================================
+   SECTION 5 — CTA
+   Dark navy background, centered
+   ============================================= */
+.Questionnaires-cta {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  padding: 90px 0;
+}
+
+.Questionnaires-cta-inner {
+  text-align: center;
+}
+
+.Questionnaires-cta-title {
+  font-size: clamp(1.9rem, 3.5vw, 2.55rem);
+  font-weight: 800;
+  color: var(--q-white);
+  letter-spacing: -0.025em;
+  margin: 0 0 16px;
+}
+
+.Questionnaires-cta-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+  margin: 0 auto 40px;
+  max-width: 500px;
+}
+
+/* ── Primary CTA button ────────────────────── */
+.Questionnaires-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--q-primary);
+  color: var(--q-white);
+  border: none;
+  border-radius: var(--q-radius-sm);
+  padding: 16px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--q-font);
+  cursor: pointer;
+  transition: background var(--q-transition), transform var(--q-transition), box-shadow var(--q-transition);
+  box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+  text-decoration: none;
+}
+
+.Questionnaires-cta-btn:hover {
+  background: var(--q-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(37,99,235,0.45);
+}
+
+.Questionnaires-cta-btn:active {
+  transform: translateY(0);
+}
+
+.Questionnaires-cta-btn-arrow {
+  font-size: 1.1rem;
+  transition: transform var(--q-transition);
+}
+
+.Questionnaires-cta-btn:hover .Questionnaires-cta-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1024px) {
+  .Questionnaires-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .Questionnaires-hero-right {
+    justify-content: center;
+  }
+  .Questionnaires-demo-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .Questionnaires-container {
+    padding: 0 20px;
+  }
+  .Questionnaires-how,
+  .Questionnaires-why,
+  .Questionnaires-numbers,
+  .Questionnaires-cta {
+    padding: 60px 0;
+  }
+  .Questionnaires-hero {
+    padding: 44px 0 60px;
+  }
+  .Questionnaires-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .Questionnaires-why-grid {
+    grid-template-columns: 1fr;
+  }
+  .Questionnaires-numbers-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .Questionnaires-stats {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Questionnaires-steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .Questionnaires-hero-title {
+    font-size: 2rem;
+  }
+}

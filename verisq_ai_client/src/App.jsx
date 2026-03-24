@@ -6,6 +6,8 @@ import Otp_verification from './pages/otp_verification'
 import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import RequestReceived from './pages/RequestReceived'
 import Howitworks from './pages/Howitworks'
+import Scorecards from './pages/Scorecards '
+import Questionnaires from './pages/Questionnaires'
 
 
 
@@ -18,6 +20,8 @@ function App() {
         <Route path="/otp_verification" element={<Otp_verification/>}/>
        <Route path="/request-received" element={<RequestReceived />} />
        <Route path="how-it-works" element={<Howitworks/>}/>
+       <Route path="Scorecard" element={<Scorecards/>}/>
+       <Route path="Questionnaires" element={<Questionnaires/>}/>
         <Route 
         path="/dashboard" 
         element={

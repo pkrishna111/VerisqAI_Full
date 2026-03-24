@@ -1,0 +1,485 @@
+/* ============================================================
+   Scorecards.css — file: Scorecards.jsx
+   All classes prefixed with "scorecards-"
+   Primary color: #1a6bdb (blue)
+   ============================================================ */
+
+/* ── Variables ──────────────────────────────────────────────── */
+:root {
+  --scorecards-primary:       #1a6bdb;
+  --scorecards-primary-dark:  #1254b5;
+  --scorecards-primary-light: #e8f0fd;
+  --scorecards-primary-glow:  rgba(26, 107, 219, 0.18);
+
+  --scorecards-danger:        #dc2626;
+  --scorecards-danger-bg:     #fef2f2;
+  --scorecards-warning:       #d97706;
+  --scorecards-warning-bg:    #fffbeb;
+
+  --scorecards-text:          #1a202c;
+  --scorecards-text-sec:      #4a5568;
+  --scorecards-text-muted:    #718096;
+  --scorecards-border:        #e2e8f0;
+  --scorecards-bg:            #f7fafc;
+  --scorecards-white:         #ffffff;
+
+  --scorecards-radius:        12px;
+  --scorecards-radius-lg:     16px;
+  --scorecards-shadow-lg:     0 8px 48px rgba(0, 0, 0, 0.12);
+  --scorecards-transition:    0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+.scorecards-root {
+  font-family: inherit;
+  color: var(--scorecards-text);
+  background: var(--scorecards-white);
+  line-height: 1.6;
+}
+
+.scorecards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.scorecards-section-title {
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 800;
+  color: var(--scorecards-text);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.scorecards-section-sub {
+  text-align: center;
+  color: var(--scorecards-text-sec);
+  font-size: 1rem;
+  margin-bottom: 48px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.scorecards-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: var(--scorecards-transition);
+  white-space: nowrap;
+}
+
+.scorecards-btn--primary {
+  background: var(--scorecards-primary);
+  color: var(--scorecards-white);
+  border-color: var(--scorecards-primary);
+}
+.scorecards-btn--primary:hover {
+  background: var(--scorecards-primary-dark);
+  transform: translateY(-2px);
+}
+
+.scorecards-btn--white {
+  background: var(--scorecards-white);
+  color: var(--scorecards-primary);
+  border-color: var(--scorecards-white);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.scorecards-btn--white:hover {
+  background: var(--scorecards-primary-light);
+  transform: translateY(-2px);
+}
+
+/* ════════════════════════════════════════════════════════════
+   HERO — text left (45%) | card right (55%)
+   ════════════════════════════════════════════════════════════ */
+.scorecards-hero {
+  padding: 0;
+  background: var(--scorecards-white);
+  overflow: hidden;
+}
+
+.scorecards-hero__layout {
+  display: grid;
+  grid-template-columns: 45fr 55fr;
+  min-height: 580px;
+}
+
+/* LEFT */
+.scorecards-hero__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 60px 56px 60px 0;
+}
+
+.scorecards-hero__title {
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--scorecards-text);
+  margin-bottom: 22px;
+  letter-spacing: -0.02em;
+}
+
+.scorecards-hero__title span {
+  color: var(--scorecards-primary);
+}
+
+.scorecards-hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--scorecards-text-sec);
+  line-height: 1.75;
+  margin-bottom: 44px;
+  max-width: 440px;
+}
+
+.scorecards-hero__stats {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.scorecards-hero__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scorecards-hero__stat-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--scorecards-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.scorecards-hero__stat-label {
+  font-size: 0.82rem;
+  color: var(--scorecards-text-muted);
+  font-weight: 500;
+}
+
+/* RIGHT */
+.scorecards-hero__right {
+  /* background: var(--scorecards-bg); */
+  display: flex;
+  align-items: flex-start;
+  padding: 40px;
+  margin-top: 12%;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SCORECARD CARD
+   ════════════════════════════════════════════════════════════ */
+.scorecards-card {
+  background: var(--scorecards-white);
+  border-radius: var(--scorecards-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--scorecards-shadow-lg);
+  width: 100%;
+  border: 1px solid var(--scorecards-border);
+}
+
+.scorecards-card__header {
+  background: linear-gradient(
+    135deg,
+    var(--scorecards-primary) 0%,
+    var(--scorecards-primary-dark) 100%
+  );
+  color: var(--scorecards-white);
+  padding: 28px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scorecards-card__header-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.scorecards-card__domain {
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.scorecards-card__body {
+  padding: 28px;
+}
+
+.scorecards-card__score-wrap {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--scorecards-border);
+}
+
+.scorecards-card__score-ring {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--scorecards-primary) 0deg 259deg,
+    #e2e8f0 259deg 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.scorecards-card__score-ring::after {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--scorecards-white);
+}
+
+.scorecards-card__score-number {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--scorecards-text);
+  position: relative;
+  z-index: 1;
+}
+
+.scorecards-card__risk-label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--scorecards-text);
+  margin-bottom: 4px;
+}
+
+.scorecards-card__risk-sub {
+  font-size: 0.9rem;
+  color: var(--scorecards-text-muted);
+}
+
+.scorecards-card__findings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scorecards-card__finding {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--scorecards-bg);
+  border: 1px solid var(--scorecards-border);
+}
+
+.scorecards-card__finding-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.scorecards-card__finding--high   .scorecards-card__finding-badge { background: var(--scorecards-danger);  color: #fff; }
+.scorecards-card__finding--medium .scorecards-card__finding-badge { background: var(--scorecards-warning); color: #fff; }
+
+.scorecards-card__finding-text {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--scorecards-text);
+}
+
+/* ════════════════════════════════════════════════════════════
+   WHAT LIVETHREAT DELIVERS
+   3-column card grid — icon top, title, description
+   exactly like second screenshot
+   ════════════════════════════════════════════════════════════ */
+.scorecards-deliver {
+  padding: 80px 0;
+  background: var(--scorecards-white);
+}
+
+.scorecards-deliver__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.scorecards-deliver__card {
+  background: var(--scorecards-white);
+  border: 1px solid var(--scorecards-border);
+  border-radius: var(--scorecards-radius-lg);
+  padding: 28px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition:
+    box-shadow   var(--scorecards-transition),
+    transform    var(--scorecards-transition),
+    border-color var(--scorecards-transition);
+}
+
+.scorecards-deliver__card:hover {
+  box-shadow: 0 8px 32px rgba(26, 107, 219, 0.1);
+  transform: translateY(-3px);
+  border-color: rgba(26, 107, 219, 0.25);
+}
+
+/* Icon — round square with coloured bg, top of card */
+.scorecards-deliver__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.scorecards-deliver__card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--scorecards-text);
+  margin-bottom: 10px;
+}
+
+.scorecards-deliver__card-desc {
+  font-size: 0.9rem;
+  color: var(--scorecards-text-sec);
+  line-height: 1.65;
+}
+
+/* ════════════════════════════════════════════════════════════
+   WHAT WE SCAN — 4-column grid
+   ════════════════════════════════════════════════════════════ */
+.scorecards-scan {
+  padding: 80px 0;
+  background: var(--scorecards-bg);
+}
+
+.scorecards-scan__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.scorecards-scan__card {
+  background: var(--scorecards-white);
+  border: 1px solid var(--scorecards-border);
+  border-radius: var(--scorecards-radius);
+  padding: 24px 16px;
+  text-align: center;
+  transition:
+    box-shadow   var(--scorecards-transition),
+    transform    var(--scorecards-transition),
+    border-color var(--scorecards-transition);
+}
+
+.scorecards-scan__card:hover {
+  box-shadow: 0 8px 32px rgba(26, 107, 219, 0.13);
+  transform: translateY(-4px);
+  border-color: rgba(26, 107, 219, 0.3);
+}
+
+.scorecards-scan__card-icon  { font-size: 1.9rem; display: block; margin-bottom: 10px; }
+.scorecards-scan__card-title { font-size: 0.88rem; font-weight: 700; color: var(--scorecards-text); margin-bottom: 6px; }
+.scorecards-scan__card-desc  { font-size: 0.76rem; color: var(--scorecards-text-muted); line-height: 1.5; }
+
+/* ════════════════════════════════════════════════════════════
+   CTA BANNER
+   ════════════════════════════════════════════════════════════ */
+.scorecards-cta {
+  padding: 80px 24px;
+  background: linear-gradient(
+    135deg,
+    var(--scorecards-primary) 0%,
+    var(--scorecards-primary-dark) 100%
+  );
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.scorecards-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.scorecards-cta__title {
+  font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  font-weight: 800;
+  color: var(--scorecards-white);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.scorecards-cta__sub {
+  color: rgba(255,255,255,0.8);
+  font-size: 1rem;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.scorecards-cta .scorecards-btn { position: relative; }
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .scorecards-scan__grid     { grid-template-columns: repeat(2, 1fr); }
+  .scorecards-deliver__grid  { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .scorecards-hero__layout {
+    grid-template-columns: 1fr;
+    min-height: unset;
+  }
+  .scorecards-hero__left {
+    padding: 56px 0 40px;
+    justify-content: flex-start;
+  }
+  .scorecards-hero__right {
+    padding: 0 0 56px;
+    background: transparent;
+  }
+  .scorecards-card { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .scorecards-container      { padding: 0 20px; }
+  .scorecards-deliver__grid  { grid-template-columns: 1fr; }
+  .scorecards-hero__stats    { gap: 24px; }
+}
+
+@media (max-width: 560px) {
+  .scorecards-scan__grid       { grid-template-columns: repeat(2, 1fr); }
+  .scorecards-hero__stat-value { font-size: 1.7rem; }
+  .scorecards-hero__title      { font-size: 2.2rem; }
+  .scorecards-deliver__grid    { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 400px) {
+  .scorecards-scan__grid { grid-template-columns: 1fr; }
+}

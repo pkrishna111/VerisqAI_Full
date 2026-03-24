@@ -14,8 +14,8 @@ function Header() {
         {/* Navigation */}
         <nav className="landing-header-nav">
           <Link to="/how-it-works" className="nav-link">How It Works</Link>
-          <Link to="/" className="nav-link">LiveThreat Scorecards</Link>
-          <Link to="/" className="nav-link">Auto Questionnaires</Link>
+          <Link to="/Scorecard" className="nav-link">LiveThreat Scorecards</Link>
+          <Link to="/Questionnaires" className="nav-link">Auto Questionnaires</Link>
           <Link to="/" className="nav-link">Risk Tiering</Link>
           <Link to="/" className="nav-link">Breach Alerts</Link>
           <Link to="/how-it-works" className="landing-btn-header">
