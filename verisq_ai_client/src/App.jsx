@@ -8,7 +8,8 @@ import RequestReceived from './pages/RequestReceived'
 import Howitworks from './pages/Howitworks'
 import Scorecards from './pages/Scorecards '
 import Questionnaires from './pages/Questionnaires'
-
+import RiskTiering from './pages/RiskTiering'
+import BreachAlerts from './pages/Breachalerts'
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
        <Route path="how-it-works" element={<Howitworks/>}/>
        <Route path="Scorecard" element={<Scorecards/>}/>
        <Route path="Questionnaires" element={<Questionnaires/>}/>
+       <Route path="RiskTiering" element={<RiskTiering/>}/>
+       <Route path="Breachalerts" element={<BreachAlerts/>}/>
+
         <Route 
         path="/dashboard" 
         element={

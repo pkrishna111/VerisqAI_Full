@@ -1,0 +1,514 @@
+/* ================================================================
+   RiskTiering.css
+   All selectors namespaced with RiskTiering__ prefix
+   ================================================================ */
+
+/* ── CSS Variables ─────────────────────────────────────────────── */
+:root {
+    --RT-critical:   #E63946;
+    --RT-high:       #F4842A;
+    --RT-medium:     #F4A235;
+    --RT-low:        #2A9D5C;
+    --RT-orange:     #F4842A;
+    --RT-dark:       #1A1F2E;
+    --RT-muted:      #6B7280;
+    --RT-bg:         #F9FAFB;
+    --RT-white:      #FFFFFF;
+    --RT-border:     #E5E7EB;
+    --RT-font-head:  'Georgia', 'Times New Roman', serif;
+    --RT-font-body:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  
+  /* ── Root ──────────────────────────────────────────────────────── */
+  .RiskTiering__root {
+    background: var(--RT-bg);
+    font-family: var(--RT-font-body);
+  }
+  
+  /* ── Shared Section Header ─────────────────────────────────────── */
+  .RiskTiering__section-header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+  
+  .RiskTiering__section-title {
+    font-family: var(--RT-font-head);
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--RT-dark);
+    margin: 0 0 12px;
+  }
+  
+  .RiskTiering__section-subtitle {
+    font-family: var(--RT-font-body);
+    color: var(--RT-muted);
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  
+  /* ================================================================
+     SECTION 1 – Hero
+     ================================================================ */
+  .RiskTiering__hero {
+    background: var(--RT-bg);
+    padding: 100px 40px 80px;
+    text-align: center;
+  }
+  
+  .RiskTiering__hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFF0E8;
+    border: 1px solid #F4C4A0;
+    border-radius: 999px;
+    padding: 6px 18px;
+    margin-bottom: 32px;
+  }
+  
+  .RiskTiering__hero-badge-icon {
+    font-size: 16px;
+  }
+  
+  .RiskTiering__hero-badge-text {
+    color: var(--RT-orange);
+    font-family: var(--RT-font-body);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .RiskTiering__hero-headline-box {
+    /* border: 2.5px solid var(--RT-dark); */
+    border-radius: 12px;
+    padding: 36px 48px;
+    margin-bottom: 28px;
+    background: var(--RT-white);
+  }
+  
+  .RiskTiering__hero-h1 {
+    font-family: var(--RT-font-head);
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--RT-dark);
+    margin: 0;
+    line-height: 1.15;
+  }
+  
+  .RiskTiering__hero-h1-accent {
+    color: var(--RT-orange);
+  }
+  
+  .RiskTiering__hero-subtitle {
+    font-family: var(--RT-font-body);
+    color: var(--RT-muted);
+    font-size: 18px;
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  
+  
+  /* ================================================================
+     SECTION 2 – Four-Tier Classification
+     ================================================================ */
+  .RiskTiering__fourtier {
+    background: var(--RT-white);
+    padding: 80px 40px;
+  }
+  
+  .RiskTiering__fourtier-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__fourtier-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .RiskTiering__tier-card {
+    flex: 1 1 220px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07);
+    border: 1.5px solid var(--RT-border);
+    background: var(--RT-white);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  
+  .RiskTiering__tier-card:hover {
+    transform: translateY(-6px);
+  }
+  
+  .RiskTiering__tier-card-header {
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .RiskTiering__tier-card-number {
+    color: #fff;
+    font-family: var(--RT-font-head);
+    font-weight: 700;
+    font-size: 20px;
+  }
+  
+  .RiskTiering__tier-card-label {
+    color: #fff;
+    font-family: var(--RT-font-body);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  
+  .RiskTiering__tier-card-body {
+    padding: 22px;
+  }
+  
+  .RiskTiering__tier-card-action {
+    font-family: var(--RT-font-body);
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 10px;
+  }
+  
+  .RiskTiering__tier-card-desc {
+    color: var(--RT-muted);
+    font-family: var(--RT-font-body);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 18px;
+  }
+  
+  .RiskTiering__tier-card-recommended {
+    font-family: var(--RT-font-body);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--RT-dark);
+    margin: 0 0 10px;
+  }
+  
+  .RiskTiering__tier-card-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .RiskTiering__tier-card-list-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--RT-font-body);
+    font-size: 13px;
+    color: var(--RT-dark);
+    margin-bottom: 6px;
+  }
+  
+  .RiskTiering__tier-card-check {
+    color: var(--RT-low);
+    font-weight: 700;
+  }
+  
+  
+  /* ================================================================
+     SECTION 3 – How Tiering Works
+     ================================================================ */
+  .RiskTiering__howtiering {
+    background: var(--RT-bg);
+    padding: 80px 40px;
+  }
+  
+  .RiskTiering__howtiering-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__howtiering-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .RiskTiering__factor-card {
+    flex: 1 1 280px;
+    background: #F3F4F6;
+    border-radius: 16px;
+    padding: 40px 32px;
+    text-align: center;
+    border: 1.5px solid transparent;
+    transition: background 0.22s ease, box-shadow 0.22s ease,
+                transform 0.22s ease, border-color 0.22s ease;
+  }
+  
+  .RiskTiering__factor-card:hover {
+    background: var(--RT-white);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+    transform: translateY(-4px);
+    border-color: var(--RT-border);
+  }
+  
+  .RiskTiering__factor-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #F0EAF6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+  }
+  
+  .RiskTiering__factor-card-title {
+    font-family: var(--RT-font-head);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--RT-dark);
+    margin: 0 0 12px;
+  }
+  
+  .RiskTiering__factor-card-desc {
+    font-family: var(--RT-font-body);
+    color: var(--RT-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0;
+  }
+  
+  
+  /* ================================================================
+     SECTION 4 – Risk Heat Map
+     ================================================================ */
+  .RiskTiering__heatmap {
+    background: var(--RT-white);
+    padding: 80px 40px;
+  }
+  
+  .RiskTiering__heatmap-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__heatmap-scroll {
+    overflow-x: auto;
+  }
+  
+  .RiskTiering__heatmap-table {
+    border-collapse: separate;
+    border-spacing: 6px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__heatmap-col-header {
+    font-family: var(--RT-font-body);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--RT-muted);
+    text-align: center;
+    padding: 0 0 12px;
+    width: 110px;
+  }
+  
+  .RiskTiering__heatmap-row-label {
+    font-family: var(--RT-font-body);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--RT-muted);
+    padding-right: 16px;
+    text-align: right;
+    white-space: nowrap;
+    width: 100px;
+  }
+  
+  .RiskTiering__heatmap-cell {
+    width: 100px;
+    height: 52px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--RT-font-body);
+    font-weight: 700;
+    font-size: 18px;
+    cursor: default;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  
+  .RiskTiering__heatmap-impact-label {
+    text-align: center;
+    color: var(--RT-muted);
+    font-family: var(--RT-font-body);
+    font-size: 13px;
+    margin-top: 14px;
+  }
+  
+  .RiskTiering__heatmap-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .RiskTiering__heatmap-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  
+  .RiskTiering__heatmap-legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+  
+  .RiskTiering__heatmap-legend-label {
+    font-family: var(--RT-font-body);
+    font-size: 13px;
+    color: var(--RT-muted);
+  }
+  
+  
+  /* ================================================================
+     SECTION 5 – Why Risk Tiering Matters
+     ================================================================ */
+  .RiskTiering__why {
+    background: var(--RT-bg);
+    padding: 80px 40px;
+  }
+  
+  .RiskTiering__why-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .RiskTiering__why-grid {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .RiskTiering__why-card {
+    flex: 1 1 260px;
+    max-width: 300px;
+    text-align: center;
+  }
+  
+  .RiskTiering__why-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: #FFF0E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 18px;
+  }
+  
+  .RiskTiering__why-card-title {
+    font-family: var(--RT-font-head);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--RT-dark);
+    margin: 0 0 10px;
+  }
+  
+  .RiskTiering__why-card-desc {
+    font-family: var(--RT-font-body);
+    color: var(--RT-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0;
+  }
+  
+  
+  /* ================================================================
+     SECTION 6 – CTA Banner
+     ================================================================ */
+  .RiskTiering__cta {
+    background: linear-gradient(
+        135deg,
+        var(--scorecards-primary) 0%,
+        var(--scorecards-primary-dark) 100%
+      );
+    padding: 80px 40px;
+    text-align: center;
+  }
+  
+  .RiskTiering__cta-title {
+    font-family: var(--RT-font-head);
+    font-weight: 900;
+    font-size: clamp(26px, 4vw, 40px);
+    color: #fff;
+    margin: 0 0 16px;
+  }
+  
+  .RiskTiering__cta-subtitle {
+    font-family: var(--RT-font-body);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 16px;
+    margin: 0 0 36px;
+  }
+  
+  .RiskTiering__cta-btn {
+    background: var(--scorecards-primary-light);
+    color: #2563eb;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 36px;
+    font-family: var(--RT-font-body);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  
+  .RiskTiering__cta-btn:hover {
+    background: var(--scorecards-primary-light);
+  transform: translateY(-2px);
+  }
+  
+  
+  /* ================================================================
+     Responsive — Mobile
+     ================================================================ */
+  @media (max-width: 768px) {
+    .RiskTiering__hero {
+      padding: 64px 20px 52px;
+    }
+  
+    .RiskTiering__hero-headline-box {
+      padding: 24px 20px;
+    }
+  
+    .RiskTiering__fourtier,
+    .RiskTiering__howtiering,
+    .RiskTiering__heatmap,
+    .RiskTiering__why,
+    .RiskTiering__cta {
+      padding: 52px 20px;
+    }
+  
+    .RiskTiering__heatmap-cell {
+      width: 72px;
+      height: 44px;
+      font-size: 15px;
+    }
+  
+    .RiskTiering__heatmap-col-header {
+      width: 76px;
+      font-size: 12px;
+    }
+  }
