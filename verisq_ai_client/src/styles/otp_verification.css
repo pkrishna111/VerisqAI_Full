@@ -353,6 +353,37 @@
   font-family: var(--Otp_verification_font);
 }
 
+.Otp_verification_disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.Otp_verification_attempts {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #999;
+}
+
+.Otp_verification_error {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: rgba(255, 0, 0, 0.08);
+  color: #ff4d4f;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.Otp_verification_timer {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #e3694a;
+  text-align: center;
+  font-weight: 500;
+}
+
 /* ── Sent badge ── */
 .Otp_verification_sent_badge {
   display: flex;

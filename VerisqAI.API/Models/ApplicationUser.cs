@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using VerisqAI.API.Models.Enums;
 
 namespace VerisqAI.API.Models
 {
@@ -9,5 +10,6 @@ namespace VerisqAI.API.Models
         public string? CompanyName { get; set; }
         public string? CompanyDomain { get; set; }
         public string? MobilePhone { get; set; }
+        public UserStatus Status { get; set; } = UserStatus.Pending;
     }
 }
