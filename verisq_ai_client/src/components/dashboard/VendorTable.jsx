@@ -1,31 +1,31 @@
 import { RefreshCw } from "lucide-react";
 import VendorRow from "./VendorRow";
 
-function VendorTable() {
-  const vendors = [
-    {
-      id: 1,
-      name: "CloudSync Pro",
-      domain: "cloudsyncpro.com",
-      status: "Complete",
-      score: 72,
-      questionnaire: "Pending",
-      riskScore: 32,
-      findings: 3,
-      tier: "Tier 3"
-    },
-    {
-      id: 2,
-      name: "DataPipe Analytics",
-      domain: "datapipe.io",
-      status: "Processing",
-      score: null,
-      questionnaire: "Send",
-      riskScore: null,
-      findings: null,
-      tier: null
-    }
-  ];
+function VendorTable({ vendors }) {
+  // const vendors = [    //to add static data
+  //   {
+  //     id: 1,
+  //     name: "CloudSync Pro",
+  //     domain: "cloudsyncpro.com",
+  //     status: "Complete",
+  //     score: 72,
+  //     questionnaire: "Pending",
+  //     riskScore: 32,
+  //     findings: 3,
+  //     tier: "Tier 3"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "DataPipe Analytics",
+  //     domain: "datapipe.io",
+  //     status: "Processing",
+  //     score: null,
+  //     questionnaire: "Send",
+  //     riskScore: null,
+  //     findings: null,
+  //     tier: null
+  //   }
+  // ];
 
   return (
     <div className="table-card">
@@ -55,9 +55,17 @@ function VendorTable() {
         </thead>
 
         <tbody>
-          {vendors.map((vendor) => (
-            <VendorRow key={vendor.id} vendor={vendor} />
-          ))}
+          {vendors.length === 0 ? (
+            <tr>
+              <td colSpan="8" style={{ textAlign: "center", padding: "20px" }}>
+                No vendors added yet
+              </td>
+            </tr>
+          ) : (
+            vendors.map((vendor) => (
+              <VendorRow key={vendor.id} vendor={vendor} />
+            ))
+          )}
         </tbody>
       </table>
     </div>
