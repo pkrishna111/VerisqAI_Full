@@ -11,8 +11,6 @@ function VerifyPage() {
   const email = searchParams.get("email");
   const token = searchParams.get("token");
 
-  const [otp, setOtp] = useState("");
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   const called = useRef(false);
@@ -32,41 +30,13 @@ function VerifyPage() {
 
       if (!res.ok) throw new Error("Email confirmation failed");
 
-      setMessage("Login code sent! Check your email.");
+      setMessage("Email verified. Waiting for admin approval...");
+      setTimeout(() => {
+        navigate(`/request-received?email=${email}`);
+      }, 1500);
     } catch (err) {
       setMessage("Error verifying email");
     }
-  };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const res = await fetch(`${API_BASE}/api/auth/verify-totp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          code: otp
-        })
-      });
-
-      if (!res.ok) throw new Error("Invalid OTP");
-
-      const data = await res.json();
-
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      setMessage(err.message);
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -83,25 +53,9 @@ function VerifyPage() {
         {message && <div className="verify-message">{message}</div>}
 
         <p className="verify-email">
-          We sent a 6-digit code to <br />
+          Verifying your email and processing your request... <br />
           <strong>{email}</strong>
         </p>
-
-        <form onSubmit={handleVerifyOtp}>
-          <input
-            type="text"
-            maxLength={6}
-            placeholder="000000"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-            required
-            className="verify-input"
-          />
-
-          <button type="submit" disabled={loading} className="verify-button">
-            {loading ? "Verifying..." : "Verify & Sign In"}
-          </button>
-        </form>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ using VerisqAI.API.Configurations;
 using VerisqAI.API.Data;
 using VerisqAI.API.Models;
 using VerisqAI.API.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,9 @@ builder.Services.AddSwaggerGen();
 
 // DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("VerisqDb"));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
 // Identity
 builder.Services

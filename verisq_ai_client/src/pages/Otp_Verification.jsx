@@ -1,23 +1,80 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import "../styles/otp_verification.css";
 
 export default function Otp_verification() {
+  const [attemptsLeft, setAttemptsLeft] = useState(5);
+  const [timer, setTimer] = useState(0);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [error, setError] = useState("");
   const [step, setStep] = useState("email");
-  const [email, setEmail] = useState("chiraglimbachiya_prjzo@mailsac.com");
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputsRef = useRef([]);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const handleSendCode = () => {
+  const emailFromUrl = searchParams.get("email");
+  const [email, setEmail] = useState(emailFromUrl || "");
+
+  useEffect(() => {
+    if (timer <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  useEffect(() => {
+    if (otpTimer <= 0) return;
+
+    const interval = setInterval(() => {
+      setOtpTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [otpTimer]);
+
+  const handleSendCode = async () => {
+    setError("");
+
     if (!email) return;
+    // removed forced redirect to allow manual login
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      const res = await fetch("https://localhost:7183/api/auth/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(email)   // ⚠️ IMPORTANT FORMAT
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        setError(text);
+        return;
+        //throw new Error(text); //removed this line to avoid console error
+      }
+
       setStep("otp");
-    }, 1400);
+      setTimer(60);
+      setOtpTimer(180);
+      setAttemptsLeft(5);  // to reset attempts on new first otp
+
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setLoading(false);
   };
 
   const handleOtpChange = (val, idx) => {
+    setError("");
     if (!/^\d?$/.test(val)) return;
     const updated = [...otp];
     updated[idx] = val;
@@ -40,8 +97,84 @@ export default function Otp_verification() {
     inputsRef.current[Math.min(pasted.length, 5)]?.focus();
   };
 
-  const handleVerify = () => {
-    alert(`OTP "${otp.join("")}" verified successfully!`);
+  const handleVerify = async () => {
+    setError("");
+    try {
+      const res = await fetch("https://localhost:7183/api/auth/verify-totp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          code: otp.join("")
+        })
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        setError(text);
+
+        // detect wrong OTP
+        if (text.toLowerCase().includes("incorrect")) {
+          setAttemptsLeft((prev) => Math.max(prev - 1, 0));
+        }
+
+        // lock case
+        if (text.toLowerCase().includes("too many")) {
+          setAttemptsLeft(0);
+          setOtp(["", "", "", "", "", ""]);
+        }
+
+        return;
+      }
+
+      const data = await res.json();
+
+      localStorage.setItem("token", data.token);
+
+      navigate("/dashboard");
+
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleResend = async () => {
+    setError(""); // clear old errors
+
+    try {
+      const res = await fetch("https://localhost:7183/api/auth/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(email)
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        setError(text);
+        return;
+        //throw new Error(text);
+      }
+
+      // ✅ reset OTP inputs only
+      setOtp(["", "", "", "", "", ""]);
+      inputsRef.current[0]?.focus();
+      setTimer(60);
+      setOtpTimer(180);
+      // setAttemptsLeft(5);  //enable this if want to resent attempts on resend
+
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  //otp timer
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
   return (
@@ -108,9 +241,18 @@ export default function Otp_verification() {
                 placeholder="you@company.com"
               />
               <span className="Otp_verification_field_hint">
-                Email is prefilled from your invitation link.
+                {emailFromUrl
+                  ? "Email is prefilled from your invitation link."
+                  : "Enter your approved work email to receive login code."}
               </span>
             </div>
+
+            {/* to show error */}
+            {error && (
+              <div className="Otp_verification_error">
+                {error}
+              </div>
+            )}
 
             <button
               className="Otp_verification_primary_btn"
@@ -179,6 +321,27 @@ export default function Otp_verification() {
               <span className="Otp_verification_email_highlight">{email}</span>
             </p>
 
+            <div className="Otp_verification_timer">
+              Code expires in {formatTime(otpTimer)}
+            </div>
+
+            {/* to show error */}
+            {error && (
+              <div className="Otp_verification_error">
+                {error.toLowerCase().includes("too many") ? (
+                  <>
+                    Too many attempts. Try again after 10 minutes.
+                  </>
+                ) : (
+                  error
+                )}
+              </div>
+            )}
+
+            <div className="Otp_verification_attempts">
+              Attempts left: {attemptsLeft} / 5
+            </div>
+
             <div className="Otp_verification_otp_group" onPaste={handleOtpPaste}>
               {otp.map((digit, i) => (
                 <input
@@ -188,19 +351,20 @@ export default function Otp_verification() {
                   inputMode="numeric"
                   maxLength={1}
                   value={digit}
-                  className={`Otp_verification_otp_cell${
-                    digit ? " Otp_verification_otp_cell_filled" : ""
-                  }`}
+                  className={`Otp_verification_otp_cell${digit ? " Otp_verification_otp_cell_filled" : ""
+                    }`}
                   onChange={(e) => handleOtpChange(e.target.value, i)}
                   onKeyDown={(e) => handleOtpKeyDown(e, i)}
+                  disabled={attemptsLeft === 0}
                 />
               ))}
             </div>
 
             <button
-              className="Otp_verification_primary_btn"
+              className={`Otp_verification_primary_btn ${attemptsLeft === 0 ? "Otp_verification_disabled" : ""
+                }`}
               onClick={handleVerify}
-              disabled={otp.some((d) => !d)}
+              disabled={otp.some((d) => !d) || attemptsLeft === 0}
             >
               Verify &amp; Sign In
             </button>
@@ -208,13 +372,12 @@ export default function Otp_verification() {
             <p className="Otp_verification_footer_note">
               Didn&apos;t receive a code?{" "}
               <button
-                className="Otp_verification_text_link Otp_verification_reset_btn"
-                onClick={() => {
-                  setStep("email");
-                  setOtp(["", "", "", "", "", ""]);
-                }}
+                className={`Otp_verification_text_link Otp_verification_reset_btn ${timer > 0 ? "Otp_verification_disabled" : ""
+                  }`}
+                onClick={handleResend}
+                disabled={timer > 0}
               >
-                Resend code
+                {timer > 0 ? `Resend in ${timer}s` : "Resend code"}
               </button>
             </p>
           </div>

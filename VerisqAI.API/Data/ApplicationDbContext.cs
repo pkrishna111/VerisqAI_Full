@@ -8,6 +8,8 @@
         {
             public ApplicationDbContext
                 (DbContextOptions<ApplicationDbContext> options) 
-                : base(options) { }        
-        }
+                : base(options) { }
+
+            public DbSet<OtpToken> OtpTokens { get; set; }
+    }
     }
