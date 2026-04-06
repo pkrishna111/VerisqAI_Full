@@ -1,25 +1,31 @@
+import { Link } from "react-router-dom";
+
 function Header() {
   return (
     <header className="landing-header">
       <div className="landing-header-content">
-        {/* Left: Logo */}
-        <a href="#" className="landing-logo">
+
+        {/* Logo */}
+        <Link to="/" className="landing-logo">
           <span className="landing-logo-text">VERISQ</span>
           <span className="landing-logo-badge">AI</span>
-        </a>
+        </Link>
 
-        {/* Right: Navigation */}
+        {/* Navigation */}
         <nav className="landing-header-nav">
-          <a href="#how-it-works" className="nav-link">How It Works</a>
-          <a href="#" className="nav-link">LiveThreat Scorecards</a>
-          <a href="#" className="nav-link">Auto Questionnaires</a>
-          <a href="#" className="nav-link">Risk Tiering</a>
-          <a href="#" className="nav-link">Breach Alerts</a>
-          <a href="#form" className="landing-btn-header">Start Free Trial</a>
+          <Link to="/how-it-works" className="nav-link">How It Works</Link>
+          <Link to="/" className="nav-link">LiveThreat Scorecards</Link>
+          <Link to="/" className="nav-link">Auto Questionnaires</Link>
+          <Link to="/" className="nav-link">Risk Tiering</Link>
+          <Link to="/" className="nav-link">Breach Alerts</Link>
+          <Link to="/how-it-works" className="landing-btn-header">
+            Start Free Trial
+          </Link>
         </nav>
+
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
