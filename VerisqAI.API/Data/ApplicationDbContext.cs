@@ -11,5 +11,7 @@
                 : base(options) { }
 
             public DbSet<OtpToken> OtpTokens { get; set; }
+
+            public DbSet<Vendor> Vendors { get; set; }
     }
     }

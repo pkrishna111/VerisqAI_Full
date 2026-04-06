@@ -13,7 +13,6 @@ export default function Otp_verification() {
   const inputsRef = useRef([]);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-
   const emailFromUrl = searchParams.get("email");
   const [email, setEmail] = useState(emailFromUrl || "");
 

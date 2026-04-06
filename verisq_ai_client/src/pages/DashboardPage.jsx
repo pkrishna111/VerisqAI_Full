@@ -10,7 +10,8 @@ import { useEffect } from "react";
 import { apiRequest } from "../services/api";
 
 function DashboardPage() {
-  const [usedVendors, setUsedVendors] = useState(2);
+  const [usedVendors, setUsedVendors] = useState(0);
+  const [vendors, setVendors] = useState([]);
   const maxVendors = 5;
 
   //to handle token
@@ -19,6 +20,10 @@ function DashboardPage() {
     const fetchData = async () => {
       try {
         const res = await apiRequest("/api/dashboard/vendors");
+
+        setVendors(res);
+        setUsedVendors(res.length);
+
       } catch (err) {
         console.error("ERROR:", err);
       }
@@ -42,9 +47,27 @@ function DashboardPage() {
   }, []);
 
 
-  const handleAddVendor = () => {
-    // modal will come later
-    console.log("Add Vendor clicked");
+  const handleAddVendor = async () => {
+    const name = prompt("Enter Vendor Name:");
+    if (!name) return;
+
+    const domain = prompt("Enter Vendor Domain:");
+    if (!domain) return;
+
+    try {
+      await apiRequest("/api/dashboard/add-vendor", "POST", {
+        name,
+        domain
+      });
+
+      // refresh vendors
+      const res = await apiRequest("/api/dashboard/vendors");
+      setVendors(res);
+      setUsedVendors(res.length);
+
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (
@@ -59,7 +82,7 @@ function DashboardPage() {
         />
         <Insights />
         <KpiGrid />
-        <VendorTable />
+        <VendorTable vendors={vendors} />
 
         <BottomCards />
       </main>
