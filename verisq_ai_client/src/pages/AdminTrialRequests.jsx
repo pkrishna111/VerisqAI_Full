@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import "../styles/AdminTrialRequests.css";
 
 const API_BASE = "https://localhost:7183";
 
 function AdminTrialRequests() {
   const [users, setUsers] = useState([]);
 
-  // fetch pending users
   const fetchUsers = async () => {
     try {
       const res = await fetch(`${API_BASE}/api/admin/pending-users`);
@@ -20,15 +20,14 @@ function AdminTrialRequests() {
     fetchUsers();
   }, []);
 
-  // approve user
   const handleApprove = async (email) => {
     try {
       const res = await fetch(`${API_BASE}/api/admin/approve-user`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(email)
+        body: JSON.stringify(email),
       });
 
       if (!res.ok) {
@@ -38,8 +37,10 @@ function AdminTrialRequests() {
 
       alert("User approved");
 
-      // refresh list
-      fetchUsers();
+      // ✅ remove approved user from UI instantly
+      setUsers((prevUsers) =>
+        prevUsers.filter((user) => user.email !== email)
+      );
 
     } catch (err) {
       alert(err.message);
@@ -47,40 +48,54 @@ function AdminTrialRequests() {
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Admin - Trial Requests</h2>
+    <div className="AdminTrialRequests-container">
+      <div className="AdminTrialRequests-card">
+        <h2 className="AdminTrialRequests-title">
+          Admin - Trial Requests
+        </h2>
 
-      {users.length === 0 ? (
-        <p>No pending users</p>
-      ) : (
-        <table border="1" cellPadding="10" style={{ marginTop: "20px" }}>
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Company</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user, index) => (
-              <tr key={index}>
-                <td>{user.email}</td>
-                <td>{user.fullName}</td>
-                <td>{user.companyName}</td>
-                <td>{user.status}</td>
-                <td>
-                  <button onClick={() => handleApprove(user.email)}>
-                    Approve
-                  </button>
-                </td>
+        {users.length === 0 ? (
+          <p className="AdminTrialRequests-empty">
+            No pending users
+          </p>
+        ) : (
+          <table className="AdminTrialRequests-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index}>
+                  <td>{user.email}</td>
+                  <td>{user.fullName}</td>
+                  <td>{user.companyName}</td>
+                  <td>
+                    <span className="AdminTrialRequests-status">
+                      {/* ✅ show Pending instead of 0 */}
+                      {user.status === 0 ? "Pending" : "Approved"}
+                    </span>
+                  </td>
+                  <td>
+                    <button
+                      className="AdminTrialRequests-btn"
+                      onClick={() => handleApprove(user.email)}
+                    >
+                      Approve
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }

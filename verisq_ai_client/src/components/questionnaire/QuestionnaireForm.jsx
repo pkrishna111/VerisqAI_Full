@@ -1,6 +1,7 @@
 import { useState } from "react";
 import QuestionItem from "./QuestionItem";
 import { apiRequest } from "../../services/api";
+import "./QuestionnaireForm.css";
 
 export default function QuestionnaireForm({ questions, questionnaireId }) {
     const [answers, setAnswers] = useState({});
@@ -37,58 +38,70 @@ export default function QuestionnaireForm({ questions, questionnaireId }) {
     };
 
     return (
-        <div style={{ maxWidth: "600px", margin: "auto" }}>
+        <div className="QuestionnaireForm-wrapper">
 
-            {/* Progress Bar */}
-            <div style={{
-                height: "6px",
-                background: "#eee",
-                borderRadius: "10px",
-                marginBottom: "20px"
-            }}>
-                <div style={{
-                    width: `${((currentStep + 1) / questions.length) * 100}%`,
-                    height: "100%",
-                    background: "#6366f1",
-                    borderRadius: "10px"
-                }} />
-            </div>
+            <div className="QuestionnaireForm-container">
 
-            {/* Question */}
-            <QuestionItem
-                index={currentStep}
-                question={questions[currentStep]}
-                value={answers[currentStep]}
-                onChange={(val) => handleChange(currentStep, val)}
-            />
+                {/* Header */}
+                <div className="QuestionnaireForm-header">
+                    <h2>Security Questionnaire</h2>
+                    <p>Step {currentStep + 1} of {questions.length}</p>
+                </div>
 
-            {/* Navigation */}
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
-
-                <button
-                    onClick={() => setCurrentStep(prev => prev - 1)}
-                    disabled={currentStep === 0}
-                >
-                    Back
-                </button>
-
-                {currentStep < questions.length - 1 ? (
-                    <button
-                        onClick={() => {
-                            if (!answers[currentStep]) {
-                                alert("Please answer before continuing");
-                                return;
-                            }
-                            setCurrentStep(prev => prev + 1);
+                {/* Progress Bar */}
+                <div className="QuestionnaireForm-progress">
+                    <div
+                        className="QuestionnaireForm-progress-fill"
+                        style={{
+                            width: `${((currentStep + 1) / questions.length) * 100}%`
                         }}
+                    />
+                </div>
+
+                {/* Question */}
+                <div className="QuestionnaireForm-card">
+                    <QuestionItem
+                        index={currentStep}
+                        question={questions[currentStep]}
+                        value={answers[currentStep]}
+                        onChange={(val) => handleChange(currentStep, val)}
+                    />
+                </div>
+
+                {/* Navigation */}
+                <div className="QuestionnaireForm-actions">
+
+                    <button
+                        className="QuestionnaireForm-btn secondary"
+                        onClick={() => setCurrentStep(prev => prev - 1)}
+                        disabled={currentStep === 0}
                     >
-                        Next
+                        ← Back
                     </button>
-                ) : (
-                    <button onClick={handleSubmit}>
-                        Submit
-                    </button>
-                )}
+
+                    {currentStep < questions.length - 1 ? (
+                        <button
+                            className="QuestionnaireForm-btn primary"
+                            onClick={() => {
+                                if (!answers[currentStep]) {
+                                    alert("Please answer before continuing");
+                                    return;
+                                }
+                                setCurrentStep(prev => prev + 1);
+                            }}
+                        >
+                            Next →
+                        </button>
+                    ) : (
+                        <button
+                            className="QuestionnaireForm-btn success"
+                            onClick={handleSubmit}
+                        >
+                            Submit ✓
+                        </button>
+                    )}
+
+                </div>
 
             </div>
         </div>

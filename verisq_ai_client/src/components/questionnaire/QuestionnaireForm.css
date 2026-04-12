@@ -1,0 +1,163 @@
+/* ===============================
+   BACKGROUND WRAPPER
+================================= */
+.QuestionnaireForm-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  display: flex;
+  align-items: flex-start;   /* ✅ reduced top spacing */
+  justify-content: center;
+  padding-top: 40px;         /* ✅ control top gap */
+}
+
+/* ===============================
+   MAIN CONTAINER
+================================= */
+.QuestionnaireForm-container {
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* ===============================
+   HEADER
+================================= */
+.QuestionnaireForm-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.QuestionnaireForm-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.QuestionnaireForm-header p {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ===============================
+   PROGRESS BAR
+================================= */
+.QuestionnaireForm-progress {
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.QuestionnaireForm-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6);
+  border-radius: 20px;
+  transition: width 0.4s ease-in-out;
+}
+
+/* ===============================
+   CARD
+================================= */
+.QuestionnaireForm-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  animation: fadeIn 0.3s ease;
+}
+
+/* ===============================
+   BUTTONS
+================================= */
+.QuestionnaireForm-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+/* BASE */
+.QuestionnaireForm-btn {
+  padding: 12px 22px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* PRIMARY */
+.QuestionnaireForm-btn.primary {
+  background: linear-gradient(135deg, #2563eb, #6366f1);
+  color: white;
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+.QuestionnaireForm-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+}
+
+/* SECONDARY */
+.QuestionnaireForm-btn.secondary {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.QuestionnaireForm-btn.secondary:hover {
+  background: #e2e8f0;
+}
+
+/* SUCCESS */
+.QuestionnaireForm-btn.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+}
+
+.QuestionnaireForm-btn.success:hover {
+  transform: translateY(-2px);
+}
+
+/* DISABLED */
+.QuestionnaireForm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   ANIMATION
+================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+================================= */
+@media (max-width: 600px) {
+  .QuestionnaireForm-container {
+    padding: 20px;
+  }
+
+  .QuestionnaireForm-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .QuestionnaireForm-btn {
+    width: 100%;
+  }
+}

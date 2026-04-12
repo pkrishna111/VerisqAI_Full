@@ -1,3 +1,5 @@
+import "../../styles/FindingsModal.css";
+
 export default function FindingsModal({ isOpen, onClose, findings }) {
     if (!isOpen) return null;
 
@@ -9,50 +11,53 @@ export default function FindingsModal({ isOpen, onClose, findings }) {
 
     if (!findings || findings.length === 0) {
         return (
-            <div className="modal-overlay">
-                <div className="modal-box">
-                    <div className="modal-header">
+            <div className="FindingsModal-overlay">
+                <div className="FindingsModal-box">
+                    <div className="FindingsModal-header">
                         <h3>Findings</h3>
-                        <button onClick={onClose}>✖</button>
+                        <button className="FindingsModal-close" onClick={onClose}>✖</button>
                     </div>
-                    <p className="no-findings">No findings 🎉</p>
+                    <p className="FindingsModal-empty">No findings 🎉</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-box">
-                <div className="modal-header">
+        <div className="FindingsModal-overlay">
+            <div className="FindingsModal-box">
+
+                <div className="FindingsModal-header">
                     <h3>Findings</h3>
-                    <button onClick={onClose}>✖</button>
+                    <button className="FindingsModal-close" onClick={onClose}>✖</button>
                 </div>
 
                 {groups.map((level) => {
                     const items = findings.filter(f => f.severity === level.value);
-
                     if (items.length === 0) return null;
 
                     return (
-                        <div key={level.label} className="modal-group">
-                            <h4>{level.label}</h4>
+                        <div key={level.label} className="FindingsModal-group">
+
+                            <h4 className={`FindingsModal-group-title ${level.label.toLowerCase()}`}>
+                                {level.label}
+                            </h4>
 
                             {items.map((f, i) => (
-                                <div key={i} className="modal-item">
-                                    <strong>{f.title}</strong>
-                                    <p style={{ whiteSpace: "pre-line" }}>
+                                <div key={i} className="FindingsModal-item">
+                                    <strong className="FindingsModal-item-title">
+                                        {f.title}
+                                    </strong>
+                                    <p className="FindingsModal-item-desc">
                                         {f.description || "No description available"}
                                     </p>
                                 </div>
                             ))}
+
                         </div>
                     );
                 })}
 
-                {findings.length === 0 && (
-                    <p className="no-findings">No findings 🎉</p>
-                )}
             </div>
         </div>
     );
