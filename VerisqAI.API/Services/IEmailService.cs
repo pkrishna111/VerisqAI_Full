@@ -6,5 +6,7 @@
             string toEmail,
             string subject,
             string htmlBody);
+
+        Task SendQuestionnaireEmail(string toEmail, string vendorName, string link);
     }
 }

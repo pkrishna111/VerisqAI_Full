@@ -63,26 +63,6 @@ namespace VerisqAI.API.Controllers
 
             await _userManager.AddToRoleAsync(user, "User");
 
- //           var token =
- //               await _userManager
- //               .GenerateEmailConfirmationTokenAsync(user);
-
- //           var confirmUrl =
- //$"http://localhost:5173/verify?email={dto.Email}&token={Uri.EscapeDataString(token)}";
-
-//            // Email sending code
-//            var body = $@"
-//<h2>Welcome to Verisq AI</h2>
-//<p>Click the link below to activate your trial dashboard:</p>
-//<a href='{confirmUrl}'>Access Dashboard</a>
-//<p>This link will verify your email and send your login code.</p>";
-
-//            await _emailService.SendEmailAsync(
-//                dto.Email,
-//                "Verify your Verisq AI account",
-//                body);
-
-            //registration done
             return Ok(new
             {
                 message = "Registration successful. Awaiting approval."
@@ -146,12 +126,6 @@ namespace VerisqAI.API.Controllers
             var token = await _tokenService.CreateTokenAsync(user);
 
             return Ok(new { token });
-
-            //var valid =
-            //    _totpService.VerifyCode(dto.Email, dto.Code);
-
-            //if (!valid)
-            //    return Unauthorized("Invalid code.");
         }
 
         //api for send otp

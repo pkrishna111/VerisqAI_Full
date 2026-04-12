@@ -7,6 +7,7 @@ import RequestReceived from './pages/RequestReceived'
 
 import Otp_verification from './pages/Otp_Verification'
 import AdminTrialRequests from './pages/AdminTrialRequests'
+import QuestionnairePage from './pages/QuestionnairePage'
 
 import Howitworks from './pages/Howitworks'
 import Scorecards from './pages/Scorecards '
@@ -32,19 +33,19 @@ function App() {
               <DashboardPage />
             </ProtectedRoute>
           } />
-        <Route path="/otp_verification" element={<Otp_verification/>}/>
-       <Route path="/request-received" element={<RequestReceived />} />
-       <Route path="how-it-works" element={<Howitworks/>}/>
-       <Route path="Scorecard" element={<Scorecards/>}/>
-       <Route path="Questionnaires" element={<Questionnaires/>}/>
-        <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <DashboardPage/>
-          </ProtectedRoute>
-        }/>
-
+        <Route path="/otp_verification" element={<Otp_verification />} />
+        <Route path="/request-received" element={<RequestReceived />} />
+        <Route path="how-it-works" element={<Howitworks />} />
+        <Route path="Scorecard" element={<Scorecards />} />
+        <Route path="Questionnaires" element={<Questionnaires />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          } />
+        <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
       </Routes>
     </BrowserRouter>
   )

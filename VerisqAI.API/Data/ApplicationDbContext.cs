@@ -13,5 +13,11 @@
             public DbSet<OtpToken> OtpTokens { get; set; }
 
             public DbSet<Vendor> Vendors { get; set; }
-    }
+
+            public DbSet<Scorecard> Scorecards { get; set; }
+
+            public DbSet<Finding> Findings { get; set; }
+            public DbSet<Questionnaire> Questionnaires { get; set; }
+            public DbSet<QuestionnaireResponse> QuestionnaireResponses { get; set; }
+        }
     }

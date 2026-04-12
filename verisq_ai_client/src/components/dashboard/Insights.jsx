@@ -1,21 +1,34 @@
 import { AlertTriangle } from "lucide-react";
 
-function Insights() {
+function Insights({ vendors, onViewFindings }) {
+
+  // find vendor with max critical findings
+  const topVendor = vendors
+    ?.filter(v => v.criticalFindings > 0)
+    ?.sort((a, b) => b.criticalFindings - a.criticalFindings)[0];
+
+  if (!topVendor) return null;
+
   return (
     <div className="alert alert-danger alert-flex">
-      {/* Left icon */}
+      
       <div className="alert-icon">
         <AlertTriangle size={22} />
       </div>
 
-      {/* Text content */}
       <div className="alert-content">
-        <div className="alert-title">High Risk Finding Detected</div>
-        <p>CloudSync Pro has 2 critical findings that require attention</p>
+        <div className="alert-title">High Risk Vendor Detected</div>
+        <p>
+          {topVendor.name} has {topVendor.criticalFindings} critical findings that require attention
+        </p>
       </div>
 
-      {/* Action button */}
-      <button className="alert-btn">View Details</button>
+      <button
+        className="alert-btn"
+        onClick={() => onViewFindings(topVendor.id)}
+      >
+        View Details
+      </button>
     </div>
   );
 }

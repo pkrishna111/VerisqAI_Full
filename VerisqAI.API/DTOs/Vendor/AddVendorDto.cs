@@ -12,5 +12,10 @@ namespace VerisqAI.API.DTOs.Vendor
         [Required]
         [MaxLength(150)]
         public string Domain { get; set; } = "";
+
+        [MaxLength(200)]
+        public string? Email { get; set; } = "";
+
+        public bool SendQuestionnaire { get; set; } = false;
     }
 }

@@ -12,6 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//for scorecard background service
+//builder.Services.AddHostedService<VerisqAI.API.Services.ScorecardProcessorService>();
+
+//pdf generation service
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+builder.Services.AddScoped<VerisqAI.API.Services.PdfService>();
+
 // Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

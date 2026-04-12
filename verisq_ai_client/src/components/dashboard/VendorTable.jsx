@@ -1,7 +1,7 @@
 import { RefreshCw } from "lucide-react";
 import VendorRow from "./VendorRow";
 
-function VendorTable({ vendors }) {
+function VendorTable({ vendors, onSendSuccess, onViewFindings, onSendClick, onRefresh, loading }) {
   // const vendors = [    //to add static data
   //   {
   //     id: 1,
@@ -33,9 +33,9 @@ function VendorTable({ vendors }) {
         <h3 className="table-title">Your Vendors</h3>
 
         <div className="table-actions">
-          <button className="btn-refresh">
-            <RefreshCw size={16} />
-            Refresh
+          <button className="btn-refresh" onClick={onRefresh} disabled={loading}>
+            <RefreshCw size={16} className={loading ? "spin" : ""} />
+            {loading ? "Refreshing..." : "Refresh"}
           </button>
         </div>
       </div>
@@ -63,7 +63,13 @@ function VendorTable({ vendors }) {
             </tr>
           ) : (
             vendors.map((vendor) => (
-              <VendorRow key={vendor.id} vendor={vendor} />
+              <VendorRow
+                key={vendor.id}
+                vendor={vendor}
+                onSendSuccess={onSendSuccess}
+                onViewFindings={onViewFindings}
+                onSendClick={onSendClick}
+              />
             ))
           )}
         </tbody>

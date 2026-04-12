@@ -1,12 +1,67 @@
 import { Clock, Send, Download, AlertCircle } from "lucide-react";
+import { apiRequest } from "../../services/api";
 
-function VendorRow({ vendor }) {
+function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
   const initials = vendor.name
     .split(" ")
     .map((w) => w[0])
     .join("")
     .slice(0, 2)
     .toUpperCase();
+
+  // //handle send questionnaire
+  // const handleSend = async () => {
+  //   try {
+  //     const res = await apiRequest(
+  //       `/api/dashboard/send-questionnaire/${vendor.id}`,
+  //       "POST"
+  //     );
+
+  //     // notify parent (Dashboard)
+  //     onSendSuccess(vendor.id);
+
+  //     // show link
+  //     const link = res.link;
+  //     prompt("Copy Questionnaire Link:", link);
+  //   } catch (err) {
+  //     alert(err.message);
+  //   }
+  // };
+
+  //handle download button ( for now txt file )
+  const handleDownload = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(
+        `https://localhost:7183/api/dashboard/download-report/${vendor.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
+
+      const blob = await res.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${vendor.name}_report.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   return (
     <tr className="vendor-row">
@@ -25,10 +80,19 @@ function VendorRow({ vendor }) {
       {/* Scorecard Status */}
       <td>
         {vendor.status === "Complete" && (
-          <span className="status-badge status-complete">✓ Complete</span>
+          <span className="status-badge status-complete">Complete</span>
         )}
+
         {vendor.status === "Processing" && (
-          <span className="status-badge status-processing">⟳ Processing</span>
+          <span className="status-badge status-processing">Processing</span>
+        )}
+
+        {vendor.status === "Queued" && (
+          <span className="status-badge status-queued">Queued</span>
+        )}
+
+        {vendor.status === "Failed" && (
+          <span className="status-badge status-failed">Failed</span>
         )}
       </td>
 
@@ -58,8 +122,19 @@ function VendorRow({ vendor }) {
           </div>
         )}
 
+        {vendor.questionnaire === "Completed" && (
+          <div className="questionnaire completed" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <span>Completed</span>
+
+            <button className="send-btn" onClick={() => onSendClick(vendor.id)}>
+              <Send size={16} />
+              Resend
+            </button>
+          </div>
+        )}
+
         {vendor.questionnaire === "Send" && (
-          <button className="send-btn">
+          <button className="send-btn" onClick={() => onSendClick(vendor.id)}>
             <Send size={16} />
             Send
           </button>
@@ -70,15 +145,56 @@ function VendorRow({ vendor }) {
       <td>{vendor.riskScore ?? "—"}</td>
 
       {/* High Findings */}
-      <td>
-        {vendor.findings ? (
-          <div className="findings">
-            <AlertCircle size={16} />
-            {vendor.findings}
-          </div>
-        ) : (
-          "—"
-        )}
+      <td onClick={() => onViewFindings(vendor.id)} style={{ cursor: "pointer" }}>
+        <div style={{ display: "flex", gap: "8px" }}>
+
+          {vendor.criticalFindings > 0 && (
+            <span style={{
+              background: "#fee2e2",
+              color: "#dc2626",
+              padding: "4px 8px",
+              borderRadius: "6px",
+              fontSize: "12px",
+              fontWeight: "600"
+            }}>
+              🔴 {vendor.criticalFindings}
+            </span>
+          )}
+
+          {vendor.highFindings > 0 && (
+            <span style={{
+              background: "#ffedd5",
+              color: "#ea580c",
+              padding: "4px 8px",
+              borderRadius: "6px",
+              fontSize: "12px",
+              fontWeight: "600"
+            }}>
+              🟠 {vendor.highFindings}
+            </span>
+          )}
+
+          {vendor.mediumFindings > 0 && (
+            <span style={{
+              background: "#fef9c3",
+              color: "#ca8a04",
+              padding: "4px 8px",
+              borderRadius: "6px",
+              fontSize: "12px",
+              fontWeight: "600"
+            }}>
+              🟡 {vendor.mediumFindings}
+            </span>
+          )}
+
+          {vendor.criticalFindings === 0 &&
+            vendor.highFindings === 0 &&
+            vendor.mediumFindings === 0 && (
+              <span style={{ color: "#9ca3af", fontSize: "12px" }}>
+                No Issues
+              </span>
+            )}
+        </div>
       </td>
 
       {/* Risk Tier */}
@@ -89,7 +205,7 @@ function VendorRow({ vendor }) {
       {/* Actions */}
       <td>
         {vendor.score ? (
-          <button className="pdf-btn">
+          <button className="pdf-btn" onClick={handleDownload}>
             <Download size={16} />
             PDF
           </button>

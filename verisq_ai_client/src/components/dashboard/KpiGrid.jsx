@@ -7,11 +7,11 @@ import {
 
 import KpiCard from "./KpiCard";
 
-function KpiGrid() {
+function KpiGrid({ stats }) {
   const kpis = [
     {
       label: "Vendors Added",
-      value: 2,
+      value: stats?.totalVendors ?? 0,
       subtext: "of 5 available",
       icon: Building2,
       colorVar: "--primary",
@@ -19,7 +19,7 @@ function KpiGrid() {
     },
     {
       label: "Scorecards Complete",
-      value: 1,
+      value: stats?.scorecardsComplete ?? 0,
       subtext: "PDF ready to download",
       icon: CheckCircle2,
       colorVar: "--success",
@@ -27,7 +27,7 @@ function KpiGrid() {
     },
     {
       label: "High+ Findings",
-      value: 3,
+      value: stats?.highFindings ?? 0,
       subtext: "Require attention",
       icon: ShieldAlert,
       colorVar: "--danger",
@@ -35,14 +35,14 @@ function KpiGrid() {
     },
     {
       label: "Questionnaires",
-      value: 1,
+      value: stats?.questionnairesPending ?? 0,
       subtext: "Awaiting response",
       icon: ClipboardList,
       colorVar: "--purple",
       bgVar: "--purple-light"
     }
   ];
-
+  
   return (
     <div className="kpi-grid">
       {kpis.map((kpi) => (

@@ -1,0 +1,5 @@
+DELETE FROM QuestionnaireResponses;
+DELETE FROM Questionnaires;
+DELETE FROM Findings;
+DELETE FROM Scorecards;
+DELETE FROM Vendors;

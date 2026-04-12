@@ -6,29 +6,47 @@ import KpiGrid from "../components/dashboard/KpiGrid";
 import Insights from "../components/dashboard/Insights";
 import VendorTable from "../components/dashboard/VendorTable";
 import BottomCards from "../components/dashboard/BottomCards";
+import AddVendorModal from "../components/dashboard/AddVendorModal";
+import FindingsModal from "../components/dashboard/FindingsModal";
+import EmailModal from "../components/dashboard/EmailModal";
 import { useEffect } from "react";
 import { apiRequest } from "../services/api";
 
 function DashboardPage() {
   const [usedVendors, setUsedVendors] = useState(0);
   const [vendors, setVendors] = useState([]);
+  const [isEmailOpen, setIsEmailOpen] = useState(false);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
+  const [findingsData, setFindingsData] = useState([]);
+  const [isFindingsOpen, setIsFindingsOpen] = useState(false);
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [pendingVendorData, setPendingVendorData] = useState(null);
   const maxVendors = 5;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   //to handle token
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+
+      const vendorRes = await apiRequest("/api/dashboard/vendors");
+      setVendors(vendorRes);
+      setUsedVendors(vendorRes.length);
+
+      const statsRes = await apiRequest("/api/dashboard/stats");
+      setStats(statsRes);
+
+    } catch (err) {
+      console.error("ERROR:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const fetchData = async () => {
-      try {
-        const res = await apiRequest("/api/dashboard/vendors");
-
-        setVendors(res);
-        setUsedVendors(res.length);
-
-      } catch (err) {
-        console.error("ERROR:", err);
-      }
-    };
-    fetchData();
+    fetchDashboardData();
   }, []);
 
   //to prevent back navigation by user 
@@ -46,27 +64,33 @@ function DashboardPage() {
     };
   }, []);
 
+  // ✅ Close modal
+  const handleCloseModal = async (refresh = false) => {
+    setIsModalOpen(false);
 
-  const handleAddVendor = async () => {
-    const name = prompt("Enter Vendor Name:");
-    if (!name) return;
+    if (refresh) {
+      try {
+        const res = await apiRequest("/api/dashboard/vendors");
+        setVendors(res);
+        setUsedVendors(res.length);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
-    const domain = prompt("Enter Vendor Domain:");
-    if (!domain) return;
+  // ✅ Open modal (instead of prompt)
+  const handleAddVendor = () => {
+    setIsModalOpen(true);
+  };
 
+  const handleViewFindings = async (vendorId) => {
     try {
-      await apiRequest("/api/dashboard/add-vendor", "POST", {
-        name,
-        domain
-      });
-
-      // refresh vendors
-      const res = await apiRequest("/api/dashboard/vendors");
-      setVendors(res);
-      setUsedVendors(res.length);
-
+      const data = await apiRequest(`/api/dashboard/vendor/${vendorId}/findings`);
+      setFindingsData(data);
+      setIsFindingsOpen(true);
     } catch (err) {
-      alert(err.message);
+      console.error(err);
     }
   };
 
@@ -80,14 +104,96 @@ function DashboardPage() {
           maxVendors={maxVendors}
           onAddVendor={handleAddVendor}
         />
-        <Insights />
-        <KpiGrid />
-        <VendorTable vendors={vendors} />
+        <Insights
+          vendors={vendors}
+          onViewFindings={handleViewFindings}
+        />
+        <KpiGrid stats={stats} />
+        <VendorTable
+          vendors={vendors}
+          onSendSuccess={(vendorId) => {
+            setVendors((prev) =>
+              prev.map((v) =>
+                v.id === vendorId
+                  ? { ...v, questionnaire: "Pending" }
+                  : v
+              )
+            );
+          }}
+          onViewFindings={handleViewFindings}
+          onSendClick={(vendorId) => {
+            setSelectedVendorId(vendorId);
+            setIsEmailOpen(true);
+          }}
+          onRefresh={fetchDashboardData}
+          loading={loading}
+        />
 
-        <BottomCards />
+        <BottomCards stats={stats} />
       </main>
 
+      <AddVendorModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onRequireEmail={(data) => {
+          setPendingVendorData(data);
+          setIsModalOpen(false);
+          setIsEmailOpen(true);
+        }}
+      />
 
+      <FindingsModal
+        isOpen={isFindingsOpen}
+        onClose={() => setIsFindingsOpen(false)}
+        findings={findingsData}
+      />
+
+      <EmailModal
+        isOpen={isEmailOpen}
+        onClose={() => setIsEmailOpen(false)}
+        onSubmit={async (email) => {
+          try {
+            // 🔥 CASE 1: From Add Vendor
+            if (pendingVendorData) {
+              await apiRequest(
+                "/api/dashboard/add-vendor",
+                "POST",
+                {
+                  ...pendingVendorData,
+                  email: email
+                }
+              );
+
+              setPendingVendorData(null);
+
+              const res = await apiRequest("/api/dashboard/vendors");
+              setVendors(res);
+              setUsedVendors(res.length);
+            }
+            // 🔥 CASE 2: From Send Button
+            else {
+              await apiRequest(
+                `/api/dashboard/send-questionnaire/${selectedVendorId}`,
+                "POST",
+                { email }
+              );
+
+              setVendors((prev) =>
+                prev.map((v) =>
+                  v.id === selectedVendorId
+                    ? { ...v, questionnaire: "Pending" }
+                    : v
+                )
+              );
+            }
+
+            setIsEmailOpen(false);
+
+          } catch (err) {
+            console.error(err.message);
+          }
+        }}
+      />
     </>
   );
 }

@@ -434,6 +434,13 @@ body {
   color: var(--info);
 }
 
+.status-queued {
+  color: orange;
+}
+
+.status-failed {
+  color: red;
+}
 
 /* Risk badges */
 .risk-badge {
@@ -700,6 +707,11 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.questionnaire.completed {
+  color: #10b981;
+  font-weight: 600;
+}
+
 
 /* ============================= */
 /* FINDINGS + TIER + PDF */
@@ -922,3 +934,280 @@ body {
   text-decoration: underline;
 }
  */
+
+ /* ===================== AddVendorModal ===================== */
+
+.avm-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.avm-container {
+  background: #ffffff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  animation: avm-fadeIn 0.22s ease;
+}
+
+@keyframes avm-fadeIn {
+  from { opacity: 0; transform: translateY(-20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Header ── */
+.avm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 32px 24px 32px;
+}
+
+.avm-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+
+.avm-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.05rem;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px 9px;
+  border-radius: 7px;
+  line-height: 1;
+  transition: background 0.2s, color 0.2s;
+}
+
+.avm-close-btn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* ── Header Divider ── */
+.avm-header-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0 32px;
+}
+
+/* ── Body ── */
+.avm-body {
+  padding: 26px 32px 0px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.avm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.avm-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0.01em;
+}
+
+.avm-asterisk {
+  color: #1f2937;
+  margin-left: 1px;
+}
+
+.avm-input {
+  padding: 13px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  color: #1f2937;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.avm-input::placeholder {
+  color: #94a3b8;
+}
+
+.avm-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: #fff;
+}
+
+.avm-select {
+  padding: 13px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  color: #64748b;
+  background: #f8fafc;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.avm-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  background: #fff;
+}
+
+/* Blue hint text — matches Image 1 exactly */
+.avm-hint {
+  font-size: 0.8rem;
+  color: #6366f1;
+  margin: 0;
+}
+
+/* ── Checkbox group WITH gray background box ── */
+.avm-checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.avm-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: #4f46e5;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.avm-checkbox-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.avm-checkbox-label {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+/* Spacer below checkbox box */
+.avm-spacer {
+  height: 50px;
+}
+
+/* ── Footer Divider ── */
+.avm-footer-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+}
+
+/* ── Footer ── */
+.avm-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 32px 24px 32px;
+}
+
+.avm-cancel-btn {
+  padding: 11px 28px;
+  border: 1.5px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.avm-cancel-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.avm-submit-btn {
+  padding: 11px 28px;
+  background: #4f46e5;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.01em;
+}
+
+.avm-submit-btn:hover {
+  background: #4338ca;
+}
+
+.avm-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ================= finging modal ========================*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-group {
+  margin-top: 16px;
+}
+
+.modal-item {
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.no-findings {
+  text-align: center;
+  color: gray;
+}
