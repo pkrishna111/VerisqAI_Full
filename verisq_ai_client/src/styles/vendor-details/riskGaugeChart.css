@@ -1,0 +1,36 @@
+.vd-risk-gauge {
+  position: relative;
+
+  height: 300px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vd-risk-gauge__center {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  top: 55%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.vd-risk-gauge__center h2 {
+  font-size: 3rem;
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+.vd-risk-gauge__center p {
+  color: #64748b;
+
+  font-size: 0.92rem;
+}

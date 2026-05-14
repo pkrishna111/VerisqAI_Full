@@ -14,6 +14,12 @@ namespace VerisqAI.API.Models
         [ForeignKey("VendorId")]
         public Vendor Vendor { get; set; }
 
+       
+        public int? QuestionnaireId { get; set; }
+
+        [ForeignKey("QuestionnaireId")]
+        public Questionnaire Questionnaire { get; set; }
+
         // score Data
         public int? Score { get; set; }
         public int? RiskScore { get; set; }

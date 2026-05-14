@@ -377,6 +377,7 @@ namespace VerisqAI.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("QuestionnaireId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("RiskScore")
@@ -549,7 +550,9 @@ namespace VerisqAI.API.Migrations
                 {
                     b.HasOne("VerisqAI.API.Models.Questionnaire", "Questionnaire")
                         .WithMany()
-                        .HasForeignKey("QuestionnaireId");
+                        .HasForeignKey("QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("VerisqAI.API.Models.Vendor", "Vendor")
                         .WithMany("Scorecards")

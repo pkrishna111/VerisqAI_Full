@@ -338,6 +338,108 @@ namespace VerisqAI.API.Controllers
             return File(pdfBytes, "application/pdf", $"{vendor.Name}_report.pdf");
         }
 
+        [HttpGet("vendor/{id}")]
+        public async Task<IActionResult> GetVendorDetails(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+                return Unauthorized();
+
+            // vendor validation
+            var vendor = await _context.Vendors
+                .FirstOrDefaultAsync(v => v.Id == id && v.UserId == userId);
+
+            if (vendor == null)
+                return NotFound("Vendor not found.");
+
+            // latest questionnaire
+            var questionnaire = await _context.Questionnaires
+                .Where(q => q.VendorId == id)
+                .OrderByDescending(q => q.SentAt)
+                .FirstOrDefaultAsync();
+
+            // latest scorecard
+            var scorecard = await _context.Scorecards
+                .Where(s => s.VendorId == id)
+                .OrderByDescending(s => s.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            // findings
+            var findings = new List<Finding>();
+
+            if (scorecard != null)
+            {
+                findings = await _context.Findings
+                    .Where(f => f.ScorecardId == scorecard.Id)
+                    .ToListAsync();
+            }
+
+            // responses
+            var responses = new List<QuestionnaireResponse>();
+
+            if (questionnaire != null)
+            {
+                responses = await _context.QuestionnaireResponses
+                    .Where(r => r.QuestionnaireId == questionnaire.Id)
+                    .ToListAsync();
+            }
+
+            var result = new VendorDetailsDto
+            {
+                Vendor = new VendorInfoDto
+                {
+                    Id = vendor.Id,
+                    Name = vendor.Name,
+                    Domain = vendor.Domain,
+                    Email = vendor.Email,
+                    Status = scorecard?.Status ?? "Queued"
+                },
+
+                Assessment = questionnaire == null && scorecard == null
+                    ? null
+                    : new AssessmentDto
+                    {
+                        Questionnaire = questionnaire == null
+                            ? null
+                            : new QuestionnaireDto
+                            {
+                                Id = questionnaire.Id,
+                                Status = questionnaire.Status,
+                                SentAt = questionnaire.SentAt,
+                                CompletedAt = questionnaire.CompletedAt
+                            },
+
+                        Scorecard = scorecard == null
+                            ? null
+                            : new ScorecardDto
+                            {
+                                Id = scorecard.Id,
+                                Score = scorecard.Score,
+                                RiskScore = scorecard.RiskScore,
+                                RiskTier = scorecard.RiskTier,
+                                CreatedAt = scorecard.CreatedAt
+                            },
+
+                        Findings = findings.Select(f => new FindingDto
+                        {
+                            Id = f.Id,
+                            Title = f.Title,
+                            Description = f.Description,
+                            Severity = f.Severity.ToString()
+                        }).ToList(),
+
+                        Responses = responses.Select(r => new ResponseDto
+                        {
+                            Question = r.Question,
+                            Answer = r.Answer
+                        }).ToList()
+                    }
+            };
+
+            return Ok(result);
+        }
+
         [HttpGet("vendor/{vendorId}/findings")]
         public async Task<IActionResult> GetVendorFindings(int vendorId)
         {

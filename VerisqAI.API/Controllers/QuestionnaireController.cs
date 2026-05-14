@@ -88,9 +88,12 @@ namespace VerisqAI.API.Controllers
             var scorecard = new Scorecard
             {
                 VendorId = questionnaire.VendorId,
+                QuestionnaireId = questionnaire.Id,
+
                 Score = result.Score,
                 RiskScore = result.RiskScore,
                 RiskTier = result.RiskTier,
+
                 Status = "Complete"
             };
 

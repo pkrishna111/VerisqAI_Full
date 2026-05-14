@@ -1,0 +1,32 @@
+.vd-response-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.45rem 0.8rem;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.vd-response-badge--positive {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.vd-response-badge--negative {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.vd-response-badge--warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.vd-response-badge--neutral {
+  background: #e2e8f0;
+  color: #334155;
+}

@@ -1,0 +1,25 @@
+.vd-findings-workspace {
+  display: grid;
+
+  grid-template-columns: 320px 1fr;
+
+  gap: 1.5rem;
+
+  margin-top: 2rem;
+
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .vd-findings-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vd-findings-workspace__left {
+  position: sticky;
+
+  top: 100px;
+
+  align-self: start;
+}

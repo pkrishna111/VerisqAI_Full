@@ -1,5 +1,6 @@
 import { Clock, Send, Download, AlertCircle } from "lucide-react";
 import { apiRequest } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
   const initials = vendor.name
@@ -9,24 +10,7 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
     .slice(0, 2)
     .toUpperCase();
 
-  // //handle send questionnaire
-  // const handleSend = async () => {
-  //   try {
-  //     const res = await apiRequest(
-  //       `/api/dashboard/send-questionnaire/${vendor.id}`,
-  //       "POST"
-  //     );
-
-  //     // notify parent (Dashboard)
-  //     onSendSuccess(vendor.id);
-
-  //     // show link
-  //     const link = res.link;
-  //     prompt("Copy Questionnaire Link:", link);
-  //   } catch (err) {
-  //     alert(err.message);
-  //   }
-  // };
+  const navigate = useNavigate();
 
   //handle download button ( for now txt file )
   const handleDownload = async () => {
@@ -67,7 +51,11 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
     <tr className="vendor-row">
       {/* Vendor */}
       <td>
-        <div className="vendor-cell">
+        <div
+          className="vendor-cell"
+          onClick={() => navigate(`/vendor/${vendor.id}`)}
+          style={{ cursor: "pointer" }}
+        >
           <div className="vendor-avatar">{initials}</div>
 
           <div className="vendor-info">

@@ -4,6 +4,7 @@ import VerifyPage from './pages/VerifyPage'
 import ProtectedRoute from './routes/ProtectedRoute'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import RequestReceived from './pages/RequestReceived'
+import VendorDetailsPage from './pages/VendorDetailsPage'
 
 import Otp_verification from './pages/Otp_Verification'
 import AdminTrialRequests from './pages/AdminTrialRequests'
@@ -12,9 +13,6 @@ import QuestionnairePage from './pages/QuestionnairePage'
 import Howitworks from './pages/Howitworks'
 import Scorecards from './pages/Scorecards '
 import Questionnaires from './pages/Questionnaires'
-
-
-
 
 function App() {
   return (
@@ -32,19 +30,21 @@ function App() {
             <ProtectedRoute>
               <DashboardPage />
             </ProtectedRoute>
-          } />
+          }
+        />
+        <Route
+          path="/vendor/:id"
+          element={
+            <ProtectedRoute>
+              <VendorDetailsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/otp_verification" element={<Otp_verification />} />
         <Route path="/request-received" element={<RequestReceived />} />
         <Route path="how-it-works" element={<Howitworks />} />
         <Route path="Scorecard" element={<Scorecards />} />
         <Route path="Questionnaires" element={<Questionnaires />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          } />
         <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
       </Routes>
     </BrowserRouter>
