@@ -2,7 +2,9 @@ import {
   Globe,
   Mail,
   Download,
-  ShieldAlert
+  ShieldAlert,
+  RefreshCw,
+  Send
 } from "lucide-react";
 
 import RiskBadge from "./RiskBadge";
@@ -14,10 +16,18 @@ import {
 
 import "../../styles/vendor-details/vendorHeader.css";
 
-function VendorHeader({
+const VendorHeader = ({
   vendor,
-  scorecard
-}) {
+  scorecard,
+
+  onRefresh,
+
+  canSendQuestionnaire,
+
+  onSendQuestionnaire,
+
+  onDownloadReport
+}) => {
   const initials = vendor.name
     .split(" ")
     .map(word => word[0])
@@ -81,9 +91,35 @@ function VendorHeader({
 
         </div>
 
-        <div className="vd-header__actions">
+        <div className="vd-header-actions">
 
-          <button className="vd-header__button">
+          <button
+            className="vd-header-btn vd-header-btn--secondary"
+            onClick={onRefresh}
+          >
+            <RefreshCw size={16} />
+
+            <span>Refresh</span>
+          </button>
+
+          <button
+            className={`vd-header-btn 
+              ${canSendQuestionnaire
+                ? "vd-header-btn--primary"
+                : "vd-header-btn--disabled"
+              }`}
+            disabled={!canSendQuestionnaire}
+            onClick={onSendQuestionnaire}
+          >
+            <Send size={16} />
+
+            <span>
+              Send Questionnaire
+            </span>
+          </button>
+
+          <button className="vd-header__button"
+            onClick={onDownloadReport}>
             <Download size={18} />
             Download Report
           </button>

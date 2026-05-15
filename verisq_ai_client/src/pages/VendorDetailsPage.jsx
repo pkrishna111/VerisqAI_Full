@@ -9,13 +9,16 @@ import AssessmentCards from "../components/vendor-details/AssessmentCards";
 import FindingsWorkspace from "../components/vendor-details/FindingsWorkspace";
 import AnalyticsSection from "../components/vendor-details/AnalyticsSection";
 import ResponsesTable from "../components/vendor-details/ResponsesTable";
+import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline";
 
-import { apiRequest } from "../services/api";
+import { apiRequest, getAssessmentDetails } from "../services/api";
 
 export default function VendorDetailsPage() {
     const { id } = useParams();
 
     const [data, setData] = useState(null);
+    const [selectedAssessment, setSelectedAssessment] =
+        useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -48,6 +51,7 @@ export default function VendorDetailsPage() {
             }
 
             setData(response);
+            setSelectedAssessment(response.assessment);
         }
         catch (err) {
             console.error(err);
@@ -81,6 +85,136 @@ export default function VendorDetailsPage() {
         return <div>No vendor data found.</div>;
     }
 
+    const questionnaire =
+        selectedAssessment?.questionnaire;
+
+    const scorecard =
+        selectedAssessment?.scorecard;
+
+    const findings =
+        selectedAssessment?.findings || [];
+
+    const responses =
+        selectedAssessment?.responses || [];
+
+    const handleAssessmentSelect =
+        async (historyItem) => {
+
+            try {
+
+                const assessmentDetails =
+                    await getAssessmentDetails(
+                        historyItem.scorecardId
+                    );
+
+                setSelectedAssessment(
+                    assessmentDetails
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load assessment:",
+                    error
+                );
+            }
+        };
+
+    const handleRefresh = async () => {
+        await fetchVendor();
+    };
+
+    const handleSendQuestionnaire =
+        async () => {
+
+            try {
+
+                await apiRequest(
+                    `/api/dashboard/send-questionnaire/${data.vendor.id}`,
+                    "POST",
+                    {
+                        email: data.vendor.email
+                    }
+                );
+
+                await fetchVendor();
+
+            }
+            catch (err) {
+
+                console.error(
+                    "Failed to send questionnaire",
+                    err
+                );
+
+                alert(
+                    "Failed to send questionnaire."
+                );
+            }
+        };
+
+    const handleDownloadReport = async () => {
+
+        try {
+
+            const token =
+                localStorage.getItem("token");
+
+            const res = await fetch(
+                `https://localhost:7183/api/dashboard/download-report/${data.vendor.id}`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!res.ok) {
+
+                const text =
+                    await res.text();
+
+                throw new Error(text);
+            }
+
+            const blob =
+                await res.blob();
+
+            const url =
+                window.URL.createObjectURL(blob);
+
+            const a =
+                document.createElement("a");
+
+            a.href = url;
+
+            a.download =
+                `${data.vendor.name}_report.pdf`;
+
+            document.body.appendChild(a);
+
+            a.click();
+
+            a.remove();
+
+        }
+        catch (err) {
+
+            console.error(
+                "Failed to download report",
+                err
+            );
+
+            alert(
+                "Failed to download report."
+            );
+        }
+    };
+
+    const canSendQuestionnaire =
+        questionnaire?.status === "Completed";
+
     return (
         <>
             <DashboardHeader />
@@ -89,27 +223,60 @@ export default function VendorDetailsPage() {
 
                 <VendorHeader
                     vendor={data.vendor}
-                    scorecard={data.assessment?.scorecard}
+                    scorecard={scorecard}
+
+                    onRefresh={handleRefresh}
+
+                    canSendQuestionnaire={
+                        canSendQuestionnaire
+                    }
+
+                    onSendQuestionnaire={
+                        handleSendQuestionnaire
+                    }
+
+                    onDownloadReport={
+                        handleDownloadReport
+                    }
                 />
 
-                <AssessmentCards
-                    scorecard={data.assessment?.scorecard}
-                    findings={data.assessment?.findings}
-                    questionnaire={data.assessment?.questionnaire}
-                />
+                <div className="vd-details-layout">
 
-                <AnalyticsSection
-                    findings={data.assessment?.findings}
-                    scorecard={data.assessment?.scorecard}
-                />
+                    <div className="vd-details-layout__sidebar">
+                        <AssessmentTimeline
+                            assessments={data.assessments}
+                            selectedAssessment={selectedAssessment}
+                            onSelectAssessment={
+                                handleAssessmentSelect
+                            }
+                        />
+                    </div>
 
-                <FindingsWorkspace
-                    findings={data.assessment?.findings}
-                />
+                    <div className="vd-details-layout__content">
 
-                <ResponsesTable
-                    responses={data.assessment?.responses}
-                />
+                        <AssessmentCards
+                            scorecard={scorecard}
+                            findings={findings}
+                            questionnaire={questionnaire}
+                        />
+
+                        <AnalyticsSection
+                            findings={findings}
+                            scorecard={scorecard}
+                        />
+
+                        <FindingsWorkspace
+                            findings={findings}
+                        />
+
+                        <ResponsesTable
+                            responses={responses}
+                        />
+
+                    </div>
+                </div>
+
+
 
             </main>
         </>

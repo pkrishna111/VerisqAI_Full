@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Verisq.API.DTOs.Vendor;
 using VerisqAI.API.Data;
 using VerisqAI.API.DTOs.Vendor;
 using VerisqAI.API.Models;
@@ -385,6 +386,42 @@ namespace VerisqAI.API.Controllers
                     .ToListAsync();
             }
 
+            var assessmentHistory = await _context.Scorecards
+    .Where(s => s.VendorId == id)
+
+    .Include(s => s.Questionnaire)
+    .Include(s => s.Findings)
+
+    .OrderByDescending(s => s.CreatedAt)
+
+    .Select(scorecard => new AssessmentHistoryDto
+    {
+        Id = scorecard.Id,
+
+        QuestionnaireId = scorecard.QuestionnaireId,
+
+        QuestionnaireStatus = scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.Status
+            : "Unknown",
+
+        ScorecardId = scorecard.Id,
+
+        Score = scorecard.Score ?? 0,
+
+        RiskScore = scorecard.RiskScore ?? 0,
+
+        RiskTier = scorecard.RiskTier ?? 0,
+
+        FindingsCount = scorecard.Findings.Count,
+
+        CreatedAt = scorecard.CreatedAt,
+
+        CompletedAt = scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.CompletedAt
+            : null
+    })
+    .ToListAsync();
+
             var result = new VendorDetailsDto
             {
                 Vendor = new VendorInfoDto
@@ -434,10 +471,97 @@ namespace VerisqAI.API.Controllers
                             Question = r.Question,
                             Answer = r.Answer
                         }).ToList()
-                    }
+                    },
+
+                Assessments = assessmentHistory
+
             };
 
             return Ok(result);
+        }
+
+        [HttpGet("assessment/{scorecardId}")]
+        public async Task<IActionResult> GetAssessmentDetails(
+    int scorecardId
+)
+        {
+            var scorecard = await _context.Scorecards
+
+                .Include(s => s.Questionnaire)
+                    .ThenInclude(q => q.Responses)
+
+                .Include(s => s.Findings)
+
+                .FirstOrDefaultAsync(
+                    s => s.Id == scorecardId
+                );
+
+            if (scorecard == null)
+            {
+                return NotFound(
+                    "Assessment not found."
+                );
+            }
+
+            var assessmentDto = new AssessmentDto
+            {
+                Questionnaire =
+                    scorecard.Questionnaire != null
+                        ? new QuestionnaireDto
+                        {
+                            Id = scorecard.Questionnaire.Id,
+
+                            Status =
+                                scorecard.Questionnaire.Status,
+
+                            SentAt =
+                                scorecard.Questionnaire.SentAt,
+
+                            CompletedAt =
+                                scorecard.Questionnaire.CompletedAt
+                        }
+                        : null,
+
+                Scorecard = new ScorecardDto
+                {
+                    Id = scorecard.Id,
+
+                    Score = scorecard.Score,
+
+                    RiskScore = scorecard.RiskScore,
+
+                    RiskTier = scorecard.RiskTier,
+
+                    CreatedAt = scorecard.CreatedAt
+                },
+
+                Findings = scorecard.Findings
+                    .Select(f => new FindingDto
+                    {
+                        Id = f.Id,
+
+                        Title = f.Title,
+
+                        Description = f.Description,
+
+                        Severity = f.Severity.ToString()
+                    })
+                    .ToList(),
+
+                Responses =
+                    scorecard.Questionnaire != null
+                        ? scorecard.Questionnaire.Responses
+                            .Select(r => new ResponseDto
+                            {
+                                Question = r.Question,
+
+                                Answer = r.Answer
+                            })
+                            .ToList()
+                        : new List<ResponseDto>()
+            };
+
+            return Ok(assessmentDto);
         }
 
         [HttpGet("vendor/{vendorId}/findings")]

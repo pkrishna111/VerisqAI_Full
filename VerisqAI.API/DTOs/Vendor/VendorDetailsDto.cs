@@ -1,10 +1,17 @@
-﻿namespace VerisqAI.API.DTOs.Vendor
+﻿using Verisq.API.DTOs.Vendor;
+
+namespace VerisqAI.API.DTOs.Vendor
 {
     public class VendorDetailsDto
     {
         public VendorInfoDto Vendor { get; set; }
 
+        // Current/latest assessment
+        // Preserved for backward compatibility
         public AssessmentDto Assessment { get; set; }
+
+        // Historical assessments timeline
+        public List<AssessmentHistoryDto> Assessments { get; set; } = new();
     }
 
     public class VendorInfoDto

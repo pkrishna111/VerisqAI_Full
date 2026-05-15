@@ -47,3 +47,12 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
     return res.json();
 };
+
+//for assesment history manangement
+export const getAssessmentDetails =
+  async (scorecardId) => {
+
+    return apiRequest(
+      `/api/dashboard/assessment/${scorecardId}`
+    );
+};

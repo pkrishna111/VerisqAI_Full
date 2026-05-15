@@ -1211,3 +1211,43 @@ body {
   text-align: center;
   color: gray;
 }
+
+.vd-details-layout {
+  display: grid;
+
+  grid-template-columns: 320px 1fr;
+
+  gap: 2rem;
+
+  align-items: start;
+
+  margin-top: 2rem;
+}
+
+.vd-details-layout__sidebar {
+  min-width: 0;
+}
+
+.vd-details-layout__content {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2rem;
+}
+
+@media (max-width: 1200px) {
+  .vd-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .vd-details-layout__sidebar {
+    order: 2;
+  }
+
+  .vd-details-layout__content {
+    order: 1;
+  }
+}
