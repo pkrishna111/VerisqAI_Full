@@ -6,10 +6,8 @@ import DashboardHeader from "../components/dashboard/Header";
 import VendorDetailsSkeleton from "../components/vendor-details/VendorDetailsSkeleton";
 import VendorHeader from "../components/vendor-details/VendorHeader";
 import AssessmentCards from "../components/vendor-details/AssessmentCards";
-import FindingsWorkspace from "../components/vendor-details/FindingsWorkspace";
-import AnalyticsSection from "../components/vendor-details/AnalyticsSection";
-import ResponsesTable from "../components/vendor-details/ResponsesTable";
 import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline";
+import AssessmentIntelligenceTabs from "../components/vendor-details/AssessmentIntelligenceTabs";
 
 import { apiRequest, getAssessmentDetails } from "../services/api";
 
@@ -260,16 +258,9 @@ export default function VendorDetailsPage() {
                             questionnaire={questionnaire}
                         />
 
-                        <AnalyticsSection
-                            findings={findings}
+                        <AssessmentIntelligenceTabs
                             scorecard={scorecard}
-                        />
-
-                        <FindingsWorkspace
                             findings={findings}
-                        />
-
-                        <ResponsesTable
                             responses={responses}
                         />
 

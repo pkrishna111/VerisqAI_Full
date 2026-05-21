@@ -8,6 +8,9 @@ using VerisqAI.API.Configurations;
 using VerisqAI.API.Data;
 using VerisqAI.API.Models;
 using VerisqAI.API.Services;
+using VerisqAI.API.AI.Contracts;
+using VerisqAI.API.AI.Providers;
+using VerisqAI.API.AI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,6 +69,17 @@ builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+//AI contract and provider
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<
+    IAiProvider,
+    GeminiProvider>();
+
+//AI Service
+builder.Services.AddScoped<
+    AiAssessmentService>();
 
 // JWT Authentication
 builder.Services

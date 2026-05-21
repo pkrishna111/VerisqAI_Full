@@ -4,6 +4,7 @@ using VerisqAI.API.Data;
 using VerisqAI.API.DTOs;
 using VerisqAI.API.Models;
 using VerisqAI.API.Services;
+using VerisqAI.API.AI.Services;
 
 namespace VerisqAI.API.Controllers
 {
@@ -13,9 +14,16 @@ namespace VerisqAI.API.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public QuestionnaireController(ApplicationDbContext context)
+        private readonly AiAssessmentService
+            _aiAssessmentService;
+
+        public QuestionnaireController(
+            ApplicationDbContext context,
+            AiAssessmentService aiAssessmentService)
         {
             _context = context;
+            _aiAssessmentService =
+                aiAssessmentService;
         }
 
         // get questions
@@ -110,6 +118,28 @@ namespace VerisqAI.API.Controllers
 
             // save Findings
             await _context.SaveChangesAsync();
+
+            var vendor = await _context.Vendors
+                .FirstOrDefaultAsync(v =>
+                    v.Id == questionnaire.VendorId);
+
+            if (vendor != null)
+            {
+                try
+                {
+                    await _aiAssessmentService
+                        .GenerateAndSaveInsightsAsync(
+                            vendor,
+                            scorecard,
+                            result.Findings,
+                            savedResponses);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(
+                        $"AI insight generation failed: {ex.Message}");
+                }
+            }
 
             return Ok(new { message = "Submitted successfully" });
         }

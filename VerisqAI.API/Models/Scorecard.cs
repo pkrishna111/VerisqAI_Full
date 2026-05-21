@@ -33,5 +33,12 @@ namespace VerisqAI.API.Models
 
         // findings as per scorecard
         public ICollection<Finding> Findings { get; set; } = new List<Finding>();
+
+        public AiAssessmentInsight? AiAssessmentInsight { get; set; }
+
+        public ICollection<AiRecommendation>
+            AiRecommendations
+        { get; set; }
+            = new List<AiRecommendation>();
     }
 }

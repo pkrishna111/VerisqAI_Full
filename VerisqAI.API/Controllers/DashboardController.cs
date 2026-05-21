@@ -7,6 +7,8 @@ using VerisqAI.API.Data;
 using VerisqAI.API.DTOs.Vendor;
 using VerisqAI.API.Models;
 using VerisqAI.API.Services;
+using System.Text.Json;
+using VerisqAI.API.DTOs.AI;
 
 namespace VerisqAI.API.Controllers
 {
@@ -323,9 +325,16 @@ namespace VerisqAI.API.Controllers
 
             // get latest scorecard
             var scorecard = await _context.Scorecards
-                .Where(s => s.VendorId == vendorId)
-                .OrderByDescending(s => s.CreatedAt)
-                .FirstOrDefaultAsync();
+
+            .Include(s => s.AiAssessmentInsight)
+
+            .Include(s => s.AiRecommendations)
+
+            .Where(s => s.VendorId == vendorId)
+
+            .OrderByDescending(s => s.CreatedAt)
+
+            .FirstOrDefaultAsync();
 
             if (scorecard == null)
                 return BadRequest("No scorecard found.");
@@ -334,7 +343,13 @@ namespace VerisqAI.API.Controllers
                 .Where(f => f.ScorecardId == scorecard.Id)
                 .ToListAsync();
 
-            var pdfBytes = _pdfService.GenerateVendorReport(vendor, scorecard, findings);
+            var pdfBytes = _pdfService.GenerateVendorReport(
+                vendor,
+                scorecard,
+                findings,
+                scorecard.AiAssessmentInsight,
+                scorecard.AiRecommendations.ToList()
+            );
 
             return File(pdfBytes, "application/pdf", $"{vendor.Name}_report.pdf");
         }
@@ -362,6 +377,8 @@ namespace VerisqAI.API.Controllers
 
             // latest scorecard
             var scorecard = await _context.Scorecards
+                .Include(s => s.AiAssessmentInsight)
+                .Include(s => s.AiRecommendations)
                 .Where(s => s.VendorId == id)
                 .OrderByDescending(s => s.CreatedAt)
                 .FirstOrDefaultAsync();
@@ -448,15 +465,76 @@ namespace VerisqAI.API.Controllers
                             },
 
                         Scorecard = scorecard == null
-                            ? null
-                            : new ScorecardDto
-                            {
-                                Id = scorecard.Id,
-                                Score = scorecard.Score,
-                                RiskScore = scorecard.RiskScore,
-                                RiskTier = scorecard.RiskTier,
-                                CreatedAt = scorecard.CreatedAt
-                            },
+    ? null
+    : new ScorecardDto
+    {
+        Id = scorecard.Id,
+
+        Score = scorecard.Score,
+
+        RiskScore = scorecard.RiskScore,
+
+        RiskTier = scorecard.RiskTier,
+
+        CreatedAt = scorecard.CreatedAt,
+
+        AiInsight =
+            scorecard.AiAssessmentInsight == null
+                ? null
+                : new AiAssessmentInsightDto
+                {
+                    ExecutiveSummary =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ExecutiveSummary,
+
+                    ConfidenceScore =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ConfidenceScore,
+
+                    RiskDrivers =
+                        string.IsNullOrWhiteSpace(
+                            scorecard
+                                .AiAssessmentInsight
+                                .RiskDriversJson
+                        )
+                            ? new List<string>()
+                            : JsonSerializer.Deserialize<
+                                List<string>
+                              >(
+                                scorecard
+                                    .AiAssessmentInsight
+                                    .RiskDriversJson
+                              ) ?? new List<string>(),
+
+                    ModelName =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ModelName,
+
+                    GeneratedAt =
+                        scorecard
+                            .AiAssessmentInsight
+                            .GeneratedAt
+                },
+
+        AiRecommendations =
+            scorecard.AiRecommendations
+                .Select(r => new AiRecommendationDto
+                {
+                    Title = r.Title,
+
+                    Description = r.Description,
+
+                    Priority = r.Priority,
+
+                    Category = r.Category,
+
+                    Rationale = r.Rationale
+                })
+                .ToList()
+    },
 
                         Findings = findings.Select(f => new FindingDto
                         {
@@ -481,20 +559,22 @@ namespace VerisqAI.API.Controllers
         }
 
         [HttpGet("assessment/{scorecardId}")]
-        public async Task<IActionResult> GetAssessmentDetails(
-    int scorecardId
-)
+        public async Task<IActionResult> GetAssessmentDetails(int scorecardId)
         {
             var scorecard = await _context.Scorecards
 
-                .Include(s => s.Questionnaire)
-                    .ThenInclude(q => q.Responses)
+    .Include(s => s.Questionnaire)
+        .ThenInclude(q => q.Responses)
 
-                .Include(s => s.Findings)
+    .Include(s => s.Findings)
 
-                .FirstOrDefaultAsync(
-                    s => s.Id == scorecardId
-                );
+    .Include(s => s.AiAssessmentInsight)
+
+    .Include(s => s.AiRecommendations)
+
+    .FirstOrDefaultAsync(
+        s => s.Id == scorecardId
+    );
 
             if (scorecard == null)
             {
@@ -522,18 +602,77 @@ namespace VerisqAI.API.Controllers
                         }
                         : null,
 
-                Scorecard = new ScorecardDto
+                Scorecard = scorecard == null
+    ? null
+    : new ScorecardDto
+    {
+        Id = scorecard.Id,
+
+        Score = scorecard.Score,
+
+        RiskScore = scorecard.RiskScore,
+
+        RiskTier = scorecard.RiskTier,
+
+        CreatedAt = scorecard.CreatedAt,
+
+        AiInsight =
+            scorecard.AiAssessmentInsight == null
+                ? null
+                : new AiAssessmentInsightDto
                 {
-                    Id = scorecard.Id,
+                    ExecutiveSummary =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ExecutiveSummary,
 
-                    Score = scorecard.Score,
+                    ConfidenceScore =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ConfidenceScore,
 
-                    RiskScore = scorecard.RiskScore,
+                    RiskDrivers =
+                        string.IsNullOrWhiteSpace(
+                            scorecard
+                                .AiAssessmentInsight
+                                .RiskDriversJson
+                        )
+                            ? new List<string>()
+                            : JsonSerializer.Deserialize<
+                                List<string>
+                              >(
+                                scorecard
+                                    .AiAssessmentInsight
+                                    .RiskDriversJson
+                              ) ?? new List<string>(),
 
-                    RiskTier = scorecard.RiskTier,
+                    ModelName =
+                        scorecard
+                            .AiAssessmentInsight
+                            .ModelName,
 
-                    CreatedAt = scorecard.CreatedAt
+                    GeneratedAt =
+                        scorecard
+                            .AiAssessmentInsight
+                            .GeneratedAt
                 },
+
+        AiRecommendations =
+            scorecard.AiRecommendations
+                .Select(r => new AiRecommendationDto
+                {
+                    Title = r.Title,
+
+                    Description = r.Description,
+
+                    Priority = r.Priority,
+
+                    Category = r.Category,
+
+                    Rationale = r.Rationale
+                })
+                .ToList()
+    },
 
                 Findings = scorecard.Findings
                     .Select(f => new FindingDto

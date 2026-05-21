@@ -1,4 +1,5 @@
 ﻿using Verisq.API.DTOs.Vendor;
+using VerisqAI.API.DTOs.AI;
 
 namespace VerisqAI.API.DTOs.Vendor
 {
@@ -58,6 +59,10 @@ namespace VerisqAI.API.DTOs.Vendor
         public int? RiskScore { get; set; }
 
         public int? RiskTier { get; set; }
+
+        public AiAssessmentInsightDto? AiInsight { get; set; }
+
+        public List<AiRecommendationDto> AiRecommendations { get; set; } = new();
 
         public DateTime CreatedAt { get; set; }
     }
