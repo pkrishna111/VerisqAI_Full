@@ -135,18 +135,18 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
 
-    var dbContext = services
-        .GetRequiredService<ApplicationDbContext>();
+//    var dbContext = services
+//        .GetRequiredService<ApplicationDbContext>();
 
-    await dbContext.Database.MigrateAsync();
+//    await dbContext.Database.MigrateAsync();
 
-    await VerisqAI.API.Seed.DbSeeder
-        .SeedRolesAndAdminAsync(services);
-}
+//    await VerisqAI.API.Seed.DbSeeder
+//        .SeedRolesAndAdminAsync(services);
+//}
 
 // Middleware pipeline - enable for development
 //if (app.Environment.IsDevelopment())
