@@ -128,6 +128,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(8080);
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
