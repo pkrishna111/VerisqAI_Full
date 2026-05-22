@@ -133,6 +133,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
+    var dbContext = services
+        .GetRequiredService<ApplicationDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+
     await VerisqAI.API.Seed.DbSeeder
         .SeedRolesAndAdminAsync(services);
 }
