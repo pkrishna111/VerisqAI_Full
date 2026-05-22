@@ -7,7 +7,28 @@
 
   padding: 1.5rem;
 
+  margin-top: 1rem;
+
   box-shadow: var(--shadow-md);
+
+  max-height: calc(100vh - 180px);
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding-right: 1rem;
+
+  scroll-behavior: smooth;
+
+  display: flex;
+
+  flex-direction: column;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    rgba(173, 173, 173, 0.24) transparent;
 }
 
 .vd-assessment-timeline__header {
@@ -136,4 +157,36 @@
   font-weight: 700;
 
   color: var(--text-primary);
+}
+
+/* CUSTOM SCROLLBAR */
+
+.vd-assessment-timeline::-webkit-scrollbar {
+  width: 0px;
+
+  transition: width 0.2s ease;
+}
+
+.vd-assessment-timeline:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vd-assessment-timeline::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vd-assessment-timeline::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(180deg,
+      rgba(59, 130, 246, 0.65),
+      rgba(37, 99, 235, 0.85));
+
+  border-radius: 999px;
+}
+
+.vd-assessment-timeline::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg,
+      rgba(59, 130, 246, 0.9),
+      rgba(37, 99, 235, 1));
 }

@@ -1015,7 +1015,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
   backdrop-filter: blur(3px);
 }
 
@@ -1293,13 +1293,14 @@ body {
 .vd-details-layout {
   display: grid;
 
-  grid-template-columns: 320px 1fr;
+  grid-template-columns:
+    minmax(260px, 290px) minmax(0, 1fr);
 
-  gap: 2rem;
+  gap: 1.5rem;
 
   align-items: start;
 
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .vd-details-layout__sidebar {
