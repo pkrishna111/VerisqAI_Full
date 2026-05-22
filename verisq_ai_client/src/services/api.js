@@ -1,5 +1,7 @@
 const API_BASE_URL = "https://localhost:7183";
 
+export default API_BASE_URL;
+
 //for registration of user through token
 export const registerUser = async (data) => {
     const response = await fetch(`${API_BASE_URL}/api/auth/register`, {

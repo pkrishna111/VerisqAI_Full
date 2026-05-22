@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import "../styles/VerifyPage.CSS"; // ✅ import CSS
+import "../styles/VerifyPage.CSS"; 
+import API_BASE_URL from "../services/api";
 
-const API_BASE = "https://localhost:7183";
+const API_BASE = API_BASE_URL;
 
 function VerifyPage() {
   const [searchParams] = useSearchParams();

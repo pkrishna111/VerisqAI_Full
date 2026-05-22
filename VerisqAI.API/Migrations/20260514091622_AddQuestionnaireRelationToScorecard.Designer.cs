@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VerisqAI.API.Data;
 
@@ -11,9 +12,11 @@ using VerisqAI.API.Data;
 namespace VerisqAI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514091622_AddQuestionnaireRelationToScorecard")]
+    partial class AddQuestionnaireRelationToScorecard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,155 +156,6 @@ namespace VerisqAI.API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("VerisqAI.API.Models.AiAssessmentInsight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("ConfidenceScore")
-                        .HasPrecision(5, 4)
-                        .HasColumnType("decimal(5,4)");
-
-                    b.Property<string>("ExecutiveSummary")
-                        .IsRequired()
-                        .HasMaxLength(5000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("GeneratedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModelName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PromptVersion")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("RiskDriversJson")
-                        .IsRequired()
-                        .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)");
-
-                    b.Property<int>("ScorecardId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ScorecardId")
-                        .IsUnique();
-
-                    b.ToTable("AiAssessmentInsights");
-                });
-
-            modelBuilder.Entity("VerisqAI.API.Models.AiExecutionAudit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CompletionTokens")
-                        .HasColumnType("int");
-
-                    b.Property<long>("DurationMs")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ErrorMessage")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)");
-
-                    b.Property<DateTime>("ExecutedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModelName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("OperationType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("PromptTokens")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PromptVersion")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("ScorecardId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Success")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("Temperature")
-                        .HasPrecision(3, 2)
-                        .HasColumnType("decimal(3,2)");
-
-                    b.Property<int>("TotalTokens")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AiExecutionAudits");
-                });
-
-            modelBuilder.Entity("VerisqAI.API.Models.AiRecommendation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Rationale")
-                        .IsRequired()
-                        .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)");
-
-                    b.Property<int>("ScorecardId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ScorecardId");
-
-                    b.ToTable("AiRecommendations");
                 });
 
             modelBuilder.Entity("VerisqAI.API.Models.ApplicationUser", b =>
@@ -661,28 +515,6 @@ namespace VerisqAI.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VerisqAI.API.Models.AiAssessmentInsight", b =>
-                {
-                    b.HasOne("VerisqAI.API.Models.Scorecard", "Scorecard")
-                        .WithOne("AiAssessmentInsight")
-                        .HasForeignKey("VerisqAI.API.Models.AiAssessmentInsight", "ScorecardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Scorecard");
-                });
-
-            modelBuilder.Entity("VerisqAI.API.Models.AiRecommendation", b =>
-                {
-                    b.HasOne("VerisqAI.API.Models.Scorecard", "Scorecard")
-                        .WithMany("AiRecommendations")
-                        .HasForeignKey("ScorecardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Scorecard");
-                });
-
             modelBuilder.Entity("VerisqAI.API.Models.Finding", b =>
                 {
                     b.HasOne("VerisqAI.API.Models.Scorecard", "Scorecard")
@@ -751,10 +583,6 @@ namespace VerisqAI.API.Migrations
 
             modelBuilder.Entity("VerisqAI.API.Models.Scorecard", b =>
                 {
-                    b.Navigation("AiAssessmentInsight");
-
-                    b.Navigation("AiRecommendations");
-
                     b.Navigation("Findings");
                 });
 

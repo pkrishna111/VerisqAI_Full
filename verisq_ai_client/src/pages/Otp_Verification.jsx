@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import "../styles/otp_verification.css";
+import API_BASE_URL from "../services/api";
 
 export default function Otp_verification() {
   const [attemptsLeft, setAttemptsLeft] = useState(5);
@@ -45,7 +46,7 @@ export default function Otp_verification() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://localhost:7183/api/auth/send-otp", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -99,7 +100,7 @@ export default function Otp_verification() {
   const handleVerify = async () => {
     setError("");
     try {
-      const res = await fetch("https://localhost:7183/api/auth/verify-totp", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/verify-totp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -142,7 +143,7 @@ export default function Otp_verification() {
     setError(""); // clear old errors
 
     try {
-      const res = await fetch("https://localhost:7183/api/auth/send-otp", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

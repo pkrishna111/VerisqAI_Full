@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import "../styles/AdminTrialRequests.css";
-
-const API_BASE = "https://localhost:7183";
+import API_BASE_URL from "../services/api";
 
 function AdminTrialRequests() {
   const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/pending-users`);
+      const res = await fetch(`${API_BASE_URL}/api/admin/pending-users`);
       const data = await res.json();
       setUsers(data);
     } catch (err) {

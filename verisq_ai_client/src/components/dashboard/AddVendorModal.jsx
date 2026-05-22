@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_BASE_URL from "../../services/api";
 
 function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
     const [vendorName, setVendorName] = useState("");
@@ -59,7 +60,7 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
         }
 
         try {
-            await fetch("https://localhost:7183/api/dashboard/add-vendor", {
+            await fetch(`${API_BASE_URL}/api/dashboard/add-vendor`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

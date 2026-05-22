@@ -29,7 +29,7 @@ builder.Services.AddSwaggerGen();
 
 // DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(
+    options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
@@ -119,47 +119,39 @@ builder.Services
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-    policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-              .AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
-
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(8080);
+        policy =>
+        {
+            policy
+                .WithOrigins(
+                    "http://localhost:5173",
+                    "https://verisq-ai.vercel.app"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
 });
 
 var app = builder.Build();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-//    var dbContext = services
-//        .GetRequiredService<ApplicationDbContext>();
+    var dbContext = services
+        .GetRequiredService<ApplicationDbContext>();
 
-//    await dbContext.Database.MigrateAsync();
-
-//    await VerisqAI.API.Seed.DbSeeder
-//        .SeedRolesAndAdminAsync(services);
-//}
+    await VerisqAI.API.Seed.DbSeeder
+        .SeedRolesAndAdminAsync(services);
+}
 
 // Middleware pipeline - enable for development
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-// and disable this for development
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();   
 
 //to enable CORS
 app.UseCors("AllowFrontend");

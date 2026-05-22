@@ -1,6 +1,7 @@
 import { Clock, Send, Download, AlertCircle } from "lucide-react";
 import { apiRequest } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../services/api";
 
 function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
   const initials = vendor.name
@@ -18,7 +19,7 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        `https://localhost:7183/api/dashboard/download-report/${vendor.id}`,
+        `${API_BASE_URL}/api/dashboard/download-report/${vendor.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

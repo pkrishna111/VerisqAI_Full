@@ -10,6 +10,7 @@ import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline"
 import AssessmentIntelligenceTabs from "../components/vendor-details/AssessmentIntelligenceTabs";
 
 import { apiRequest, getAssessmentDetails } from "../services/api";
+import API_BASE_URL from "../services/api";
 
 export default function VendorDetailsPage() {
     const { id } = useParams();
@@ -159,7 +160,7 @@ export default function VendorDetailsPage() {
                 localStorage.getItem("token");
 
             const res = await fetch(
-                `https://localhost:7183/api/dashboard/download-report/${data.vendor.id}`,
+                `${API_BASE_URL}/api/dashboard/download-report/${data.vendor.id}`,
                 {
                     headers: {
                         Authorization:
