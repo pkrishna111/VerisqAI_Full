@@ -8,10 +8,6 @@
   padding: 1.5rem;
 
   box-shadow: var(--shadow-md);
-
-  position: sticky;
-
-  top: 100px;
 }
 
 .vd-assessment-timeline__header {

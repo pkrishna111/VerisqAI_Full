@@ -1,8 +1,13 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { Sparkles, ChevronDown } from "lucide-react";
 
 function DashboardHeader() {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const token = localStorage.getItem("token");
 
@@ -29,6 +34,33 @@ function DashboardHeader() {
     .slice(0, 2)
     .toUpperCase();
 
+  useEffect(() => {
+
+    const handleClickOutside = (event) => {
+
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+
+  }, []);
+
   return (
     <header className="dashboard-header">
       <div className="dashboard-header-content">
@@ -47,43 +79,72 @@ function DashboardHeader() {
 
         {/* RIGHT */}
         <div className="dashboard-header-right">
-          <div className="trial-badge">
-            <Sparkles size={16} />
-            <span>Free Trial</span>
-          </div>
+          <div className="trial-badge"> <Sparkles size={16} /> <span>Free Trial</span> </div>
+          <div
+            className="user-menu"
+            ref={dropdownRef}
+          >
+            <div
+              className="user-menu-trigger"
+              onClick={() => setOpen(!open)}
+            >
 
-          <div className="user-menu" style={{ position: "relative" }}>
+              <div className="user-avatar">
+                {initials}
+              </div>
 
-            <div onClick={() => setOpen(!open)} style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
-              <div className="user-avatar">{initials}</div>
-              <span className="user-name">{fullName}</span>
-              <ChevronDown size={16} style={{ opacity: 0.7 }} />
+              <div className="user-meta">
+
+                <span className="user-name">
+                  {fullName}
+                </span>
+
+                <span className="user-role">
+                  Trial Workspace
+                </span>
+
+              </div>
+
+              <ChevronDown
+                size={16}
+                style={{
+                  opacity: 0.7,
+                  transition: "transform 0.2s ease",
+                  transform: open
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)"
+                }}
+              />
+
             </div>
 
             {open && (
-              <div style={{
-                position: "absolute",
-                top: "40px",
-                right: 0,
-                background: "white",
-                border: "1px solid #eee",
-                borderRadius: "8px",
-                padding: "8px",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)"
-              }}>
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: "8px 12px",
-                    width: "100%",
-                    textAlign: "left"
-                  }}
-                >
-                  Logout
-                </button>
+
+              <div className="user-dropdown">
+
+                <div className="user-dropdown__header">
+
+                  <div className="user-dropdown__name">
+                    {fullName}
+                  </div>
+
+                  <div className="user-dropdown__email">
+                    Trial Workspace
+                  </div>
+
+                </div>
+
+                <div className="user-dropdown__menu">
+
+                  <button
+                    className="user-dropdown__item"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+
+                </div>
+
               </div>
             )}
 
