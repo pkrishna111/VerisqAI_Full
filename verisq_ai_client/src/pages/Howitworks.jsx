@@ -1,6 +1,6 @@
 import '../styles/Howitworks.css'
 import "../styles/Scorecards.css"   // ✅ added for CTA reuse
-
+import { Link } from "react-router-dom";
 import Header from "../components/landingPage/Header"
 import Footer from "../components/landingPage/Footer"
 
@@ -141,9 +141,9 @@ function CtaSection() {
         <p className="scorecards-cta__sub">
           See where your vendors really stand — in minutes, not months.
         </p>
-        <a href="#" className="scorecards-btn scorecards-btn--white">
+        <Link to="/" className="scorecards-btn scorecards-btn--white">
           Try 5 Vendors for Free →
-        </a>
+        </Link>
       </div>
     </section>
   )

@@ -13,6 +13,11 @@ import QuestionnairePage from './pages/QuestionnairePage'
 import Howitworks from './pages/Howitworks'
 import Scorecards from './pages/Scorecards '
 import Questionnaires from './pages/Questionnaires'
+import TemplateBuilderPage from './pages/TemplateBuilderPage'
+import TemplateDetailsPage from './pages/TemplateDetailsPage'
+import BreachAlerts from './pages/BreachAlerts'
+import RiskTiering from './pages/RiskTiering'
+
 
 function App() {
   return (
@@ -40,12 +45,31 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/templates"
+          element={
+            <ProtectedRoute>
+              <TemplateBuilderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/templates/:id"
+          element={
+            <ProtectedRoute>
+              <TemplateDetailsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/otp_verification" element={<Otp_verification />} />
         <Route path="/request-received" element={<RequestReceived />} />
         <Route path="how-it-works" element={<Howitworks />} />
         <Route path="Scorecard" element={<Scorecards />} />
         <Route path="Questionnaires" element={<Questionnaires />} />
         <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
+        <Route path="BreachAlerts" element={<BreachAlerts />} />
+        <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
+        <Route path="RiskTiering" element={<RiskTiering />} />
       </Routes>
     </BrowserRouter>
   )

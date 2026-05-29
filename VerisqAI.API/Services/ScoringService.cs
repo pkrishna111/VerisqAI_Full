@@ -14,6 +14,7 @@ namespace VerisqAI.API.Services
     public class QuestionRule
     {
         public string Question { get; set; }
+        public string? QuestionKey { get; set; }
         public string ExpectedAnswer { get; set; }
         public int Weight { get; set; }
 
@@ -28,6 +29,7 @@ namespace VerisqAI.API.Services
         {
             new QuestionRule {
                 Question = "Do you use HTTPS?",
+                QuestionKey = "sso_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "No HTTPS",
@@ -36,6 +38,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you encrypt sensitive data?",
+                QuestionKey = "encryption_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "No Data Encryption",
@@ -44,6 +47,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you have firewall protection?",
+                QuestionKey = "firewall_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "No Firewall",
@@ -52,6 +56,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you perform regular backups?",
+                QuestionKey = "firewall_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "No Backup Strategy",
@@ -60,6 +65,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you use multi-factor authentication?",
+                QuestionKey = "mfa_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 15,
                 FindingTitle = "No MFA",
@@ -68,6 +74,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you update software regularly?",
+                QuestionKey = "mfa_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "Outdated Software",
@@ -76,6 +83,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you monitor system logs?",
+                QuestionKey = "encryption_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 5,
                 FindingTitle = "No Monitoring",
@@ -84,6 +92,7 @@ namespace VerisqAI.API.Services
             },
             new QuestionRule {
                 Question = "Do you have access control policies?",
+                QuestionKey = "sso_enabled",
                 ExpectedAnswer = "Yes",
                 Weight = 10,
                 FindingTitle = "Weak Access Control",
@@ -102,7 +111,15 @@ namespace VerisqAI.API.Services
 
             foreach (var rule in _rules)
             {
-                var response = responses.FirstOrDefault(r => r.Question == rule.Question);
+                var response = responses.FirstOrDefault(r =>
+
+                    (!string.IsNullOrWhiteSpace(rule.QuestionKey) &&
+                     r.QuestionKey == rule.QuestionKey)
+
+                    ||
+
+                    r.Question == rule.Question
+                );
 
                 if (response == null)
                     continue;

@@ -1,78 +1,79 @@
 import "../styles/Scorecards.css";
 import Header from "../components/landingPage/Header"
+import { Link } from "react-router-dom";
 import Footer from "../components/landingPage/Footer"
 
 // ── Hero + Card ──────────────────────────────────────────────────────────────
 const HeroSection = () => (
   <>
-    <Header/>
+    <Header />
     <section className="scorecards-hero">
-    <div className="scorecards-container">
-      <div className="scorecards-hero__layout">
+      <div className="scorecards-container">
+        <div className="scorecards-hero__layout">
 
-        {/* LEFT — text */}
-        <div className="scorecards-hero__left">
-          <h1 className="scorecards-hero__title">
-            <span>LiveThreat</span> Security Scorecards
-          </h1>
-          <p className="scorecards-hero__subtitle">
-            Real-time cyber threat intelligence that scans your vendors' external
-            security posture. No questionnaire needed — just enter a domain and
-            get actionable insights within hours.
-          </p>
-          <div className="scorecards-hero__stats">
-            <div className="scorecards-hero__stat">
-              <span className="scorecards-hero__stat-value">100+</span>
-              <span className="scorecards-hero__stat-label">Security Signals</span>
-            </div>
-            <div className="scorecards-hero__stat">
-              <span className="scorecards-hero__stat-value">&lt;24h</span>
-              <span className="scorecards-hero__stat-label">Results Delivery</span>
-            </div>
-            <div className="scorecards-hero__stat">
-              <span className="scorecards-hero__stat-value">PDF</span>
-              <span className="scorecards-hero__stat-label">Shareable Reports</span>
+          {/* LEFT — text */}
+          <div className="scorecards-hero__left">
+            <h1 className="scorecards-hero__title">
+              <span>LiveThreat</span> Security Scorecards
+            </h1>
+            <p className="scorecards-hero__subtitle">
+              Real-time cyber threat intelligence that scans your vendors' external
+              security posture. No questionnaire needed — just enter a domain and
+              get actionable insights within hours.
+            </p>
+            <div className="scorecards-hero__stats">
+              <div className="scorecards-hero__stat">
+                <span className="scorecards-hero__stat-value">100+</span>
+                <span className="scorecards-hero__stat-label">Security Signals</span>
+              </div>
+              <div className="scorecards-hero__stat">
+                <span className="scorecards-hero__stat-value">&lt;24h</span>
+                <span className="scorecards-hero__stat-label">Results Delivery</span>
+              </div>
+              <div className="scorecards-hero__stat">
+                <span className="scorecards-hero__stat-value">PDF</span>
+                <span className="scorecards-hero__stat-label">Shareable Reports</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* RIGHT — scorecard card */}
-        <div className="scorecards-hero__right">
-          <div className="scorecards-card">
-            <div className="scorecards-card__header">
-              <p className="scorecards-card__header-title">LiveThreat Security Scorecard</p>
-              <p className="scorecards-card__domain">CloudSync Pro — cloudsyncpro.com</p>
-            </div>
-            <div className="scorecards-card__body">
-              <div className="scorecards-card__score-wrap">
-                <div className="scorecards-card__score-ring">
-                  <span className="scorecards-card__score-number">72</span>
-                </div>
-                <div className="scorecards-card__score-info">
-                  <p className="scorecards-card__risk-label">Medium Risk</p>
-                  <p className="scorecards-card__risk-sub">3 High findings require attention</p>
-                </div>
+          {/* RIGHT — scorecard card */}
+          <div className="scorecards-hero__right">
+            <div className="scorecards-card">
+              <div className="scorecards-card__header">
+                <p className="scorecards-card__header-title">LiveThreat Security Scorecard</p>
+                <p className="scorecards-card__domain">CloudSync Pro — cloudsyncpro.com</p>
               </div>
-              <div className="scorecards-card__findings">
-                {[
-                  { level: "high",   text: "SSL Certificate expires in 14 days" },
-                  { level: "high",   text: "Outdated TLS 1.0 protocol detected" },
-                  { level: "medium", text: "Missing DMARC email policy" },
-                ].map((f, i) => (
-                  <div key={i} className={`scorecards-card__finding scorecards-card__finding--${f.level}`}>
-                    <span className="scorecards-card__finding-badge">{f.level}</span>
-                    <span className="scorecards-card__finding-text">{f.text}</span>
+              <div className="scorecards-card__body">
+                <div className="scorecards-card__score-wrap">
+                  <div className="scorecards-card__score-ring">
+                    <span className="scorecards-card__score-number">72</span>
                   </div>
-                ))}
+                  <div className="scorecards-card__score-info">
+                    <p className="scorecards-card__risk-label">Medium Risk</p>
+                    <p className="scorecards-card__risk-sub">3 High findings require attention</p>
+                  </div>
+                </div>
+                <div className="scorecards-card__findings">
+                  {[
+                    { level: "high", text: "SSL Certificate expires in 14 days" },
+                    { level: "high", text: "Outdated TLS 1.0 protocol detected" },
+                    { level: "medium", text: "Missing DMARC email policy" },
+                  ].map((f, i) => (
+                    <div key={i} className={`scorecards-card__finding scorecards-card__finding--${f.level}`}>
+                      <span className="scorecards-card__finding-badge">{f.level}</span>
+                      <span className="scorecards-card__finding-text">{f.text}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
-    </div>
-  </section>
-  
+    </section>
+
   </>
 );
 
@@ -143,14 +144,14 @@ const DeliverSection = () => (
 
 // ── What We Scan ─────────────────────────────────────────────────────────────
 const scanItems = [
-  { icon: "🔒", title: "SSL/TLS Security",    desc: "Certificate validity, protocol versions, cipher strength" },
-  { icon: "📧", title: "Email Security",       desc: "SPF, DKIM, DMARC configuration and policy" },
-  { icon: "🌐", title: "DNS Configuration",    desc: "DNSSEC, nameserver security, zone transfers" },
-  { icon: "🖥️", title: "Web Application",      desc: "Security headers, WAF detection, HTTPS enforcement" },
-  { icon: "🔌", title: "Network Security",     desc: "Open ports, exposed services, IP reputation" },
-  { icon: "💥", title: "Breach History",       desc: "Known breaches, dark web mentions, credential leaks" },
-  { icon: "✅", title: "Compliance Signals",   desc: "SOC 2, ISO 27001, privacy policy presence" },
-  { icon: "🛡️", title: "Vulnerability Intel",  desc: "Known CVEs, patching cadence, tech stack risks" },
+  { icon: "🔒", title: "SSL/TLS Security", desc: "Certificate validity, protocol versions, cipher strength" },
+  { icon: "📧", title: "Email Security", desc: "SPF, DKIM, DMARC configuration and policy" },
+  { icon: "🌐", title: "DNS Configuration", desc: "DNSSEC, nameserver security, zone transfers" },
+  { icon: "🖥️", title: "Web Application", desc: "Security headers, WAF detection, HTTPS enforcement" },
+  { icon: "🔌", title: "Network Security", desc: "Open ports, exposed services, IP reputation" },
+  { icon: "💥", title: "Breach History", desc: "Known breaches, dark web mentions, credential leaks" },
+  { icon: "✅", title: "Compliance Signals", desc: "SOC 2, ISO 27001, privacy policy presence" },
+  { icon: "🛡️", title: "Vulnerability Intel", desc: "Known CVEs, patching cadence, tech stack risks" },
 ];
 
 const ScanSection = () => (
@@ -179,9 +180,9 @@ const CtaSection = () => (
       <p className="scorecards-cta__sub">
         Try LiveThreat free with 5 vendors. Get your first scorecard within hours.
       </p>
-      <a href="#" className="scorecards-btn scorecards-btn--white">
+      <Link to="/" className="scorecards-btn scorecards-btn--white">
         Try 5 Vendors for Free →
-      </a>
+      </Link>
     </div>
   </section>
 );
@@ -194,7 +195,7 @@ export default function Scorecards() {
       <DeliverSection />
       <ScanSection />
       <CtaSection />
-      <Footer/>
+      <Footer />
     </div>
   );
 }

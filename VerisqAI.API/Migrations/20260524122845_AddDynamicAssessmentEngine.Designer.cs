@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VerisqAI.API.Data;
 
@@ -11,9 +12,11 @@ using VerisqAI.API.Data;
 namespace VerisqAI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260524122845_AddDynamicAssessmentEngine")]
+    partial class AddDynamicAssessmentEngine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,38 +449,6 @@ namespace VerisqAI.API.Migrations
                     b.ToTable("AssessmentQuestions");
                 });
 
-            modelBuilder.Entity("VerisqAI.API.Models.AssessmentQuestionOption", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssessmentQuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsPreferredAnswer")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OptionText")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("ScoreModifier")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssessmentQuestionId");
-
-                    b.ToTable("AssessmentQuestionOptions");
-                });
-
             modelBuilder.Entity("VerisqAI.API.Models.AssessmentSection", b =>
                 {
                     b.Property<int>("Id")
@@ -657,31 +628,12 @@ namespace VerisqAI.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AssessmentQuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Category")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Question")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("QuestionKey")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("QuestionType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<int>("QuestionnaireId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Severity")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -870,17 +822,6 @@ namespace VerisqAI.API.Migrations
                     b.Navigation("AssessmentSection");
                 });
 
-            modelBuilder.Entity("VerisqAI.API.Models.AssessmentQuestionOption", b =>
-                {
-                    b.HasOne("VerisqAI.API.Models.AssessmentQuestion", "AssessmentQuestion")
-                        .WithMany("Options")
-                        .HasForeignKey("AssessmentQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AssessmentQuestion");
-                });
-
             modelBuilder.Entity("VerisqAI.API.Models.AssessmentSection", b =>
                 {
                     b.HasOne("VerisqAI.API.Models.AssessmentTemplate", "AssessmentTemplate")
@@ -951,11 +892,6 @@ namespace VerisqAI.API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("VerisqAI.API.Models.AssessmentQuestion", b =>
-                {
-                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("VerisqAI.API.Models.AssessmentSection", b =>

@@ -499,7 +499,7 @@
 }
 
 /* ── Primary CTA button ────────────────────── */
-.Questionnaires-cta-btn {
+/* .Questionnaires-cta-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -534,7 +534,7 @@
 
 .Questionnaires-cta-btn:hover .Questionnaires-cta-btn-arrow {
   transform: translateX(4px);
-}
+} */
 
 /* =============================================
    RESPONSIVE

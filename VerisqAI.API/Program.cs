@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
+using VerisqAI.API.AI.Contracts;
+using VerisqAI.API.AI.Models;
+using VerisqAI.API.AI.Providers;
+using VerisqAI.API.AI.Services;
 using VerisqAI.API.Configurations;
 using VerisqAI.API.Data;
 using VerisqAI.API.Models;
+using VerisqAI.API.Seed;
 using VerisqAI.API.Services;
-using VerisqAI.API.AI.Contracts;
-using VerisqAI.API.AI.Providers;
-using VerisqAI.API.AI.Services;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +26,13 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 builder.Services.AddScoped<VerisqAI.API.Services.PdfService>();
 
 // Controllers
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            ReferenceHandler.IgnoreCycles;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -73,9 +82,14 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 //AI contract and provider
 builder.Services.AddHttpClient();
 
+
+//openrouter service registration
 builder.Services.AddScoped<
     IAiProvider,
-    GeminiProvider>();
+    OpenRouterProvider>();
+
+builder.Services.Configure<OpenRouterSettings>(
+    builder.Configuration.GetSection("OpenRouter"));
 
 //AI Service
 builder.Services.AddScoped<
@@ -140,8 +154,9 @@ using (var scope = app.Services.CreateScope())
     var dbContext = services
         .GetRequiredService<ApplicationDbContext>();
 
-    await VerisqAI.API.Seed.DbSeeder
-        .SeedRolesAndAdminAsync(services);
+    await DbSeeder.SeedRolesAndAdminAsync(services);
+
+    await DynamicAssessmentSeeder.SeedAsync(dbContext);
 }
 
 // Middleware pipeline - enable for development

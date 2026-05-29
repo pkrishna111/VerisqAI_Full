@@ -292,7 +292,7 @@ div.Howitworks_included_card ul.Howitworks_included_list li::before {
 /* ============================================================
    CTA SECTION
    ============================================================ */
-#Howitworks_cta_section {
+/* #Howitworks_cta_section {
   background: linear-gradient(
     135deg,
     var(--scorecards-primary) 0%,
@@ -343,7 +343,7 @@ div.Howitworks_included_card ul.Howitworks_included_list li::before {
 #Howitworks_cta_powered strong {
   color: #94a3b8;
   font-weight: 600;
-}
+} */
 
 /* ============================================================
    RESPONSIVE — GENERAL

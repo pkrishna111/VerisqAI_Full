@@ -16,9 +16,9 @@ function Header() {
           <Link to="/how-it-works" className="nav-link">How It Works</Link>
           <Link to="/Scorecard" className="nav-link">LiveThreat Scorecards</Link>
           <Link to="/Questionnaires" className="nav-link">Auto Questionnaires</Link>
-          <Link to="/" className="nav-link">Risk Tiering</Link>
-          <Link to="/" className="nav-link">Breach Alerts</Link>
-          <Link to="/how-it-works" className="landing-btn-header">
+          <Link to="/RiskTiering" className="nav-link">Risk Tiering</Link>
+          <Link to="/BreachAlerts" className="nav-link">Breach Alerts</Link>
+          <Link to="/" className="landing-btn-header">
             Start Free Trial
           </Link>
         </nav>

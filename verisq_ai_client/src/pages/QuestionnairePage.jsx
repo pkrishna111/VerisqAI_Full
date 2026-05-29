@@ -1,38 +1,56 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import QuestionnaireForm from "../components/questionnaire/QuestionnaireForm";
-import { apiRequest } from "../services/api";
+
+import QuestionnaireForm
+    from "../components/questionnaire/QuestionnaireForm";
+
+import { apiRequest }
+    from "../services/api";
 
 export default function QuestionnairePage() {
+
     const { token } = useParams();
-    const [questions, setQuestions] = useState([]);
+
+    const [template, setTemplate] = useState(null);
+    const [vendorId, setVendorId] = useState(null);
     const [questionnaireId, setQuestionnaireId] = useState(null);
 
     useEffect(() => {
-        const fetchQuestions = async () => {
+
+        const fetchQuestionnaire = async () => {
+
             try {
-                const res = await apiRequest(`/api/questionnaire/${token}`);
-                setQuestions(res.questions);
+
+                const res = await apiRequest(
+                    `/api/questionnaire/${token}`
+                );
+
                 setQuestionnaireId(res.questionnaireId);
+                setTemplate(res.template);
+                setVendorId(res.vendorId);
+
             } catch (err) {
+
                 console.error(err);
             }
         };
 
-        fetchQuestions();
+        fetchQuestionnaire();
+
     }, [token]);
 
-    if (!questions || questions.length === 0)
+    if (!template)
         return <div>Loading...</div>;
 
     return (
         <div style={{ padding: "40px" }}>
-            <h2>Vendor Security Questionnaire</h2>
 
             <QuestionnaireForm
-                questions={questions}
+                template={template}
+                vendorId={vendorId}
                 questionnaireId={questionnaireId}
             />
+
         </div>
     );
 }

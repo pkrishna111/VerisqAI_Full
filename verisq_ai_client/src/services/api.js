@@ -24,7 +24,7 @@ export const registerUser = async (data) => {
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
     const token = localStorage.getItem("token");
-    
+
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method,
         headers: {
@@ -52,9 +52,141 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
 
 //for assesment history manangement
 export const getAssessmentDetails =
-  async (scorecardId) => {
+    async (scorecardId) => {
+
+        return apiRequest(
+            `/api/dashboard/assessment/${scorecardId}`
+        );
+    };
+
+// =============================
+// Assessment Template APIs
+// =============================
+
+// Get all templates
+export const getAssessmentTemplates = async () => {
+    return apiRequest("/api/AssessmentTemplate");
+};
+
+// Get single template
+export const getAssessmentTemplateById = async (templateId) => {
+    return apiRequest(`/api/AssessmentTemplate/${templateId}`);
+};
+
+// Create template
+export const createAssessmentTemplate = async (data) => {
+    return apiRequest(
+        "/api/AssessmentTemplate",
+        "POST",
+        data
+    );
+};
+
+// Create section
+export const createAssessmentSection = async (data) => {
+    return apiRequest(
+        "/api/AssessmentTemplate/section",
+        "POST",
+        data
+    );
+};
+
+export const updateAssessmentSection =
+    async (sectionId, data) => {
 
     return apiRequest(
-      `/api/dashboard/assessment/${scorecardId}`
+        `/api/AssessmentTemplate/section/${sectionId}`,
+        "PUT",
+        data
+    );
+};
+
+export const deleteAssessmentSection =
+    async (sectionId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/section/${sectionId}`,
+        "DELETE"
+    );
+};
+
+export const reorderSections =
+    async (templateId, sectionIds) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/${templateId}/reorder-sections`,
+        "PUT",
+        {
+            sectionIds
+        }
+    );
+};
+
+// Create question
+export const createAssessmentQuestion = async (data) => {
+    return apiRequest(
+        "/api/AssessmentTemplate/question",
+        "POST",
+        data
+    );
+};
+
+export const updateAssessmentQuestionOption =
+    async (optionId, data) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/question-option/${optionId}`,
+        "PUT",
+        data
+    );
+};
+
+export const deleteAssessmentQuestion =
+    async (questionId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/question/${questionId}`,
+        "DELETE"
+    );
+};
+
+export const reorderQuestions =
+    async (sectionId, questionIds) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/section/${sectionId}/reorder-questions`,
+        "PUT",
+        {
+            questionIds
+        }
+    );
+};
+
+export const deleteAssessmentQuestionOption =
+    async (optionId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/question-option/${optionId}`,
+        "DELETE"
+    );
+};
+
+export const updateAssessmentQuestion = async (
+    questionId,
+    data
+) => {
+    return apiRequest(
+        `/api/AssessmentTemplate/question/${questionId}`,
+        "PUT",
+        data
+    );
+};
+
+// Create question option
+export const createAssessmentQuestionOption = async (data) => {
+    return apiRequest(
+        "/api/AssessmentTemplate/question-option",
+        "POST",
+        data
     );
 };

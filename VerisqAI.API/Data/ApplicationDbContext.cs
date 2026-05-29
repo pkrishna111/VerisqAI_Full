@@ -23,21 +23,21 @@ namespace VerisqAI.API.Data
 
         public DbSet<Questionnaire> Questionnaires { get; set; }
 
-        public DbSet<QuestionnaireResponse>
-            QuestionnaireResponses
-        { get; set; }
+        public DbSet<QuestionnaireResponse> QuestionnaireResponses { get; set; }
 
-        public DbSet<AiAssessmentInsight>
-            AiAssessmentInsights
-        { get; set; }
+        public DbSet<AiAssessmentInsight> AiAssessmentInsights { get; set; }
 
-        public DbSet<AiRecommendation>
-            AiRecommendations
-        { get; set; }
+        public DbSet<AiRecommendation> AiRecommendations { get; set; }
 
-        public DbSet<AiExecutionAudit>
-            AiExecutionAudits
-        { get; set; }
+        public DbSet<AiExecutionAudit> AiExecutionAudits { get; set; }
+
+        public DbSet<AssessmentTemplate> AssessmentTemplates { get; set; }
+
+        public DbSet<AssessmentSection> AssessmentSections { get; set; }
+
+        public DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
+
+        public DbSet<AssessmentQuestionOption> AssessmentQuestionOptions { get; set; }
 
         protected override void OnModelCreating(
             ModelBuilder modelBuilder)
@@ -58,12 +58,41 @@ namespace VerisqAI.API.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AiAssessmentInsight>()
-    .Property(a => a.ConfidenceScore)
-    .HasPrecision(5, 4);
+                .Property(a => a.ConfidenceScore)
+                .HasPrecision(5, 4);
 
             modelBuilder.Entity<AiExecutionAudit>()
                 .Property(a => a.Temperature)
                 .HasPrecision(3, 2);
+
+            modelBuilder.Entity<AssessmentTemplate>()
+                .HasMany(t => t.Sections)
+                .WithOne(s => s.AssessmentTemplate)
+                .HasForeignKey(s => s.AssessmentTemplateId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AssessmentSection>()
+                .HasMany(s => s.Questions)
+                .WithOne(q => q.AssessmentSection)
+                .HasForeignKey(q => q.AssessmentSectionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AssessmentQuestion>()
+                .HasIndex(q => q.QuestionKey);
+
+            modelBuilder.Entity<AssessmentQuestion>()
+                .Property(q => q.QuestionType)
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<AssessmentQuestion>()
+                .Property(q => q.Severity)
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<AssessmentQuestion>()
+                .HasMany(q => q.Options)
+                .WithOne(o => o.AssessmentQuestion)
+                .HasForeignKey(o => o.AssessmentQuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

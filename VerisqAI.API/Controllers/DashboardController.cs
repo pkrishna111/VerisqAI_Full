@@ -276,15 +276,19 @@ namespace VerisqAI.API.Controllers
             // optionally store email
             vendor.Email = email;
 
-            // check if already pending questionnaire exists
-            var existingPending = await _context.Questionnaires
-                .Where(q => q.VendorId == vendorId && q.Status == "Pending")
+            // get latest questionnaire for vendor
+            var latestQuestionnaire = await _context.Questionnaires
+                .Where(q => q.VendorId == vendorId)
                 .OrderByDescending(q => q.SentAt)
                 .FirstOrDefaultAsync();
 
-            if (existingPending != null)
+            // only block if latest questionnaire is still pending
+            if (latestQuestionnaire != null &&
+                latestQuestionnaire.Status == "Pending")
             {
-                return BadRequest("Questionnaire already pending for this vendor.");
+                return BadRequest(
+                    "Questionnaire already pending for this vendor."
+                );
             }
 
             var questionnaire = new Questionnaire

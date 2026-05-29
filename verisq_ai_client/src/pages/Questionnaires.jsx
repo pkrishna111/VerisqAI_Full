@@ -4,6 +4,7 @@
 // Header & Footer already exist — not included here
 
 import '../styles/Questionnaires.css';
+import { Link } from "react-router-dom";
 import Header from "../components/landingPage/Header"
 import Footer from "../components/landingPage/Footer"
 
@@ -79,9 +80,9 @@ const WHY_ITEMS = [
 ];
 
 const NUMBERS = [
-  { old: '3–6 weeks',    now: 'Hours', label: 'Time to completion'   },
-  { old: '47 emails',    now: 'Zero',  label: 'Follow-up messages'   },
-  { old: 'Manual entry', now: '85%',   label: 'Auto-filled responses' },
+  { old: '3–6 weeks', now: 'Hours', label: 'Time to completion' },
+  { old: '47 emails', now: 'Zero', label: 'Follow-up messages' },
+  { old: 'Manual entry', now: '85%', label: 'Auto-filled responses' },
 ];
 
 /* ─────────────────────────────────────────────
@@ -154,173 +155,173 @@ function NumberItem({ old: oldVal, now, label }) {
 ───────────────────────────────────────────── */
 export default function Questionnaires() {
   return (
-   <>
+    <>
 
-    <Header/>
+      <Header />
 
-     <main className="Questionnaires-page">
+      <main className="Questionnaires-page">
 
-      {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════
           SECTION 1 — HERO
           Grid: [left text] [right demo card]
       ══════════════════════════════════════════ */}
-      <section className="Questionnaires-hero">
-        <div className="Questionnaires-container">
-          <div className="Questionnaires-hero-grid">
+        <section className="Questionnaires-hero">
+          <div className="Questionnaires-container">
+            <div className="Questionnaires-hero-grid">
 
-            {/* ── Left column ─────────────────────── */}
-            <div className="Questionnaires-hero-left">
+              {/* ── Left column ─────────────────────── */}
+              <div className="Questionnaires-hero-left">
 
-              {/* Breadcrumb chip */}
-              <div className="Questionnaires-chip">
-                <span className="Questionnaires-chip-icon">⚡</span>
-                QFX Technology
-              </div>
-
-              {/* Headline — accent on second line */}
-              <h1 className="Questionnaires-hero-title">
-                Questionnaires That
-                <span className="Questionnaires-hero-title-accent">
-                  Complete Themselves
-                </span>
-              </h1>
-
-              {/* Subtitle */}
-              <p className="Questionnaires-hero-subtitle">
-                QFX reads vendor SOC 2 reports, security documentation, and
-                public filings to auto-fill questionnaire responses. What used to
-                take weeks now takes hours.
-              </p>
-
-              {/* Stats */}
-              <div className="Questionnaires-stats">
-                <div>
-                  <div className="Questionnaires-stat-val">85%</div>
-                  <div className="Questionnaires-stat-label">Auto-Fill Rate</div>
+                {/* Breadcrumb chip */}
+                <div className="Questionnaires-chip">
+                  <span className="Questionnaires-chip-icon">⚡</span>
+                  QFX Technology
                 </div>
-                <div>
-                  <div className="Questionnaires-stat-val">Hours</div>
-                  <div className="Questionnaires-stat-label">vs. Weeks</div>
-                </div>
-                <div>
-                  <div className="Questionnaires-stat-val">0</div>
-                  <div className="Questionnaires-stat-label">Chase Emails</div>
-                </div>
-              </div>
-            </div>
 
-            {/* ── Right column — demo card ─────────── */}
-            <div className="Questionnaires-hero-right">
-              <div className="Questionnaires-demo-card">
+                {/* Headline — accent on second line */}
+                <h1 className="Questionnaires-hero-title">
+                  Questionnaires That
+                  <span className="Questionnaires-hero-title-accent">
+                    Complete Themselves
+                  </span>
+                </h1>
 
-                {/* Card header */}
-                <div className="Questionnaires-demo-header">
-                  <div className="Questionnaires-demo-header-row">
-                    <span className="Questionnaires-demo-header-title">
-                      Security Assessment Questionnaire
-                    </span>
+                {/* Subtitle */}
+                <p className="Questionnaires-hero-subtitle">
+                  QFX reads vendor SOC 2 reports, security documentation, and
+                  public filings to auto-fill questionnaire responses. What used to
+                  take weeks now takes hours.
+                </p>
+
+                {/* Stats */}
+                <div className="Questionnaires-stats">
+                  <div>
+                    <div className="Questionnaires-stat-val">85%</div>
+                    <div className="Questionnaires-stat-label">Auto-Fill Rate</div>
                   </div>
-                  <div className="Questionnaires-demo-progress-wrap">
-                    <div className="Questionnaires-demo-progress-track">
-                      <div className="Questionnaires-demo-progress-fill" />
+                  <div>
+                    <div className="Questionnaires-stat-val">Hours</div>
+                    <div className="Questionnaires-stat-label">vs. Weeks</div>
+                  </div>
+                  <div>
+                    <div className="Questionnaires-stat-val">0</div>
+                    <div className="Questionnaires-stat-label">Chase Emails</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── Right column — demo card ─────────── */}
+              <div className="Questionnaires-hero-right">
+                <div className="Questionnaires-demo-card">
+
+                  {/* Card header */}
+                  <div className="Questionnaires-demo-header">
+                    <div className="Questionnaires-demo-header-row">
+                      <span className="Questionnaires-demo-header-title">
+                        Security Assessment Questionnaire
+                      </span>
                     </div>
-                    <span className="Questionnaires-demo-progress-label">
-                      85% Auto-filled
-                    </span>
+                    <div className="Questionnaires-demo-progress-wrap">
+                      <div className="Questionnaires-demo-progress-track">
+                        <div className="Questionnaires-demo-progress-fill" />
+                      </div>
+                      <span className="Questionnaires-demo-progress-label">
+                        85% Auto-filled
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Card body — Q&A rows */}
-                <div className="Questionnaires-demo-body">
-                  {DEMO_QUESTIONS.map((q) => (
-                    <DemoRow key={q.id} {...q} />
-                  ))}
-                </div>
+                  {/* Card body — Q&A rows */}
+                  <div className="Questionnaires-demo-body">
+                    {DEMO_QUESTIONS.map((q) => (
+                      <DemoRow key={q.id} {...q} />
+                    ))}
+                  </div>
 
+                </div>
               </div>
+
             </div>
-
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════
           SECTION 2 — HOW QFX WORKS
           4 cards in a row, centered content
       ══════════════════════════════════════════ */}
-      <section className="Questionnaires-how">
-        <div className="Questionnaires-container">
-          <h2 className="Questionnaires-section-title">How QFX Works</h2>
-          <p className="Questionnaires-section-sub">
-            AI-powered questionnaire completion in four steps
-          </p>
-          <div className="Questionnaires-steps-grid">
-            {HOW_STEPS.map((step) => (
-              <StepCard key={step.name} {...step} />
-            ))}
+        <section className="Questionnaires-how">
+          <div className="Questionnaires-container">
+            <h2 className="Questionnaires-section-title">How QFX Works</h2>
+            <p className="Questionnaires-section-sub">
+              AI-powered questionnaire completion in four steps
+            </p>
+            <div className="Questionnaires-steps-grid">
+              {HOW_STEPS.map((step) => (
+                <StepCard key={step.name} {...step} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════
           SECTION 3 — WHY QFX CHANGES EVERYTHING
           2×2 grid, icon on left
       ══════════════════════════════════════════ */}
-      <section className="Questionnaires-why">
-        <div className="Questionnaires-container">
-          <h2 className="Questionnaires-section-title">Why QFX Changes Everything</h2>
-          <p className="Questionnaires-section-sub">
-            The operational burden of TPRM finally solved
-          </p>
-          <div className="Questionnaires-why-grid">
-            {WHY_ITEMS.map((item) => (
-              <WhyCard key={item.title} {...item} />
-            ))}
+        <section className="Questionnaires-why">
+          <div className="Questionnaires-container">
+            <h2 className="Questionnaires-section-title">Why QFX Changes Everything</h2>
+            <p className="Questionnaires-section-sub">
+              The operational burden of TPRM finally solved
+            </p>
+            <div className="Questionnaires-why-grid">
+              {WHY_ITEMS.map((item) => (
+                <WhyCard key={item.title} {...item} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════
           SECTION 4 — THE NUMBERS DON'T LIE
           Peach bg, no card, strikethrough + big val
       ══════════════════════════════════════════ */}
-      <section className="Questionnaires-numbers">
-        <div className="Questionnaires-container">
-          <h2 className="Questionnaires-section-title">The Numbers Don't Lie</h2>
-          <p className="Questionnaires-section-sub">
-            Traditional questionnaire process vs. Verisq QFX
-          </p>
-          <div className="Questionnaires-numbers-grid">
-            {NUMBERS.map((n) => (
-              <NumberItem key={n.label} {...n} />
-            ))}
+        <section className="Questionnaires-numbers">
+          <div className="Questionnaires-container">
+            <h2 className="Questionnaires-section-title">The Numbers Don't Lie</h2>
+            <p className="Questionnaires-section-sub">
+              Traditional questionnaire process vs. Verisq QFX
+            </p>
+            <div className="Questionnaires-numbers-grid">
+              {NUMBERS.map((n) => (
+                <NumberItem key={n.label} {...n} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ══════════════════════════════════════════
+        {/* ══════════════════════════════════════════
           SECTION 5 — CTA
           Dark navy bg, headline + subtitle + button
       ══════════════════════════════════════════ */}
-       <section className="scorecards-cta">
+        <section className="scorecards-cta">
           <div className="scorecards-container">
             <h2 className="scorecards-cta__title">
               Experience QFX Technology
             </h2>
             <p className="scorecards-cta__sub">
-              Send a questionnaire to one of your trial vendors and watch QFX work its magic.  
+              Send a questionnaire to one of your trial vendors and watch QFX work its magic.
             </p>
-            <a href="#" className="scorecards-btn scorecards-btn--white">
+            <Link to="/" className="scorecards-btn scorecards-btn--white">
               Try 5 Vendors for Free →
-            </a>
+            </Link>
           </div>
         </section>
 
-    </main>
+      </main>
 
-    <Footer/>
-   </> 
+      <Footer />
+    </>
 
-   
+
   );
 }

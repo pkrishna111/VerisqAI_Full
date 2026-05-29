@@ -3,10 +3,18 @@ import {
   useRef,
   useState
 } from "react";
+
+import {
+  useLocation,
+  useNavigate
+} from "react-router-dom";
+
 import { Sparkles, ChevronDown } from "lucide-react";
 
 function DashboardHeader() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const dropdownRef = useRef(null);
 
   const token = localStorage.getItem("token");
@@ -75,6 +83,31 @@ function DashboardHeader() {
           <div className="dashboard-header-divider"></div>
 
           <span className="dashboard-header-title">Trial Dashboard</span>
+          <div className="dashboard-top-nav">
+
+            <button
+              className={
+                location.pathname === "/dashboard"
+                  ? "dashboard-nav-btn active"
+                  : "dashboard-nav-btn"
+              }
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </button>
+
+            <button
+              className={
+                location.pathname.startsWith("/templates")
+                  ? "dashboard-nav-btn active"
+                  : "dashboard-nav-btn"
+              }
+              onClick={() => navigate("/templates")}
+            >
+              Templates
+            </button>
+
+          </div>
         </div>
 
         {/* RIGHT */}
