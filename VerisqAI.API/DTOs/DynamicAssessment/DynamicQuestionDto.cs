@@ -14,6 +14,8 @@
 
         public string Severity { get; set; } = string.Empty;
 
+        public int Weight { get; set; }
+
         public bool IsRequired { get; set; }
 
         public int DisplayOrder { get; set; }

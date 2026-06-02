@@ -21,7 +21,7 @@ function AdminTrialRequests() {
 
   const handleApprove = async (email) => {
     try {
-      const res = await fetch(`${API_BASE}/api/admin/approve-user`, {
+      const res = await fetch(`${API_BASE_URL}/api/admin/approve-user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

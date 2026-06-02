@@ -36,13 +36,18 @@ namespace VerisqAI.API.Controllers
             if (questionnaire == null)
                 return NotFound();
 
+            if (questionnaire.AssessmentTemplateId <= 0)
+            {
+                return BadRequest(
+                    "Questionnaire is not linked to a template.");
+            }
+
             var template = await _context.AssessmentTemplates
                 .Include(t => t.Sections)
                     .ThenInclude(s => s.Questions)
                         .ThenInclude(q => q.Options)
-                .Where(t => t.IsActive)
-                .OrderByDescending(t => t.CreatedAt)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(t =>
+                    t.Id == questionnaire.AssessmentTemplateId);
 
             if (template == null)
             {
@@ -145,6 +150,7 @@ namespace VerisqAI.API.Controllers
                                 QuestionType = question.QuestionType,
                                 Category = question.Category,
                                 Severity = question.Severity,
+                                Weight = question.Weight,
                                 IsRequired = question.IsRequired,
                                 DisplayOrder = question.DisplayOrder,
                                 DependsOnQuestionKey = question.DependsOnQuestionKey,
@@ -155,7 +161,9 @@ namespace VerisqAI.API.Controllers
                                     {
                                         Id = option.Id,
                                         OptionText = option.OptionText,
-                                        DisplayOrder = option.DisplayOrder
+                                        DisplayOrder = option.DisplayOrder,
+                                        ScoreModifier = option.ScoreModifier,
+                                        IsPreferredAnswer = option.IsPreferredAnswer
                                     })
                                     .ToList()
                             })
@@ -296,6 +304,7 @@ namespace VerisqAI.API.Controllers
                 .ToList();
 
             var questions = await _context.AssessmentQuestions
+                .Include(q => q.Options)
                 .Where(q => questionIds.Contains(q.Id))
                 .ToListAsync();
 
@@ -327,12 +336,14 @@ namespace VerisqAI.API.Controllers
 
             await _context.SaveChangesAsync();
 
-            // TEMPORARY:
-            // still using old scoring engine until dynamic scoring layer is built
-            var scoringService = new ScoringService();
+            var scoringService =
+                new DynamicScoringService();
 
             var scoringResult =
-                scoringService.Calculate(responseEntities);
+                scoringService.Calculate(
+                    responseEntities,
+                    questions
+                );
 
             // Create scorecard
             var scorecard = new Scorecard

@@ -3,5 +3,7 @@
     public class SendQuestionnaireDto
     {
         public string Email { get; set; } = "";
+
+        public int TemplateId { get; set; }
     }
 }

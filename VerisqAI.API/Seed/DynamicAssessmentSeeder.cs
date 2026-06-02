@@ -1,20 +1,38 @@
-﻿using VerisqAI.API.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using VerisqAI.API.Data;
 using VerisqAI.API.Models;
 
 namespace VerisqAI.API.Seed
 {
     public static class DynamicAssessmentSeeder
     {
-        public static async Task SeedAsync(ApplicationDbContext context)
+        public static async Task SeedAsync(
+            ApplicationDbContext context,
+            IServiceProvider services)
         {
             if (context.AssessmentTemplates.Any())
                 return;
+
+            var userManager =
+                services.GetRequiredService<
+                    UserManager<ApplicationUser>>();
+
+            var adminUser =
+                await userManager.Users
+                    .FirstOrDefaultAsync();
+
+            if (adminUser == null)
+            {
+                return;
+            }
 
             var template = new AssessmentTemplate
             {
                 Name = "Core Security Assessment",
                 Description = "Default Verisq AI security questionnaire",
-                Version = "v1"
+                Version = "v1",
+                UserId = adminUser.Id
             };
 
             var identitySection = new AssessmentSection

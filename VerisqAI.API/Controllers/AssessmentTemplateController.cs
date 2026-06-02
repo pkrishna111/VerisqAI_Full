@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Verisq.API.DTOs.AssessmentTemplate;
 using VerisqAI.API.Data;
 using VerisqAI.API.DTOs.AssessmentTemplate;
@@ -8,6 +10,7 @@ using VerisqAI.API.Models;
 namespace VerisqAI.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class AssessmentTemplateController : ControllerBase
     {
@@ -31,7 +34,19 @@ namespace VerisqAI.API.Controllers
                 );
             }
 
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             template.CreatedAt = DateTime.UtcNow;
+
+            template.UserId = userId;
 
             _context.AssessmentTemplates.Add(template);
 
@@ -470,8 +485,18 @@ namespace VerisqAI.API.Controllers
         // Get full template
         [HttpGet("{templateId}")]
         public async Task<IActionResult> GetTemplate(
-            int templateId)
+    int templateId)
         {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             var template = await _context.AssessmentTemplates
 
                 .Include(t => t.Sections
@@ -484,7 +509,8 @@ namespace VerisqAI.API.Controllers
                             .OrderBy(o => o.DisplayOrder))
 
                 .FirstOrDefaultAsync(t =>
-                    t.Id == templateId);
+                    t.Id == templateId &&
+                    t.UserId == userId);
 
             if (template == null)
             {
@@ -498,8 +524,19 @@ namespace VerisqAI.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTemplates()
         {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
             var templates =
                 await _context.AssessmentTemplates
+                    .Where(t => t.UserId == userId)
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();
 

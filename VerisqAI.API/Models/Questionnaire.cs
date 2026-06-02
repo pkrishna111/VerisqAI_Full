@@ -15,6 +15,12 @@ namespace VerisqAI.API.Models
         public Vendor Vendor { get; set; }
 
         [Required]
+        public int AssessmentTemplateId { get; set; }
+
+        [ForeignKey("AssessmentTemplateId")]
+        public AssessmentTemplate AssessmentTemplate { get; set; } = null!;
+
+        [Required]
         public string ContactEmail { get; set; } = "";
 
         // status (Sent, Pending, Completed)

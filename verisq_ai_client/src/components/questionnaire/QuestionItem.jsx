@@ -83,6 +83,65 @@ export default function QuestionItem({
           />
         );
 
+      case "MultiSelect":
+        return (
+          <div className="QuestionItem-options">
+
+            {(question.options || []).map(option => {
+
+              const selectedValues = Array.isArray(value)
+                ? value
+                : [];
+
+              return (
+                <label
+                  key={option.id}
+                  className={`QuestionItem-option ${selectedValues.includes(option.optionText)
+                      ? "active"
+                      : ""
+                    }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      selectedValues.includes(
+                        option.optionText
+                      )
+                    }
+                    onChange={(e) => {
+
+                      let updatedValues;
+
+                      if (e.target.checked) {
+
+                        updatedValues = [
+                          ...selectedValues,
+                          option.optionText
+                        ];
+
+                      } else {
+
+                        updatedValues =
+                          selectedValues.filter(
+                            x => x !== option.optionText
+                          );
+                      }
+
+                      onChange(updatedValues);
+                    }}
+                  />
+
+                  <span>
+                    {option.optionText}
+                  </span>
+
+                </label>
+              );
+            })}
+
+          </div>
+        );
+
       case "YesNo":
       default:
         return (

@@ -1,10 +1,41 @@
-import { useState } from "react";
 import "../../styles/EmailModal.css";
+import { useEffect, useState } from "react";
+import { getAssessmentTemplates } from "../../services/api";
 
-function EmailModal({ isOpen, onClose, onSubmit }) {
+function EmailModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  initialEmail = ""
+}) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const [templates, setTemplates] = useState([]);
+  const [templateId, setTemplateId] = useState("");
+
+  useEffect(() => {
+    const loadTemplates = async () => {
+      try {
+        const data = await getAssessmentTemplates();
+        setTemplates(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadTemplates();
+  }, []);
+
+  useEffect(() => {
+
+    if (isOpen) {
+
+      setEmail(initialEmail);
+
+    }
+
+  }, [isOpen, initialEmail]);
 
   if (!isOpen) return null;
 
@@ -17,6 +48,11 @@ function EmailModal({ isOpen, onClose, onSubmit }) {
       newErrors.email = "Enter a valid email";
     }
 
+    if (!templateId) {
+      alert("Please select a template.");
+      return;
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -24,7 +60,11 @@ function EmailModal({ isOpen, onClose, onSubmit }) {
   const handleSubmit = () => {
     if (!validate()) return;
 
-    onSubmit(email, message);
+    onSubmit({
+      email,
+      templateId: Number(templateId),
+      message
+    });
 
     setEmail("");
     setMessage("");
@@ -66,6 +106,30 @@ function EmailModal({ isOpen, onClose, onSubmit }) {
           {errors.email && (
             <span className="EmailModal-error">{errors.email}</span>
           )}
+        </div>
+
+        {/* template select */}
+        <div className="form-group">
+          <label>Assessment Template</label>
+
+          <select
+            value={templateId}
+            onChange={(e) => setTemplateId(e.target.value)}
+            required
+          >
+            <option value="">
+              Select Template
+            </option>
+
+            {templates.map(template => (
+              <option
+                key={template.id}
+                value={template.id}
+              >
+                {template.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* MESSAGE */}

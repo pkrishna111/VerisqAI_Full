@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VerisqAI.API.Data;
 
@@ -11,9 +12,11 @@ using VerisqAI.API.Data;
 namespace VerisqAI.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260529111401_AddTemplateOwnership")]
+    partial class AddTemplateOwnership
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -623,9 +626,6 @@ namespace VerisqAI.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssessmentTemplateId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("datetime2");
 
@@ -648,8 +648,6 @@ namespace VerisqAI.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssessmentTemplateId");
 
                     b.HasIndex("VendorId");
 
@@ -927,19 +925,11 @@ namespace VerisqAI.API.Migrations
 
             modelBuilder.Entity("VerisqAI.API.Models.Questionnaire", b =>
                 {
-                    b.HasOne("VerisqAI.API.Models.AssessmentTemplate", "AssessmentTemplate")
-                        .WithMany()
-                        .HasForeignKey("AssessmentTemplateId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("VerisqAI.API.Models.Vendor", "Vendor")
                         .WithMany("Questionnaires")
                         .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AssessmentTemplate");
 
                     b.Navigation("Vendor");
                 });

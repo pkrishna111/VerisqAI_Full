@@ -24,7 +24,9 @@ import {
     getAssessmentTemplateById,
     deleteAssessmentQuestionOption,
     deleteAssessmentQuestion,
+    deleteAssessmentSection,
     reorderQuestions,
+    reorderSections,
     updateAssessmentSection
 } from "../services/api";
 
@@ -89,6 +91,12 @@ function TemplateDetailsPage() {
         useState(null);
 
     const [dragOverQuestionId, setDragOverQuestionId] =
+        useState(null);
+
+    const [draggedSectionId, setDraggedSectionId] =
+        useState(null);
+
+    const [dragOverSectionId, setDragOverSectionId] =
         useState(null);
 
     const [editingSection, setEditingSection] =
@@ -270,15 +278,130 @@ function TemplateDetailsPage() {
         setShowEditSectionModal(true);
     };
 
-    const handleDeleteSection = (
-        section
-    ) => {
+    const handleDeleteSection =
+        async (section) => {
 
-        console.log(
-            "Delete section:",
-            section
-        );
-    };
+            const confirmed =
+                window.confirm(
+                    `Delete section "${section.title}" ?`
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+
+                await deleteAssessmentSection(
+                    section.id
+                );
+
+                const remainingSections =
+                    template.sections.filter(
+                        s => s.id !== section.id
+                    );
+
+                if (
+                    activeSectionId === section.id
+                ) {
+
+                    setActiveSectionId(
+                        remainingSections.length > 0
+                            ? remainingSections[0].id
+                            : null
+                    );
+                }
+
+                await fetchTemplate();
+
+            } catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Failed to delete section."
+                );
+            }
+        };
+
+    const handleSectionDragStart =
+        (sectionId) => {
+
+            setDraggedSectionId(sectionId);
+        };
+
+    const handleSectionDragOver =
+        (e, sectionId) => {
+
+            e.preventDefault();
+
+            setDragOverSectionId(sectionId);
+        };
+
+    const handleSectionDrop =
+        async (targetSectionId) => {
+
+            if (
+                !draggedSectionId ||
+                draggedSectionId === targetSectionId
+            ) {
+                return;
+            }
+
+            try {
+
+                const sections =
+                    [...template.sections];
+
+                const draggedIndex =
+                    sections.findIndex(
+                        s => s.id === draggedSectionId
+                    );
+
+                const targetIndex =
+                    sections.findIndex(
+                        s => s.id === targetSectionId
+                    );
+
+                const [draggedSection] =
+                    sections.splice(
+                        draggedIndex,
+                        1
+                    );
+
+                sections.splice(
+                    targetIndex,
+                    0,
+                    draggedSection
+                );
+
+                const orderedIds =
+                    sections.map(
+                        s => s.id
+                    );
+
+                await reorderSections(
+                    template.id,
+                    orderedIds
+                );
+
+                await fetchTemplate();
+
+            } catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Failed to reorder sections."
+                );
+
+            } finally {
+
+                setDraggedSectionId(null);
+
+                setDragOverSectionId(null);
+            }
+        };
 
     const fetchTemplate = async () => {
 
@@ -442,11 +565,36 @@ function TemplateDetailsPage() {
                                         return (
                                             <div
                                                 key={section.id}
+                                                draggable
                                                 className={
-                                                    isActive
-                                                        ? "tb-sidebar-item active"
-                                                        : "tb-sidebar-item"
+                                                    `tb-sidebar-item
+        ${isActive ? "active" : ""}
+        ${dragOverSectionId === section.id
+                                                        ? "drag-over"
+                                                        : ""}`
                                                 }
+                                                onDragStart={() =>
+                                                    handleSectionDragStart(
+                                                        section.id
+                                                    )
+                                                }
+                                                onDragOver={(e) =>
+                                                    handleSectionDragOver(
+                                                        e,
+                                                        section.id
+                                                    )
+                                                }
+                                                onDrop={() =>
+                                                    handleSectionDrop(
+                                                        section.id
+                                                    )
+                                                }
+                                                onDragEnd={() => {
+
+                                                    setDraggedSectionId(null);
+
+                                                    setDragOverSectionId(null);
+                                                }}
                                                 onClick={() =>
                                                     setActiveSectionId(
                                                         section.id

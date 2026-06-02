@@ -151,11 +151,28 @@ namespace VerisqAI.API.Controllers
             // 🔥 AUTO SEND QUESTIONNAIRE IF CHECKED
             if (dto.SendQuestionnaire)
             {
+
+                if (dto.TemplateId == null)
+                {
+                    return BadRequest("Template is required.");
+                }
+
+                var template = await _context.AssessmentTemplates
+                    .FirstOrDefaultAsync(t =>
+                        t.Id == dto.TemplateId &&
+                        t.UserId == userId);
+
+                if (template == null)
+                {
+                    return BadRequest("Invalid template.");
+                }
+
                 if (!string.IsNullOrEmpty(dto.Email))
                 {
                     var questionnaire = new Questionnaire
                     {
                         VendorId = vendor.Id,
+                        AssessmentTemplateId = dto.TemplateId.Value,
                         ContactEmail = dto.Email,
                         Status = "Pending"
                     };
@@ -273,6 +290,16 @@ namespace VerisqAI.API.Controllers
             if (string.IsNullOrEmpty(email))
                 return BadRequest("Email is required");
 
+            var template = await _context.AssessmentTemplates
+                .FirstOrDefaultAsync(t =>
+                    t.Id == dto.TemplateId &&
+                    t.UserId == userId);
+
+            if (template == null)
+            {
+                return BadRequest("Invalid template.");
+            }
+
             // optionally store email
             vendor.Email = email;
 
@@ -294,6 +321,7 @@ namespace VerisqAI.API.Controllers
             var questionnaire = new Questionnaire
             {
                 VendorId = vendorId,
+                AssessmentTemplateId = dto.TemplateId,
                 ContactEmail = email,
                 Status = "Pending"
             };

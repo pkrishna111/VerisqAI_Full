@@ -66,6 +66,12 @@ namespace VerisqAI.API.Data
                 .HasPrecision(3, 2);
 
             modelBuilder.Entity<AssessmentTemplate>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AssessmentTemplate>()
                 .HasMany(t => t.Sections)
                 .WithOne(s => s.AssessmentTemplate)
                 .HasForeignKey(s => s.AssessmentTemplateId)
@@ -93,6 +99,12 @@ namespace VerisqAI.API.Data
                 .WithOne(o => o.AssessmentQuestion)
                 .HasForeignKey(o => o.AssessmentQuestionId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Questionnaire>()
+                .HasOne(q => q.AssessmentTemplate)
+                .WithMany()
+                .HasForeignKey(q => q.AssessmentTemplateId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

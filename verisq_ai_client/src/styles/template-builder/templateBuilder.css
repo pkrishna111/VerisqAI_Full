@@ -1102,3 +1102,11 @@ textarea.avm-input {
 
     transform: scale(1.01);
 }
+
+.tb-sidebar-item.drag-over {
+    border-color: var(--primary);
+
+    background: #f8fbff;
+
+    transform: scale(1.01);
+}

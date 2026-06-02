@@ -1,0 +1,17 @@
+Pending:
+After this builds, I actually recommend removing DynamicAssessmentSeeder entirely.
+Reason:
+Now templates are user-owned.
+
+TemplatePreviewPage
+
+Before Preview Mode:
+Assessment Campaign / Send Questionnaire
+From a template:
+
+Phase 2A ------------------------------------- done
+→ Link questionnaire to template
+Phase 3
+→ Dynamic questionnaire runtime
+Phase 4
+→ Dynamic scoring engine

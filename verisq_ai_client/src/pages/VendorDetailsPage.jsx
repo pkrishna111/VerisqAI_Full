@@ -8,7 +8,7 @@ import VendorHeader from "../components/vendor-details/VendorHeader";
 import AssessmentCards from "../components/vendor-details/AssessmentCards";
 import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline";
 import AssessmentIntelligenceTabs from "../components/vendor-details/AssessmentIntelligenceTabs";
-
+import EmailModal from "../components/dashboard/EmailModal";
 import { apiRequest, getAssessmentDetails } from "../services/api";
 import API_BASE_URL from "../services/api";
 
@@ -20,6 +20,8 @@ export default function VendorDetailsPage() {
         useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [showEmailModal, setShowEmailModal] =
+        useState(false);
 
     useEffect(() => {
         fetchVendor();
@@ -123,34 +125,10 @@ export default function VendorDetailsPage() {
         await fetchVendor();
     };
 
-    const handleSendQuestionnaire =
-        async () => {
+    const handleSendQuestionnaire = () => {
 
-            try {
-
-                await apiRequest(
-                    `/api/dashboard/send-questionnaire/${data.vendor.id}`,
-                    "POST",
-                    {
-                        email: data.vendor.email
-                    }
-                );
-
-                await fetchVendor();
-
-            }
-            catch (err) {
-
-                console.error(
-                    "Failed to send questionnaire",
-                    err
-                );
-
-                alert(
-                    "Failed to send questionnaire."
-                );
-            }
-        };
+        setShowEmailModal(true);
+    };
 
     const handleDownloadReport = async () => {
 
@@ -268,7 +246,44 @@ export default function VendorDetailsPage() {
                     </div>
                 </div>
 
+                <EmailModal
+                    isOpen={showEmailModal}
+                    initialEmail={data.vendor.email}
+                    onClose={() =>
+                        setShowEmailModal(false)
+                    }
+                    onSubmit={async (modalData) => {
 
+                        try {
+
+                            await apiRequest(
+                                `/api/dashboard/send-questionnaire/${data.vendor.id}`,
+                                "POST",
+                                {
+                                    email: modalData.email,
+                                    templateId:
+                                        modalData.templateId
+                                }
+                            );
+
+                            setShowEmailModal(false);
+
+                            await fetchVendor();
+
+                        }
+                        catch (err) {
+
+                            console.error(
+                                "Failed to send questionnaire",
+                                err
+                            );
+
+                            alert(
+                                "Failed to send questionnaire."
+                            );
+                        }
+                    }}
+                />
 
             </main>
         </>

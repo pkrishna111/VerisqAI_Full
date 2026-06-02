@@ -28,11 +28,15 @@ export default function QuestionnaireForm({
 
     const validateCurrentStep = () => {
 
+        const answer = answers[currentQuestion.id];
+
         if (
             currentQuestion.isRequired &&
             (
-                !answers[currentQuestion.id] ||
-                answers[currentQuestion.id].trim() === ""
+                answer === undefined ||
+                answer === null ||
+                answer === "" ||
+                (Array.isArray(answer) && answer.length === 0)
             )
         ) {
             alert("Please answer before continuing");
@@ -47,11 +51,15 @@ export default function QuestionnaireForm({
         // validate all required questions
         for (const question of questions) {
 
+            const answer = answers[question.id];
+
             if (
                 question.isRequired &&
                 (
-                    !answers[question.id] ||
-                    answers[question.id].trim() === ""
+                    answer === undefined ||
+                    answer === null ||
+                    answer === "" ||
+                    (Array.isArray(answer) && answer.length === 0)
                 )
             ) {
                 alert(
@@ -70,7 +78,9 @@ export default function QuestionnaireForm({
             answers: questions.map(question => ({
                 questionId: question.id,
                 questionKey: question.questionKey,
-                answer: answers[question.id] || ""
+                answer: Array.isArray(answers[question.id])
+                    ? answers[question.id].join(", ")
+                    : answers[question.id] || ""
             }))
         };
 
@@ -114,10 +124,9 @@ export default function QuestionnaireForm({
                     <div
                         className="QuestionnaireForm-progress-fill"
                         style={{
-                            width: `${
-                                ((currentStep + 1)
+                            width: `${((currentStep + 1)
                                 / questions.length) * 100
-                            }%`
+                                }%`
                         }}
                     />
 

@@ -156,7 +156,11 @@ using (var scope = app.Services.CreateScope())
 
     await DbSeeder.SeedRolesAndAdminAsync(services);
 
-    await DynamicAssessmentSeeder.SeedAsync(dbContext);
+    await DynamicAssessmentSeeder
+    .SeedAsync(
+        dbContext,
+        services
+    );
 }
 
 // Middleware pipeline - enable for development

@@ -151,7 +151,7 @@ function DashboardPage() {
       <EmailModal
         isOpen={isEmailOpen}
         onClose={() => setIsEmailOpen(false)}
-        onSubmit={async (email) => {
+        onSubmit={async (data) => {
           try {
             // 🔥 CASE 1: From Add Vendor
             if (pendingVendorData) {
@@ -160,7 +160,8 @@ function DashboardPage() {
                 "POST",
                 {
                   ...pendingVendorData,
-                  email: email
+                  email: data.email,
+                  templateId: data.templateId
                 }
               );
 
@@ -175,7 +176,10 @@ function DashboardPage() {
               await apiRequest(
                 `/api/dashboard/send-questionnaire/${selectedVendorId}`,
                 "POST",
-                { email }
+                {
+                  email: data.email,
+                  templateId: data.templateId
+                }
               );
 
               setVendors((prev) =>

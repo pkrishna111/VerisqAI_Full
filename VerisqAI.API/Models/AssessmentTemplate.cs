@@ -21,6 +21,10 @@ namespace VerisqAI.API.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public string UserId { get; set; } = string.Empty;
+
+        public ApplicationUser? User { get; set; }
+
         // Navigation
         public ICollection<AssessmentSection> Sections { get; set; }
             = new List<AssessmentSection>();

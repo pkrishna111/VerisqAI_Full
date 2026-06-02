@@ -17,5 +17,7 @@ namespace VerisqAI.API.DTOs.Vendor
         public string? Email { get; set; } = "";
 
         public bool SendQuestionnaire { get; set; } = false;
+
+        public int? TemplateId { get; set; }
     }
 }
