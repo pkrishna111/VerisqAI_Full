@@ -1,0 +1,62 @@
+.vendordetailsmodal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.vendordetailsmodal {
+    width: 700px;
+    max-width: 95%;
+
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.vendordetailsmodal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.vendordetailsmodal-close {
+    border: none;
+    background: none;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+.vendordetailsmodal-body {
+    padding: 24px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.vendordetailsmodal-body div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.vendordetailsmodal-body strong {
+    color: #475569;
+}

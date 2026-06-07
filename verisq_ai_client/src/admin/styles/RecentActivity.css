@@ -1,0 +1,62 @@
+.recentactivity {
+    background: white;
+
+    padding: 24px;
+
+    border-radius: 16px;
+
+    border: 1px solid #e5e7eb;
+
+    margin-top: 30px;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.recentactivity-title {
+    margin-bottom: 20px;
+
+    color: #0f172a;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.recentactivity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.recentactivity-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding-bottom: 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.recentactivity-item:last-child {
+    border-bottom: none;
+}
+
+.recentactivity-item h4 {
+    margin-bottom: 4px;
+
+    color: #0f172a;
+}
+
+.recentactivity-item p {
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+.recentactivity-item span {
+    color: #94a3b8;
+
+    font-size: 13px;
+}

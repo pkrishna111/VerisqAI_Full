@@ -1,0 +1,107 @@
+.auditlogtimeline {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    flex: 2;
+}
+
+.auditlogtimeline-header {
+    margin-bottom: 1.5rem;
+}
+
+.auditlogtimeline-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.auditlogtimeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.auditlogtimeline-item {
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.auditlogtimeline-item:hover {
+    background: #f8fafc;
+}
+
+.auditlogtimeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #2563eb;
+    margin-top: 8px;
+}
+
+.auditlogtimeline-content {
+    flex: 1;
+}
+
+.auditlogtimeline-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.auditlogtimeline-top h4 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.auditlogtimeline-content p {
+    color: #64748b;
+    margin: 0.5rem 0;
+}
+
+.auditlogtimeline-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.auditlogtimeline-info,
+.auditlogtimeline-success,
+.auditlogtimeline-warning,
+.auditlogtimeline-error {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.auditlogtimeline-info {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.auditlogtimeline-success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.auditlogtimeline-warning {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.auditlogtimeline-error {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.auditlogtimeline-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+}

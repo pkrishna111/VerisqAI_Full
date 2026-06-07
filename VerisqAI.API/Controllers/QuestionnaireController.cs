@@ -205,6 +205,23 @@ namespace VerisqAI.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            _context.AuditLogs.Add(
+    new AuditLog
+    {
+        EventType = "Questionnaire",
+        Title = "Questionnaire Completed",
+        Description =
+            $"Questionnaire {questionnaire.Id} completed",
+
+        EntityType = "Questionnaire",
+        EntityId = questionnaire.Id.ToString(),
+
+        Severity = "Info",
+        Source = "Vendor"
+    });
+
+            await _context.SaveChangesAsync();
+
             // get responses for scoring
             var savedResponses = await _context.QuestionnaireResponses
                 .Where(r => r.QuestionnaireId == questionnaireId)
@@ -362,6 +379,23 @@ namespace VerisqAI.API.Controllers
 
             await _context.SaveChangesAsync();
 
+            _context.AuditLogs.Add(
+    new AuditLog
+    {
+        EventType = "Assessment",
+        Title = "Scorecard Generated",
+        Description =
+            $"Scorecard {scorecard.Id} generated",
+
+        EntityType = "Scorecard",
+        EntityId = scorecard.Id.ToString(),
+
+        Severity = "Success",
+        Source = "System"
+    });
+
+            await _context.SaveChangesAsync();
+
             // Attach findings
             foreach (var finding in scoringResult.Findings)
             {
@@ -387,6 +421,23 @@ namespace VerisqAI.API.Controllers
                 Console.WriteLine(
                     $"Dynamic AI generation failed: {ex.Message}");
             }
+
+            _context.AuditLogs.Add(
+    new AuditLog
+    {
+        EventType = "AI Analysis",
+        Title = "AI Assessment Generated",
+        Description =
+            $"AI assessment generated for Vendor {vendor.Name}",
+
+        EntityType = "Vendor",
+        EntityId = vendor.Id.ToString(),
+
+        Severity = "Success",
+        Source = "AI Engine"
+    });
+
+            await _context.SaveChangesAsync();
 
             return Ok(new
             {

@@ -1,0 +1,140 @@
+.usertable-container {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    overflow-x: auto;
+}
+
+.usertable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.usertable thead {
+    background: #f8fafc;
+}
+
+.usertable th {
+    padding: 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.usertable td {
+    padding: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.usertable tr:hover {
+    background: #f8fafc;
+}
+
+.usertable-clickable {
+    color: #0f172a;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.usertable-clickable:hover {
+    color: #1e293b;
+    text-decoration: none;
+}
+
+/* Status */
+
+.user-status {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.user-status.approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.user-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.user-status.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Actions */
+
+.usertable-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.usertable-view-btn,
+.usertable-approve-btn,
+.usertable-reject-btn,
+.usertable-delete-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.usertable-view-btn {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.usertable-approve-btn {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.usertable-reject-btn {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.usertable-delete-btn {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.usertable-empty {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+}
+.usertable-name {
+    color: #0f172a;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.usertable-name:hover {
+    color: #2563eb;
+}
+
+.usertable-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.usertable-actions button {
+    white-space: nowrap;
+}
+
+.usertable td:last-child {
+    min-width: 280px;
+}

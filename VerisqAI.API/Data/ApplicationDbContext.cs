@@ -17,9 +17,12 @@ namespace VerisqAI.API.Data
 
         public DbSet<Vendor> Vendors { get; set; }
 
+        public DbSet<AiProcessingLog> AiProcessingLogs { get; set; }
         public DbSet<Scorecard> Scorecards { get; set; }
 
         public DbSet<Finding> Findings { get; set; }
+
+        public DbSet<AuditLog> AuditLogs { get; set; }
 
         public DbSet<Questionnaire> Questionnaires { get; set; }
 
