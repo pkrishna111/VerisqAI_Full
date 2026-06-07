@@ -1,0 +1,17 @@
+.aiprocessingvolumechart {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    flex: 2;
+}
+
+.aiprocessingvolumechart-header {
+    margin-bottom: 20px;
+}
+
+.aiprocessingvolumechart-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}

@@ -1,0 +1,33 @@
+.aiinsightstable {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid #e5e7eb;
+}
+
+.aiinsightstable h2 {
+    margin-bottom: 20px;
+    color: #0f172a;
+}
+
+.aiinsightstable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.aiinsightstable th {
+    background: #f8fafc;
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.aiinsightstable td {
+    padding: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.aiinsightstable tr:hover {
+    background: #f8fafc;
+}

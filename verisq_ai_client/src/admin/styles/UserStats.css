@@ -1,0 +1,59 @@
+.userstats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.userstats-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.userstats-card span {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.userstats-card h2 {
+    margin-top: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* Approved */
+
+.userstats-card.approved {
+    border-left: 4px solid #22c55e;
+}
+
+/* Pending */
+
+.userstats-card.pending {
+    border-left: 4px solid #f59e0b;
+}
+
+/* Rejected */
+
+.userstats-card.rejected {
+    border-left: 4px solid #ef4444;
+}
+
+@media (max-width: 1000px) {
+
+    .userstats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .userstats {
+        grid-template-columns: 1fr;
+    }
+
+}

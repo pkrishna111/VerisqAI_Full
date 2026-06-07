@@ -1,0 +1,37 @@
+.aifailedrequeststable {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.aifailedrequeststable-header {
+    margin-bottom: 20px;
+}
+
+.aifailedrequeststable-header h3 {
+    color: #0f172a;
+}
+
+.aifailedrequeststable table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.aifailedrequeststable th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.aifailedrequeststable td {
+    padding: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.aifailedrequeststable-empty {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+}

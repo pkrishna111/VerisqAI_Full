@@ -18,17 +18,34 @@ import TemplateDetailsPage from './pages/TemplateDetailsPage'
 import BreachAlerts from './pages/BreachAlerts'
 import RiskTiering from './pages/RiskTiering'
 
+//Admin Imports
+import AdminDashboard from './admin/pages/AdminDashboard'
+import Users from './admin/pages/Users'
+import Vendors from "./admin/pages/Vendors";
+import AiMonitoring from './admin/pages/AiMonitoring'
+import AuditLogs from './admin/pages/AuditLogs'
+
+
+
+// import AdminLayout from './admin/layouts/AdminLayout'
+// import AdminDashboard from './admin/pages/AdminDashboard'
+// import UserManagement from './admin/pages/UserManagement'
+// import VendorAnalytics from './admin/pages/VendorAnalytics'
+// import AiMonitoring from './admin/pages/AiMonitoring'
+// import AuditLogs from './admin/pages/AuditLogs'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<LandingPage />} />
         <Route path="/verify" element={<VerifyPage />} />
 
         <Route path="/request-received" element={<RequestReceived />} />
         <Route path="/send-code" element={<Otp_verification />} />
         <Route path="/admin/trial-requests" element={<AdminTrialRequests />} />
+
         <Route
           path="/dashboard"
           element={
@@ -37,6 +54,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/vendor/:id"
           element={
@@ -45,6 +63,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/templates"
           element={
@@ -53,6 +72,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/templates/:id"
           element={
@@ -61,6 +81,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="/otp_verification" element={<Otp_verification />} />
         <Route path="/request-received" element={<RequestReceived />} />
         <Route path="how-it-works" element={<Howitworks />} />
@@ -68,8 +89,23 @@ function App() {
         <Route path="Questionnaires" element={<Questionnaires />} />
         <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
         <Route path="BreachAlerts" element={<BreachAlerts />} />
-        <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
         <Route path="RiskTiering" element={<RiskTiering />} />
+
+        {/* Admin Routes */}
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<Users />}/>
+        <Route path="/admin/vendors" element={<Vendors />}/>
+        <Route path="/admin/ai-monitoring" element={<AiMonitoring />}/>
+        <Route path="/admin/audit-logs"  element={<AuditLogs />}/>
+
+        {/* <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="vendors" element={<VendorAnalytics />} />
+          <Route path="ai-monitoring" element={<AiMonitoring />} />
+          <Route path="audit-logs" element={<AuditLogs />} />
+        </Route> */}
+
       </Routes>
     </BrowserRouter>
   )

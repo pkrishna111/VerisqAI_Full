@@ -1,0 +1,48 @@
+.userdetailsmodal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 999;
+}
+
+.userdetailsmodal {
+    width: 600px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+.userdetailsmodal-header {
+    padding: 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.userdetailsmodal-header button {
+    border: none;
+    background: none;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+.userdetailsmodal-body {
+    padding: 24px;
+
+    display: grid;
+
+    gap: 16px;
+}

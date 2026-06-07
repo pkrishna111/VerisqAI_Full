@@ -1,0 +1,58 @@
+.adminheader {
+    height: 70px;
+
+    background: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    margin-bottom: 30px;
+}
+
+.adminheader-left h2 {
+    margin: 0;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    color: #0f172a;
+}
+
+.adminheader-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.adminheader-search input {
+    width: 250px;
+
+    padding: 10px 14px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    outline: none;
+}
+
+.adminheader-profile {
+    width: 40px;
+    height: 40px;
+
+    background: #2563eb;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 600;
+}

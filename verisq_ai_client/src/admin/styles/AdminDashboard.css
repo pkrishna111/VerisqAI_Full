@@ -1,0 +1,52 @@
+.admindashboard {
+    min-height: 100vh;
+    background: #f8fafc;
+    padding: 30px;
+}
+
+.admindashboard-loading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.admindashboard-header {
+    margin-bottom: 30px;
+}
+
+.admindashboard-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.admindashboard-subtitle {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.admindashboard-stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px, 1fr));
+
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+
+    .admindashboard {
+        padding: 20px;
+    }
+
+    .admindashboard-title {
+        font-size: 26px;
+    }
+
+}

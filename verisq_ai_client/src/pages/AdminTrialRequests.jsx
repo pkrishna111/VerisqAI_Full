@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/AdminTrialRequests.css";
 import API_BASE_URL from "../services/api";
 
+
 function AdminTrialRequests() {
   const [users, setUsers] = useState([]);
 
