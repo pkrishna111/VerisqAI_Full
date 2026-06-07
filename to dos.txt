@@ -5,11 +5,47 @@ Now templates are user-owned.
 
 TemplatePreviewPage
 
-Before Preview Mode:
+FUTURE PHASES AFTER PHASE 2A
+PHASE 2B
+Template Preview Mode
+Render questionnaire exactly as vendor sees it.
+Reuse later for vendor assessment UI.
+
+PHASE 3
+Vendor Assessment Runtime
+Vendor opens questionnaire.
+Questionnaire responses saved.
+Dependencies honored.
+Question types rendered.
+
+PHASE 4
+Scoring Engine
+Response evaluation.
+Preferred answer logic.
+Weight calculation.
+Severity impact.
+Risk score generation.
+
+PHASE 5
+AI Assessment Engine
+AI recommendations.
+AI findings.
+AI risk insights.
+AI execution audit.
+
+PHASE 6
+Assessment Report Generation
+PDF
+Executive summary
+Findings
+Risk breakdown
+Recommendations
+
+Before Preview Mode: ------------------------------------- done
 Assessment Campaign / Send Questionnaire
 From a template:
 
-Phase 2A ------------------------------------- done
+Phase 2A 
 → Link questionnaire to template
 Phase 3
 → Dynamic questionnaire runtime
