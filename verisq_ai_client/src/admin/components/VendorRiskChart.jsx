@@ -14,7 +14,7 @@ import "../styles/VendorRiskChart.css";
 import { getVendorRisk } from "../services/dashboardApi";
 
 const COLORS = [
-  "#22c55e",
+  "#10b981",
   "#f59e0b",
   "#ef4444"
 ];
@@ -30,10 +30,8 @@ function VendorRiskChart() {
   const loadVendorRisk = async () => {
     try {
       const result = await getVendorRisk();
-
       setData(result);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
   };
@@ -41,7 +39,10 @@ function VendorRiskChart() {
   return (
     <div className="vendorriskchart">
 
-      <h3>Vendor Risk Distribution</h3>
+      <div className="vendorriskchart-header">
+        <h3>Vendor Risk Distribution</h3>
+        <p>Current vendor risk overview</p>
+      </div>
 
       <ResponsiveContainer
         width="100%"
@@ -54,20 +55,34 @@ function VendorRiskChart() {
             data={data}
             dataKey="value"
             nameKey="name"
+            innerRadius={75}
             outerRadius={120}
-            label
+            paddingAngle={4}
+            cornerRadius={8}
           >
+
             {data.map((entry, index) => (
               <Cell
                 key={index}
                 fill={COLORS[index % COLORS.length]}
               />
             ))}
+
           </Pie>
 
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              borderRadius: "12px",
+              border: "none",
+              boxShadow:
+                "0 10px 30px rgba(15,23,42,.12)"
+            }}
+          />
 
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            height={36}
+          />
 
         </PieChart>
 

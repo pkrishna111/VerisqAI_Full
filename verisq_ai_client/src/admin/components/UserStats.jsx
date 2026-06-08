@@ -1,63 +1,78 @@
+import {
+  Users,
+  CheckCircle,
+  Clock,
+  XCircle
+} from "lucide-react";
+
 import "../styles/UserStats.css";
 
-function UserStats({
-  stats
-}) {
+function UserStats({ stats }) {
+
+  const cards = [
+    {
+      title: "Total Users",
+      value: stats.totalUsers || 0,
+      subtitle: "Registered Accounts",
+      icon: <Users size={22} />,
+      color: "blue"
+    },
+    {
+      title: "Approved Users",
+      value: stats.approvedUsers || 0,
+      subtitle: "Active Accounts",
+      icon: <CheckCircle size={22} />,
+      color: "green"
+    },
+    {
+      title: "Pending Users",
+      value: stats.pendingUsers || 0,
+      subtitle: "Awaiting Approval",
+      icon: <Clock size={22} />,
+      color: "orange"
+    },
+    {
+      title: "Rejected Users",
+      value: stats.rejectedUsers || 0,
+      subtitle: "Access Denied",
+      icon: <XCircle size={22} />,
+      color: "red"
+    }
+  ];
 
   return (
-
     <div className="userstats">
 
-      <div className="userstats-card">
+      {cards.map((card) => (
+        <div
+          key={card.title}
+          className={`userstats-card ${card.color}`}
+        >
 
-        <span>
-          Total Users
-        </span>
+          <div className="userstats-header">
 
-        <h2>
-          {stats.totalUsers || 0}
-        </h2>
+            <div className="userstats-title">
+              {card.title}
+            </div>
 
-      </div>
+            <div className={`userstats-icon ${card.color}`}>
+              {card.icon}
+            </div>
 
-      <div className="userstats-card approved">
+          </div>
 
-        <span>
-          Approved
-        </span>
+          <div className="userstats-value">
+            {card.value}
+          </div>
 
-        <h2>
-          {stats.approvedUsers || 0}
-        </h2>
+          <div className="userstats-subtitle">
+            {card.subtitle}
+          </div>
 
-      </div>
-
-      <div className="userstats-card pending">
-
-        <span>
-          Pending
-        </span>
-
-        <h2>
-          {stats.pendingUsers || 0}
-        </h2>
-
-      </div>
-
-      <div className="userstats-card rejected">
-
-        <span>
-          Rejected
-        </span>
-
-        <h2>
-          {stats.rejectedUsers || 0}
-        </h2>
-
-      </div>
+        </div>
+      ))}
 
     </div>
-
   );
 }
 

@@ -1,15 +1,23 @@
 .aimodelusagechart {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 20px;
+
     padding: 24px;
+
     flex: 1;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-    transition: all 0.3s ease;
+
+    box-shadow:
+        0 2px 8px rgba(15,23,42,.04);
+
+    transition: all .25s ease;
 }
 
 .aimodelusagechart:hover {
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 15px 30px rgba(15,23,42,.08);
 }
 
 .aimodelusagechart-header {
@@ -18,17 +26,25 @@
 
 .aimodelusagechart-header h3 {
     margin: 0;
-    font-size: 20px;
+
+    font-size: 18px;
+
     font-weight: 700;
+
     color: #0f172a;
 }
 
 .aimodelusagechart-header span {
     display: block;
+
     margin-top: 6px;
-    font-size: 13px;
-    color: #64748b;
+
+    font-size: 14px;
+
+    color: #94a3b8;
 }
+
+/* Legend */
 
 .recharts-legend-wrapper {
     padding-top: 10px;
@@ -36,11 +52,17 @@
 
 .recharts-legend-item-text {
     color: #475569 !important;
+
     font-size: 13px;
 }
 
+/* Tooltip */
+
 .recharts-default-tooltip {
     border-radius: 12px !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+
+    border: none !important;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.12) !important;
 }
