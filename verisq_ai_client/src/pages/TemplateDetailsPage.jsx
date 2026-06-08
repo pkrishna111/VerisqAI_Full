@@ -4,7 +4,8 @@ import {
 } from "react";
 
 import {
-    useParams
+    useParams,
+    useNavigate
 } from "react-router-dom";
 
 import DashboardHeader
@@ -51,6 +52,8 @@ import { updateAssessmentQuestion } from "../services/api";
 function TemplateDetailsPage() {
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
     const [template, setTemplate] =
         useState(null);
@@ -455,6 +458,22 @@ function TemplateDetailsPage() {
 
             console.error(err);
 
+            if (
+                err.message?.includes("deactivated")
+            ) {
+
+                alert(
+                    "This template has been deactivated. Create a copy to continue using it."
+                );
+
+                navigate("/template-builder");
+
+                return;
+            }
+
+            alert(
+                "Failed to load template."
+            );
         } finally {
 
             setLoading(false);
@@ -605,8 +624,8 @@ function TemplateDetailsPage() {
                                                 draggable
                                                 className={
                                                     `tb-sidebar-item
-        ${isActive ? "active" : ""}
-        ${dragOverSectionId === section.id
+                                                        ${isActive ? "active" : ""}
+                                                        ${dragOverSectionId === section.id
                                                         ? "drag-over"
                                                         : ""}`
                                                 }
@@ -825,13 +844,72 @@ function TemplateDetailsPage() {
                                                                             </div>
 
                                                                             <div className="tb-question-toolbar-actions">
-                                                                                <button
-                                                                                    className="tb-question-action-btn info"
-                                                                                    type="button"
-                                                                                    title={question.questionType}
-                                                                                >
-                                                                                    <HelpCircle size={15} />
-                                                                                </button>
+                                                                                <div className="tb-question-metadata-tooltip">
+
+                                                                                    <button
+                                                                                        className="tb-question-action-btn info"
+                                                                                        type="button"
+                                                                                    >
+                                                                                        <HelpCircle size={15} />
+                                                                                    </button>
+
+                                                                                    <div className="tb-metadata-popup">
+
+                                                                                        <div className="tb-metadata-title">
+                                                                                            Question Metadata
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Type</span>
+                                                                                            <strong>{question.questionType}</strong>
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Category</span>
+                                                                                            <strong>
+                                                                                                {question.category || "N/A"}
+                                                                                            </strong>
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Severity</span>
+                                                                                            <strong>
+                                                                                                {question.severity}
+                                                                                            </strong>
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Weight</span>
+                                                                                            <strong>
+                                                                                                {question.weight}
+                                                                                            </strong>
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Required</span>
+                                                                                            <strong>
+                                                                                                {
+                                                                                                    question.isRequired
+                                                                                                        ? "Yes"
+                                                                                                        : "No"
+                                                                                                }
+                                                                                            </strong>
+                                                                                        </div>
+
+                                                                                        <div className="tb-metadata-row">
+                                                                                            <span>Status</span>
+                                                                                            <strong>
+                                                                                                {
+                                                                                                    question.isActive
+                                                                                                        ? "Active"
+                                                                                                        : "Inactive"
+                                                                                                }
+                                                                                            </strong>
+                                                                                        </div>
+
+                                                                                    </div>
+
+                                                                                </div>
 
                                                                                 <button
                                                                                     className="tb-question-action-btn"

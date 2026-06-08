@@ -82,6 +82,19 @@ export const createAssessmentTemplate = async (data) => {
     );
 };
 
+export const updateAssessmentTemplate =
+    async (
+        templateId,
+        data
+    ) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/${templateId}`,
+        "PUT",
+        data
+    );
+};
+
 // Create section
 export const createAssessmentSection = async (data) => {
     return apiRequest(
@@ -216,5 +229,14 @@ export const duplicateAssessmentTemplate =
     return apiRequest(
         `/api/AssessmentTemplate/${templateId}/duplicate`,
         "POST"
+    );
+};
+
+export const deleteAssessmentTemplate =
+    async (templateId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/${templateId}`,
+        "DELETE"
     );
 };

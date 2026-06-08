@@ -18,7 +18,12 @@ function EmailModal({
     const loadTemplates = async () => {
       try {
         const data = await getAssessmentTemplates();
-        setTemplates(data);
+
+        setTemplates(
+          data.filter(
+            template => template.isActive
+          )
+        );
       } catch (err) {
         console.error(err);
       }

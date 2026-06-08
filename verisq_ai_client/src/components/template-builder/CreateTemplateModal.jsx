@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   X,
@@ -6,13 +6,16 @@ import {
 } from "lucide-react";
 
 import {
-  createAssessmentTemplate
+  createAssessmentTemplate,
+  updateAssessmentTemplate
 } from "../../services/api";
 
 function CreateTemplateModal({
   open,
   onClose,
-  onCreated
+  onCreated,
+  mode = "create",
+  editingTemplate = null
 }) {
 
   const [loading, setLoading] =
@@ -22,9 +25,46 @@ function CreateTemplateModal({
     useState({
       name: "",
       description: "",
-      version: "v1",
+      version: 1,
       isActive: true
     });
+
+  useEffect(() => {
+
+    if (
+      mode === "edit" &&
+      editingTemplate
+    ) {
+
+      setFormData({
+        name:
+          editingTemplate.name || "",
+
+        description:
+          editingTemplate.description || "",
+
+        version:
+          editingTemplate.version || 1,
+
+        isActive:
+          editingTemplate.isActive
+      });
+
+    } else {
+
+      setFormData({
+        name: "",
+        description: "",
+        version: 1,
+        isActive: true
+      });
+    }
+
+  }, [
+    mode,
+    editingTemplate,
+    open
+  ]);
 
   if (!open) return null;
 
@@ -51,12 +91,40 @@ function CreateTemplateModal({
 
       setLoading(true);
 
-      await createAssessmentTemplate({
-        name: formData.name,
-        description: formData.description,
-        version: formData.version,
-        isActive: true
-      });
+      if (mode === "edit") {
+
+        await updateAssessmentTemplate(
+          editingTemplate.id,
+          {
+            name:
+              formData.name,
+
+            description:
+              formData.description,
+
+            version:
+              formData.version,
+
+            isActive:
+              formData.isActive
+          }
+        );
+
+      } else {
+
+        await createAssessmentTemplate({
+          name:
+            formData.name,
+
+          description:
+            formData.description,
+
+          version:
+            formData.version,
+
+          isActive: true
+        });
+      }
 
       onCreated();
 
@@ -65,7 +133,7 @@ function CreateTemplateModal({
       setFormData({
         name: "",
         description: "",
-        version: "v1",
+        version: 1,
         isActive: true
       });
 
@@ -92,7 +160,11 @@ function CreateTemplateModal({
         <div className="avm-header">
 
           <h2 className="avm-title">
-            Create Assessment Template
+            {
+              mode === "edit"
+                ? "Edit Assessment Template"
+                : "Create Assessment Template"
+            }
           </h2>
 
           <button
@@ -150,7 +222,8 @@ function CreateTemplateModal({
             </label>
 
             <input
-              type="text"
+              type="number"
+              min="1"
               name="version"
               className="avm-input"
               placeholder="v1"
@@ -183,8 +256,16 @@ function CreateTemplateModal({
 
             {
               loading
-                ? "Creating..."
-                : "Create Template"
+                ? (
+                  mode === "edit"
+                    ? "Updating..."
+                    : "Creating..."
+                )
+                : (
+                  mode === "edit"
+                    ? "Update Template"
+                    : "Create Template"
+                )
             }
           </button>
 

@@ -44,6 +44,18 @@ namespace VerisqAI.API.Controllers
                 return Unauthorized();
             }
 
+            var existingTemplateCount =
+                await _context.AssessmentTemplates
+                    .CountAsync(t =>
+                        t.UserId == userId);
+
+            if (existingTemplateCount >= 5)
+            {
+                return BadRequest(
+                    "Free Trial allows maximum 5 templates."
+                );
+            }
+
             template.CreatedAt = DateTime.UtcNow;
 
             template.UserId = userId;
@@ -56,6 +68,119 @@ namespace VerisqAI.API.Controllers
             {
                 message = "Template created successfully",
                 templateId = template.Id
+            });
+        }
+
+        [HttpPut("{templateId}")]
+        public async Task<IActionResult> UpdateTemplate(
+        int templateId,
+        [FromBody] AssessmentTemplate dto)
+        {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+
+            var template =
+                await _context.AssessmentTemplates
+                    .FirstOrDefaultAsync(t =>
+                        t.Id == templateId &&
+                        t.UserId == userId);
+
+            if (template == null)
+            {
+                return NotFound("Template not found.");
+            }
+
+            if (!template.IsActive)
+            {
+                return BadRequest(
+                    "Inactive templates cannot be edited."
+                );
+            }
+
+            template.Name =
+                dto.Name;
+
+            template.Description =
+                dto.Description;
+
+            template.Version =
+                dto.Version;
+
+            template.IsActive =
+                dto.IsActive;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message =
+                    "Template updated successfully"
+            });
+        }
+
+        [HttpDelete("{templateId}")]
+        public async Task<IActionResult> DeleteTemplate(
+            int templateId)
+        {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var template =
+                await _context.AssessmentTemplates
+                    .FirstOrDefaultAsync(t =>
+                        t.Id == templateId &&
+                        t.UserId == userId);
+
+            if (template == null)
+            {
+                return NotFound("Template not found.");
+            }
+
+            var hasQuestionnaires =
+                await _context.Questionnaires
+                    .AnyAsync(q =>
+                        q.AssessmentTemplateId ==
+                        templateId);
+
+            if (hasQuestionnaires)
+            {
+                template.IsActive = false;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    action = "deactivated",
+                    message =
+                        "Template has assessment history and was deactivated."
+                });
+            }
+
+            _context.AssessmentTemplates
+                .Remove(template);
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                action = "deleted",
+                message =
+                    "Template deleted successfully."
             });
         }
 
@@ -504,7 +629,7 @@ namespace VerisqAI.API.Controllers
                         q.Id == questionId);
 
             if (originalQuestion == null)
-            {   
+            {
                 return NotFound("Question not found.");
             }
 
@@ -821,6 +946,18 @@ namespace VerisqAI.API.Controllers
                 return Unauthorized();
             }
 
+            var templateCount =
+                await _context.AssessmentTemplates
+                    .CountAsync(t =>
+            t.UserId == userId);
+
+            if (templateCount >= 5)
+            {
+                return BadRequest(
+                    "Free Trial allows maximum 5 templates."
+                );
+            }
+
             var originalTemplate =
                 await _context.AssessmentTemplates
                     .Include(t => t.Sections)
@@ -865,7 +1002,7 @@ namespace VerisqAI.API.Controllers
                         originalTemplate.Version,
 
                     IsActive =
-                        originalTemplate.IsActive,
+                        true,
 
                     UserId = userId,
 
@@ -1042,6 +1179,13 @@ namespace VerisqAI.API.Controllers
             if (template == null)
             {
                 return NotFound("Template not found.");
+            }
+
+            if (!template.IsActive)
+            {
+                return BadRequest(
+                    "This template has been deactivated. Create a copy to continue using it."
+                );
             }
 
             return Ok(template);

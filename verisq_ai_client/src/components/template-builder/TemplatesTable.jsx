@@ -3,19 +3,21 @@ import {
     Copy,
     Pencil,
     Trash2,
-    ExternalLink
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
 
 import {
-    duplicateAssessmentTemplate
+    duplicateAssessmentTemplate,
+    deleteAssessmentTemplate
 } from "../../services/api";
 
 function TemplatesTable({
     templates,
     loading,
-    error
+    error,
+    onEditTemplate,
+    onRefresh
 }) {
 
     const navigate = useNavigate();
@@ -31,7 +33,7 @@ function TemplatesTable({
                     templateId
                 );
 
-                window.location.reload();
+                onRefresh();
 
             } catch (err) {
 
@@ -118,12 +120,25 @@ function TemplatesTable({
                             return (
                                 <tr
                                     key={template.id}
-                                    className="tb-clickable-row"
-                                    onClick={() =>
+                                    className={
+                                        template.isActive
+                                            ? "tb-clickable-row"
+                                            : "tb-clickable-row tb-template-inactive"
+                                    }
+                                    onClick={() => {
+
+                                        if (!template.isActive) {
+                                            alert(
+                                                "This template is inactive. Create a copy to continue using it."
+                                            );
+
+                                            return;
+                                        }
+
                                         navigate(
                                             `/templates/${template.id}`
-                                        )
-                                    }
+                                        );
+                                    }}
                                 >
 
                                     <td>
@@ -177,7 +192,7 @@ function TemplatesTable({
                                             {
                                                 template.isActive
                                                     ? "Active"
-                                                    : "Inactive"
+                                                    : "Archived"
                                             }
                                         </span>
 
@@ -186,21 +201,6 @@ function TemplatesTable({
                                     <td>
 
                                         <div className="tb-template-actions">
-
-                                            <button
-                                                className="tb-template-action-btn"
-                                                title="Open Template"
-                                                onClick={(e) => {
-
-                                                    e.stopPropagation();
-
-                                                    navigate(
-                                                        `/templates/${template.id}`
-                                                    );
-                                                }}
-                                            >
-                                                <ExternalLink size={15} />
-                                            </button>
 
                                             <button
                                                 className="tb-template-action-btn"
@@ -215,36 +215,58 @@ function TemplatesTable({
                                                 <Copy size={15} />
                                             </button>
 
-                                            <button
-                                                className="tb-template-action-btn"
-                                                title="Edit Template"
-                                                onClick={(e) => {
+                                            {template.isActive && (
+                                                <button
+                                                    className="tb-template-action-btn"
+                                                    title="Edit Template"
+                                                    onClick={(e) => {
 
-                                                    e.stopPropagation();
+                                                        e.stopPropagation();
 
-                                                    alert(
-                                                        "Edit template coming next."
-                                                    );
-                                                }}
-                                            >
-                                                <Pencil size={15} />
-                                            </button>
+                                                        onEditTemplate(template);
+                                                    }}
+                                                >
+                                                    <Pencil size={15} />
+                                                </button>
+                                            )}
 
-                                            <button
-                                                className="tb-template-action-btn danger"
-                                                title="Delete Template"
-                                                onClick={(e) => {
+                                            {template.isActive && (
+                                                <button
+                                                    className="tb-template-action-btn danger"
+                                                    title="Delete Template"
+                                                    onClick={async (e) => {
 
-                                                    e.stopPropagation();
+                                                        e.stopPropagation();
 
-                                                    alert(
-                                                        "Delete template coming next."
-                                                    );
-                                                }}
-                                            >
-                                                <Trash2 size={15} />
-                                            </button>
+                                                        if (
+                                                            !window.confirm(
+                                                                "If this template has assessment history it will be deactivated instead of deleted.\n\nContinue?"
+                                                            )
+                                                        ) {
+                                                            return;
+                                                        }
 
+                                                        try {
+
+                                                            await deleteAssessmentTemplate(
+                                                                template.id
+                                                            );
+
+                                                            window.location.reload();
+
+                                                        } catch (err) {
+
+                                                            console.error(err);
+
+                                                            alert(
+                                                                "Failed to delete template."
+                                                            );
+                                                        }
+                                                    }}
+                                                >
+                                                    <Trash2 size={15} />
+                                                </button>
+                                            )}
                                         </div>
 
                                     </td>

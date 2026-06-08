@@ -28,6 +28,9 @@ function TemplateBuilderPage() {
 
     const [showCreateModal, setShowCreateModal] = useState(false);
 
+    const [editingTemplate, setEditingTemplate] =
+        useState(null);
+
     useEffect(() => {
 
         fetchTemplates();
@@ -69,9 +72,27 @@ function TemplateBuilderPage() {
             <main className="dashboard-main">
 
                 <TemplateBuilderHero
-                    onCreateClick={() =>
-                        setShowCreateModal(true)
+                    onCreateClick={() => {
+
+                        if (
+                            templates.length >= 5
+                        ) {
+
+                            alert(
+                                "Free Trial allows maximum 5 templates."
+                            );
+
+                            return;
+                        }
+
+                        setShowCreateModal(true);
+                    }}
+
+                    usedTemplates={
+                        templates.length
                     }
+
+                    maxTemplates={5}
                 />
 
                 <TemplateBuilderKpis
@@ -82,16 +103,36 @@ function TemplateBuilderPage() {
                     templates={templates}
                     loading={loading}
                     error={error}
+                    onEditTemplate={setEditingTemplate}
+                    onRefresh={fetchTemplates}
                 />
 
                 <CreateTemplateModal
-                    open={showCreateModal}
-                    onClose={() =>
-                        setShowCreateModal(false)
+                    open={
+                        showCreateModal ||
+                        editingTemplate !== null
                     }
+
+                    mode={
+                        editingTemplate
+                            ? "edit"
+                            : "create"
+                    }
+
+                    editingTemplate={
+                        editingTemplate
+                    }
+
+                    onClose={() => {
+
+                        setShowCreateModal(false);
+
+                        setEditingTemplate(null);
+                    }}
+
                     onCreated={fetchTemplates}
                 />
-                
+
             </main>
         </>
     );
