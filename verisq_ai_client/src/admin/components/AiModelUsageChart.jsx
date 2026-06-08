@@ -50,36 +50,39 @@ function AiModelUsageChart({
             nameKey="model"
             cx="50%"
             cy="50%"
+            innerRadius={75}
             outerRadius={120}
-            innerRadius={70}
-            paddingAngle={3}
-            label
+            paddingAngle={4}
+            cornerRadius={8}
           >
 
-            {data.map(
-              (
-                entry,
-                index
-              ) => (
-
-                <Cell
-                  key={index}
-                  fill={
-                    COLORS[
-                      index %
-                      COLORS.length
-                    ]
-                  }
-                />
-
-              )
-            )}
+            {data.map((entry, index) => (
+              <Cell
+                key={index}
+                fill={
+                  COLORS[
+                    index %
+                    COLORS.length
+                  ]
+                }
+              />
+            ))}
 
           </Pie>
 
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              borderRadius: "12px",
+              border: "none",
+              boxShadow:
+                "0 10px 30px rgba(15,23,42,.12)"
+            }}
+          />
 
-          <Legend />
+          <Legend
+            verticalAlign="bottom"
+            height={36}
+          />
 
         </PieChart>
 

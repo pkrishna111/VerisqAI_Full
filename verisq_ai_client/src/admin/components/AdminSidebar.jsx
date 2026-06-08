@@ -1,14 +1,18 @@
 import { NavLink } from "react-router-dom";
+
+import {
+  LayoutDashboard,
+  Users,
+  Building2,
+  Bot,
+  ClipboardList
+} from "lucide-react";
+
 import "../styles/AdminSidebar.css";
 
 function AdminSidebar() {
   return (
     <aside className="adminsidebar">
-
-      <div className="adminsidebar-logo">
-        <h2>VerisqAI</h2>
-        <span>Admin Portal</span>
-      </div>
 
       <nav className="adminsidebar-nav">
 
@@ -16,50 +20,41 @@ function AdminSidebar() {
           to="/admin/dashboard"
           className="adminsidebar-link"
         >
-          Dashboard
+          <LayoutDashboard size={20} />
+          <span>Dashboard</span>
         </NavLink>
 
         <NavLink
           to="/admin/users"
           className="adminsidebar-link"
         >
-          Users
+          <Users size={20} />
+          <span>Users</span>
         </NavLink>
 
         <NavLink
           to="/admin/vendors"
           className="adminsidebar-link"
         >
-          Vendors
+          <Building2 size={20} />
+          <span>Vendors</span>
         </NavLink>
-
-        {/* <NavLink
-          to="/admin/assessments"
-          className="adminsidebar-link"
-        >
-          Assessments
-        </NavLink> */}
 
         <NavLink
           to="/admin/ai-monitoring"
           className="adminsidebar-link"
         >
-          AI Monitoring
+          <Bot size={20} />
+          <span>AI Monitoring</span>
         </NavLink>
 
         <NavLink
           to="/admin/audit-logs"
           className="adminsidebar-link"
         >
-          Audit Logs
+          <ClipboardList size={20} />
+          <span>Audit Logs</span>
         </NavLink>
-
-        {/* <NavLink
-          to="/admin/settings"
-          className="adminsidebar-link"
-        >
-          Settings
-        </NavLink> */}
 
       </nav>
 

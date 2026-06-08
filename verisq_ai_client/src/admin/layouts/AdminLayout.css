@@ -4,11 +4,14 @@
 
 .adminlayout-content {
     margin-left: 260px;
+
     width: calc(100% - 260px);
 
-    min-height: 100vh;
+    min-height: calc(100vh - 84px);
 
-    background: #f8fafc;
+    /* margin-top: 20px; */
+
+    background: #f4f7fb;
 
     padding: 30px;
 }

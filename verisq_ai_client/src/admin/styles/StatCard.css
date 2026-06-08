@@ -1,26 +1,170 @@
 .statcard {
     background: #ffffff;
-    border-radius: 16px;
+
+    border-radius: 18px;
+
     padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
     border: 1px solid #e5e7eb;
+
+    position: relative;
+
     transition: all 0.25s ease;
+
+    box-shadow:
+        0 2px 8px rgba(15,23,42,.04);
+
+    overflow: hidden;
 }
 
 .statcard:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 15px 30px rgba(15,23,42,.08);
+}
+
+/* TOP BORDER */
+
+.statcard::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 4px;
+}
+
+/* COLORS */
+
+.statcard.blue::before {
+    background: #3b82f6;
+}
+
+.statcard.green::before {
+    background: #22c55e;
+}
+
+.statcard.orange::before {
+    background: #f59e0b;
+}
+
+.statcard.purple::before {
+    background: #8b5cf6;
+}
+
+.statcard.indigo::before {
+    background: #6366f1;
+}
+
+.statcard.emerald::before {
+    background: #10b981;
+}
+
+.statcard.red::before {
+    background: #ef4444;
+}
+
+.statcard.teal::before {
+    background: #14b8a6;
+}
+
+/* HEADER */
+
+.statcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin-bottom: 18px;
 }
 
 .statcard-title {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
     color: #64748b;
-    margin-bottom: 10px;
 }
 
+/* ICON */
+
+.statcard-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.statcard-icon.blue {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.statcard-icon.green {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.statcard-icon.orange {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.statcard-icon.purple {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.statcard-icon.indigo {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.statcard-icon.emerald {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.statcard-icon.red {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.statcard-icon.teal {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+
+/* VALUE */
+
 .statcard-value {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 44px;
+
+    font-weight: 800;
+
     color: #0f172a;
+
+    line-height: 1;
+}
+
+/* SUBTITLE */
+
+.statcard-subtitle {
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    color: #94a3b8;
 }
