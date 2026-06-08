@@ -5,19 +5,19 @@ import AdminHeader from "../components/AdminHeader";
 
 function AdminLayout({ children }) {
   return (
-    <div className="adminlayout">
+    <>
+      <AdminHeader />
 
-      <AdminSidebar />
+      <div className="adminlayout">
 
-      <div className="adminlayout-content">
+        <AdminSidebar />
 
-        <AdminHeader />
-
-        {children}
+        <main className="adminlayout-content">
+          {children}
+        </main>
 
       </div>
-
-    </div>
+    </>
   );
 }
 
