@@ -13,7 +13,6 @@ import DashboardHeader
 import {
     Layers3,
     Plus,
-    Eye,
     Copy,
     Pencil,
     Trash2,
@@ -27,6 +26,8 @@ import {
     deleteAssessmentSection,
     reorderQuestions,
     reorderSections,
+    duplicateAssessmentQuestion,
+    duplicateAssessmentSection,
     updateAssessmentSection
 } from "../services/api";
 
@@ -105,12 +106,48 @@ function TemplateDetailsPage() {
     const [showEditSectionModal, setShowEditSectionModal] =
         useState(false);
 
-    const handlePreviewQuestion = (question) => {
-        console.log("Preview question:", question);
+    const handleDuplicateQuestion = async (
+        question
+    ) => {
+
+        try {
+
+            await duplicateAssessmentQuestion(
+                question.id
+            );
+
+            await fetchTemplate();
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                "Failed to duplicate question."
+            );
+        }
     };
 
-    const handleDuplicateQuestion = (question) => {
-        console.log("Duplicate question:", question);
+    const handleDuplicateSection = async (
+        section
+    ) => {
+
+        try {
+
+            await duplicateAssessmentSection(
+                section.id
+            );
+
+            await fetchTemplate();
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert(
+                "Failed to duplicate section."
+            );
+        }
     };
 
     const handleEditQuestion = (question) => {
@@ -643,6 +680,20 @@ function TemplateDetailsPage() {
                                                         </button>
 
                                                         <button
+                                                            className="tb-sidebar-action-btn"
+                                                            onClick={(e) => {
+
+                                                                e.stopPropagation();
+
+                                                                handleDuplicateSection(
+                                                                    section
+                                                                );
+                                                            }}
+                                                        >
+                                                            <Copy size={13} />
+                                                        </button>
+
+                                                        <button
                                                             className="tb-sidebar-action-btn danger"
                                                             onClick={(e) => {
 
@@ -771,10 +822,6 @@ function TemplateDetailsPage() {
                                                                                 <div className="tb-question-text">
                                                                                     {question.questionText}
                                                                                 </div>
-
-                                                                                <div className="tb-question-key">
-                                                                                    {question.questionKey}
-                                                                                </div>
                                                                             </div>
 
                                                                             <div className="tb-question-toolbar-actions">
@@ -784,15 +831,6 @@ function TemplateDetailsPage() {
                                                                                     title={question.questionType}
                                                                                 >
                                                                                     <HelpCircle size={15} />
-                                                                                </button>
-
-                                                                                <button
-                                                                                    className="tb-question-action-btn"
-                                                                                    type="button"
-                                                                                    title="Preview Question"
-                                                                                    onClick={() => handlePreviewQuestion(question)}
-                                                                                >
-                                                                                    <Eye size={16} />
                                                                                 </button>
 
                                                                                 <button
@@ -930,33 +968,28 @@ function TemplateDetailsPage() {
                                                                             )
                                                                         }
 
-                                                                        <div className="tb-question-meta">
+                                                                        <div className="tb-question-footer">
 
-                                                                            <span className="tb-meta-chip">
-                                                                                {
-                                                                                    question.questionType
-                                                                                }
-                                                                            </span>
+                                                                            <div className="tb-question-footer-item">
+                                                                                <strong>Type</strong>
+                                                                                <span>{question.questionType}</span>
+                                                                            </div>
 
-                                                                            <span className="tb-meta-chip">
-                                                                                {
-                                                                                    question.category
-                                                                                }
-                                                                            </span>
+                                                                            <div className="tb-question-footer-item">
+                                                                                <strong>Category</strong>
+                                                                                <span>{question.category}</span>
+                                                                            </div>
 
-                                                                            <span className="tb-meta-chip">
-                                                                                {
-                                                                                    question.severity
-                                                                                }
-                                                                            </span>
+                                                                            <div className="tb-question-footer-item">
+                                                                                <span className={`tb-severity-dot ${question.severity?.toLowerCase()}`}></span>
+                                                                                <strong>Severity</strong>
+                                                                                <span>{question.severity}</span>
+                                                                            </div>
 
-                                                                            <span className="tb-meta-chip">
-                                                                                Weight:
-                                                                                {" "}
-                                                                                {
-                                                                                    question.weight
-                                                                                }
-                                                                            </span>
+                                                                            <div className="tb-question-footer-item">
+                                                                                <strong>Weight</strong>
+                                                                                <span>{question.weight}</span>
+                                                                            </div>
 
                                                                         </div>
 

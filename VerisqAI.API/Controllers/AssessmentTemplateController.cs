@@ -177,6 +177,17 @@ namespace VerisqAI.API.Controllers
                 );
             }
 
+            var existingQuestions =
+                await _context.AssessmentQuestions
+                    .Where(q =>
+                        q.AssessmentSectionId == dto.SectionId)
+                    .ToListAsync();
+
+            foreach (var existingQuestion in existingQuestions)
+            {
+                existingQuestion.DisplayOrder++;
+            }
+
             var question = new AssessmentQuestion
             {
                 AssessmentSectionId = dto.SectionId,
@@ -195,7 +206,7 @@ namespace VerisqAI.API.Controllers
 
                 IsRequired = dto.IsRequired,
 
-                DisplayOrder = dto.DisplayOrder,
+                DisplayOrder = 1,
 
                 DependsOnQuestionKey =
                     dto.DependsOnQuestionKey,
@@ -482,6 +493,522 @@ namespace VerisqAI.API.Controllers
             });
         }
 
+        [HttpPost("question/{questionId}/duplicate")]
+        public async Task<IActionResult> DuplicateQuestion(
+    int questionId)
+        {
+            var originalQuestion =
+                await _context.AssessmentQuestions
+                    .Include(q => q.Options)
+                    .FirstOrDefaultAsync(q =>
+                        q.Id == questionId);
+
+            if (originalQuestion == null)
+            {   
+                return NotFound("Question not found.");
+            }
+
+            var sectionQuestions =
+                await _context.AssessmentQuestions
+                    .Where(q =>
+                        q.AssessmentSectionId ==
+                        originalQuestion.AssessmentSectionId)
+                    .ToListAsync();
+
+            foreach (var question in sectionQuestions)
+            {
+                question.DisplayOrder++;
+            }
+
+            string originalKey =
+                originalQuestion.QuestionKey;
+
+            if (originalKey.Length > 130)
+            {
+                originalKey =
+                    originalKey.Substring(0, 130);
+            }
+
+            string baseKey =
+                $"{originalKey}_copy";
+
+            string newKey = baseKey;
+
+            string newQuestionText =
+                $"{originalQuestion.QuestionText} (Copy)";
+
+            int counter = 1;
+
+            while (
+                await _context.AssessmentQuestions
+                    .AnyAsync(q => q.QuestionKey == newKey)
+            )
+            {
+                newKey =
+                    $"{baseKey}{counter}";
+
+                newQuestionText =
+                    $"{originalQuestion.QuestionText} (Copy {counter})";
+
+                counter++;
+            }
+            var duplicatedQuestion =
+                new AssessmentQuestion
+                {
+                    AssessmentSectionId =
+                        originalQuestion.AssessmentSectionId,
+
+                    QuestionKey = newKey,
+
+                    QuestionText = newQuestionText,
+
+                    QuestionType =
+                        originalQuestion.QuestionType,
+
+                    Category =
+                        originalQuestion.Category,
+
+                    Weight =
+                        originalQuestion.Weight,
+
+                    Severity =
+                        originalQuestion.Severity,
+
+                    IsRequired =
+                        originalQuestion.IsRequired,
+
+                    IsActive =
+                        originalQuestion.IsActive,
+
+                    DependsOnQuestionKey =
+                        originalQuestion.DependsOnQuestionKey,
+
+                    DependsOnValue =
+                        originalQuestion.DependsOnValue,
+
+                    DisplayOrder = 1
+                };
+
+            _context.AssessmentQuestions
+                .Add(duplicatedQuestion);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var option in originalQuestion.Options)
+            {
+                _context.AssessmentQuestionOptions.Add(
+                    new AssessmentQuestionOption
+                    {
+                        AssessmentQuestionId =
+                            duplicatedQuestion.Id,
+
+                        OptionText =
+                            option.OptionText,
+
+                        DisplayOrder =
+                            option.DisplayOrder,
+
+                        ScoreModifier =
+                            option.ScoreModifier,
+
+                        IsPreferredAnswer =
+                            option.IsPreferredAnswer
+                    });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message =
+                    "Question duplicated successfully",
+                questionId =
+                    duplicatedQuestion.Id
+            });
+        }
+
+        [HttpPost("section/{sectionId}/duplicate")]
+        public async Task<IActionResult> DuplicateSection(
+    int sectionId)
+        {
+            var originalSection =
+                await _context.AssessmentSections
+                    .Include(s => s.Questions)
+                        .ThenInclude(q => q.Options)
+                    .FirstOrDefaultAsync(
+                        s => s.Id == sectionId);
+
+            if (originalSection == null)
+            {
+                return NotFound("Section not found.");
+            }
+
+            var templateSections =
+                await _context.AssessmentSections
+                    .Where(s =>
+                        s.AssessmentTemplateId ==
+                        originalSection.AssessmentTemplateId)
+                    .ToListAsync();
+
+            foreach (var section in templateSections)
+            {
+                section.DisplayOrder++;
+            }
+
+            string newSectionTitle =
+                $"{originalSection.Title} (Copy)";
+
+            int sectionCounter = 1;
+
+            while (
+                await _context.AssessmentSections
+                    .AnyAsync(s =>
+                        s.AssessmentTemplateId ==
+                        originalSection.AssessmentTemplateId
+                        &&
+                        s.Title == newSectionTitle)
+            )
+            {
+                newSectionTitle =
+                    $"{originalSection.Title} (Copy {sectionCounter})";
+
+                sectionCounter++;
+            }
+
+            var duplicatedSection =
+                new AssessmentSection
+                {
+                    AssessmentTemplateId =
+                        originalSection.AssessmentTemplateId,
+
+                    Title = newSectionTitle,
+
+                    Description =
+                        originalSection.Description,
+
+                    DisplayOrder = 1
+                };
+
+            _context.AssessmentSections
+                .Add(duplicatedSection);
+
+            await _context.SaveChangesAsync();
+
+            foreach (
+                var originalQuestion
+                in originalSection.Questions
+            )
+            {
+                string originalKey =
+                    originalQuestion.QuestionKey;
+
+                if (originalKey.Length > 130)
+                {
+                    originalKey =
+                        originalKey.Substring(0, 130);
+                }
+
+                string baseKey =
+                    $"{originalKey}_copy";
+
+                string newKey = baseKey;
+
+                int counter = 1;
+
+                while (
+                    await _context.AssessmentQuestions
+                        .AnyAsync(q =>
+                            q.QuestionKey == newKey)
+                )
+                {
+                    newKey =
+                        $"{baseKey}{counter}";
+
+                    counter++;
+                }
+
+                var duplicatedQuestion =
+                    new AssessmentQuestion
+                    {
+                        AssessmentSectionId =
+                            duplicatedSection.Id,
+
+                        QuestionKey = newKey,
+
+                        QuestionText =
+                            originalQuestion.QuestionText,
+
+                        QuestionType =
+                            originalQuestion.QuestionType,
+
+                        Category =
+                            originalQuestion.Category,
+
+                        Weight =
+                            originalQuestion.Weight,
+
+                        Severity =
+                            originalQuestion.Severity,
+
+                        IsRequired =
+                            originalQuestion.IsRequired,
+
+                        IsActive =
+                            originalQuestion.IsActive,
+
+                        DisplayOrder =
+                            originalQuestion.DisplayOrder,
+
+                        DependsOnQuestionKey =
+                            originalQuestion.DependsOnQuestionKey,
+
+                        DependsOnValue =
+                            originalQuestion.DependsOnValue
+                    };
+
+                _context.AssessmentQuestions
+                    .Add(duplicatedQuestion);
+
+                await _context.SaveChangesAsync();
+
+                foreach (
+                    var option
+                    in originalQuestion.Options
+                )
+                {
+                    _context.AssessmentQuestionOptions
+                        .Add(
+                            new AssessmentQuestionOption
+                            {
+                                AssessmentQuestionId =
+                                    duplicatedQuestion.Id,
+
+                                OptionText =
+                                    option.OptionText,
+
+                                DisplayOrder =
+                                    option.DisplayOrder,
+
+                                ScoreModifier =
+                                    option.ScoreModifier,
+
+                                IsPreferredAnswer =
+                                    option.IsPreferredAnswer
+                            });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message =
+                    "Section duplicated successfully"
+            });
+        }
+
+        [HttpPost("{templateId}/duplicate")]
+        public async Task<IActionResult> DuplicateTemplate(
+    int templateId)
+        {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var originalTemplate =
+                await _context.AssessmentTemplates
+                    .Include(t => t.Sections)
+                        .ThenInclude(s => s.Questions)
+                            .ThenInclude(q => q.Options)
+                    .FirstOrDefaultAsync(t =>
+                        t.Id == templateId &&
+                        t.UserId == userId);
+
+            if (originalTemplate == null)
+            {
+                return NotFound("Template not found.");
+            }
+
+            string newTemplateName =
+                $"{originalTemplate.Name} (Copy)";
+
+            int templateCounter = 1;
+
+            while (
+                await _context.AssessmentTemplates
+                    .AnyAsync(t =>
+                        t.UserId == userId &&
+                        t.Name == newTemplateName)
+            )
+            {
+                newTemplateName =
+                    $"{originalTemplate.Name} (Copy {templateCounter})";
+
+                templateCounter++;
+            }
+
+            var duplicatedTemplate =
+                new AssessmentTemplate
+                {
+                    Name = newTemplateName,
+
+                    Description =
+                        originalTemplate.Description,
+
+                    Version =
+                        originalTemplate.Version,
+
+                    IsActive =
+                        originalTemplate.IsActive,
+
+                    UserId = userId,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+            _context.AssessmentTemplates
+                .Add(duplicatedTemplate);
+
+            await _context.SaveChangesAsync();
+
+            foreach (var originalSection in originalTemplate.Sections)
+            {
+                var duplicatedSection =
+                    new AssessmentSection
+                    {
+                        AssessmentTemplateId =
+                            duplicatedTemplate.Id,
+
+                        Title =
+                            originalSection.Title,
+
+                        Description =
+                            originalSection.Description,
+
+                        DisplayOrder =
+                            originalSection.DisplayOrder
+                    };
+
+                _context.AssessmentSections
+                    .Add(duplicatedSection);
+
+                await _context.SaveChangesAsync();
+
+                foreach (var originalQuestion in originalSection.Questions)
+                {
+                    string originalKey =
+                        originalQuestion.QuestionKey;
+
+                    if (originalKey.Length > 130)
+                    {
+                        originalKey =
+                            originalKey.Substring(0, 130);
+                    }
+
+                    string baseKey =
+                        $"{originalKey}_copy";
+
+                    string newKey = baseKey;
+
+                    int counter = 1;
+
+                    while (
+                        await _context.AssessmentQuestions
+                            .AnyAsync(q =>
+                                q.QuestionKey == newKey)
+                    )
+                    {
+                        newKey =
+                            $"{baseKey}{counter}";
+
+                        counter++;
+                    }
+
+                    var duplicatedQuestion =
+                        new AssessmentQuestion
+                        {
+                            AssessmentSectionId =
+                                duplicatedSection.Id,
+
+                            QuestionKey = newKey,
+
+                            QuestionText =
+                                originalQuestion.QuestionText,
+
+                            QuestionType =
+                                originalQuestion.QuestionType,
+
+                            Category =
+                                originalQuestion.Category,
+
+                            Weight =
+                                originalQuestion.Weight,
+
+                            Severity =
+                                originalQuestion.Severity,
+
+                            IsRequired =
+                                originalQuestion.IsRequired,
+
+                            IsActive =
+                                originalQuestion.IsActive,
+
+                            DisplayOrder =
+                                originalQuestion.DisplayOrder,
+
+                            DependsOnQuestionKey =
+                                originalQuestion.DependsOnQuestionKey,
+
+                            DependsOnValue =
+                                originalQuestion.DependsOnValue
+                        };
+
+                    _context.AssessmentQuestions
+                        .Add(duplicatedQuestion);
+
+                    await _context.SaveChangesAsync();
+
+                    foreach (var option in originalQuestion.Options)
+                    {
+                        _context.AssessmentQuestionOptions
+                            .Add(
+                                new AssessmentQuestionOption
+                                {
+                                    AssessmentQuestionId =
+                                        duplicatedQuestion.Id,
+
+                                    OptionText =
+                                        option.OptionText,
+
+                                    DisplayOrder =
+                                        option.DisplayOrder,
+
+                                    ScoreModifier =
+                                        option.ScoreModifier,
+
+                                    IsPreferredAnswer =
+                                        option.IsPreferredAnswer
+                                });
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return Ok(new
+            {
+                message =
+                    "Template duplicated successfully"
+            });
+        }
+
         // Get full template
         [HttpGet("{templateId}")]
         public async Task<IActionResult> GetTemplate(
@@ -536,6 +1063,8 @@ namespace VerisqAI.API.Controllers
 
             var templates =
                 await _context.AssessmentTemplates
+                    .Include(t => t.Sections)
+                    .ThenInclude(s => s.Questions)
                     .Where(t => t.UserId == userId)
                     .OrderByDescending(t => t.CreatedAt)
                     .ToListAsync();

@@ -190,3 +190,31 @@ export const createAssessmentQuestionOption = async (data) => {
         data
     );
 };
+
+export const duplicateAssessmentQuestion = async (
+    questionId
+) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/question/${questionId}/duplicate`,
+        "POST"
+    );
+};
+
+export const duplicateAssessmentSection =
+    async (sectionId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/section/${sectionId}/duplicate`,
+        "POST"
+    );
+};
+
+export const duplicateAssessmentTemplate =
+    async (templateId) => {
+
+    return apiRequest(
+        `/api/AssessmentTemplate/${templateId}/duplicate`,
+        "POST"
+    );
+};

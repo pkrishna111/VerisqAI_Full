@@ -1,0 +1,46 @@
+=> check all pages with authorization - complete it
+
+----------SEND_CODE PAGE----------
+=> start free trial button click par landing page open thavu joie
+
+----------LANDING PAGE------------
+=> add login button in landing page
+
+----------DASHBOARD---------------
+=> add skeleton loading in dashboard
+=> reduce padding from header and content
+=> add loading when clicked send/resend, pdf download in vendor row
+=> improve send questionnaire modal -> ui of selecting template
+
+----------VENDOR DETAILS----------
+=> add loading state in send questionnaire and download report button
+=> "completed" word is being in two line so make it smaller
+=> in ai assesment intelligence -> when clicked view full analysis -> ui should scroll down to overview
+=> improve ui 	-> in ai intelligence part -> top risk driver vala ma border radius ochu krvanu che
+		-> inactive tabs no color thodo change krvano che proper dekhatu nthi
+		-> search bar in all findings te right side lavani etle ek line ma avu joie
+		-> risk posture no diagram ma legend add krvanu so color khabar pade
+
+----------TEMPLATE BUILDER--------
+=> main page static che update that (table ma badho data 0 batave che and kpi cards ma bhi)
+=> add pre made ready made templates ena par click krva thi aakhu template ready made mali jai
+=> also add pre ready made sections in that each template/also provide ready made sections in dynamically created template with ready made questions and options which user can select and use or can create dynamically by using it as normally do
+=> copy template, sections and questions is also pending
+=> remove -> preview questionnaire, hide/unhide questions
+=> hide key from users
+=> improve ui of information which is at bottom of each question card because it match with options ui so everything there seems messy
+	-> so add like a footer in each question div
+
+
+----------ADVANCE IMPROVEMENENT---------
+add back button when we hower to verisq ai logo
+
+
+
+
+
+
+
+
+
+

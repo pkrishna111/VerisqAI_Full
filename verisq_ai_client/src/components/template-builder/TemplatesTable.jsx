@@ -1,6 +1,16 @@
-import { ClipboardList } from "lucide-react";
+import {
+    ClipboardList,
+    Copy,
+    Pencil,
+    Trash2,
+    ExternalLink
+} from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+
+import {
+    duplicateAssessmentTemplate
+} from "../../services/api";
 
 function TemplatesTable({
     templates,
@@ -9,6 +19,29 @@ function TemplatesTable({
 }) {
 
     const navigate = useNavigate();
+
+    const handleDuplicateTemplate =
+        async (e, templateId) => {
+
+            e.stopPropagation();
+
+            try {
+
+                await duplicateAssessmentTemplate(
+                    templateId
+                );
+
+                window.location.reload();
+
+            } catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Failed to duplicate template."
+                );
+            }
+        };
 
     return (
         <div className="table-card">
@@ -59,6 +92,7 @@ function TemplatesTable({
                             <th>Sections</th>
                             <th>Questions</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -120,7 +154,7 @@ function TemplatesTable({
                                     </td>
 
                                     <td>
-                                        {template.version || "v1"}
+                                        Version {template.version || 1}
                                     </td>
 
                                     <td>
@@ -146,6 +180,72 @@ function TemplatesTable({
                                                     : "Inactive"
                                             }
                                         </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div className="tb-template-actions">
+
+                                            <button
+                                                className="tb-template-action-btn"
+                                                title="Open Template"
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
+
+                                                    navigate(
+                                                        `/templates/${template.id}`
+                                                    );
+                                                }}
+                                            >
+                                                <ExternalLink size={15} />
+                                            </button>
+
+                                            <button
+                                                className="tb-template-action-btn"
+                                                title="Copy Template"
+                                                onClick={(e) =>
+                                                    handleDuplicateTemplate(
+                                                        e,
+                                                        template.id
+                                                    )
+                                                }
+                                            >
+                                                <Copy size={15} />
+                                            </button>
+
+                                            <button
+                                                className="tb-template-action-btn"
+                                                title="Edit Template"
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
+
+                                                    alert(
+                                                        "Edit template coming next."
+                                                    );
+                                                }}
+                                            >
+                                                <Pencil size={15} />
+                                            </button>
+
+                                            <button
+                                                className="tb-template-action-btn danger"
+                                                title="Delete Template"
+                                                onClick={(e) => {
+
+                                                    e.stopPropagation();
+
+                                                    alert(
+                                                        "Delete template coming next."
+                                                    );
+                                                }}
+                                            >
+                                                <Trash2 size={15} />
+                                            </button>
+
+                                        </div>
 
                                     </td>
 
