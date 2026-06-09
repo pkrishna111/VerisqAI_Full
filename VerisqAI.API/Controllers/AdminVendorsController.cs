@@ -158,7 +158,7 @@ if (vendor == null)
                         vendorId.ToString(),
 
                     Severity =
-                        "Error",
+                        "Delete",
 
                     Source =
                         "Admin"

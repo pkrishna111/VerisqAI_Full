@@ -45,37 +45,63 @@ function EmailModal({
   if (!isOpen) return null;
 
   const validate = () => {
+
     let newErrors = {};
 
+    // Email Validation
+
     if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Enter a valid email";
+
+      newErrors.email =
+        "Vendor email is required";
+
+    }
+    else {
+
+      const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+
+        newErrors.email =
+          "Please enter a valid email address";
+
+      }
+
     }
 
+    // Template Validation
+
     if (!templateId) {
-      alert("Please select a template.");
-      return;
+
+      newErrors.templateId =
+        "Please select an assessment template";
+
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    return (
+      Object.keys(newErrors).length === 0
+    );
+
   };
 
   const handleSubmit = () => {
+
     if (!validate()) return;
 
     onSubmit({
       email,
-      templateId: Number(templateId),
-      message
+      templateId: Number(templateId)
     });
 
     setEmail("");
-    setMessage("");
+    setTemplateId("");
     setErrors({});
 
-    onClose(); // ✅ CLOSE MODAL AFTER SUBMIT
+    onClose();
+
   };
 
   return (
@@ -119,25 +145,47 @@ function EmailModal({
 
           <select
             value={templateId}
-            onChange={(e) => setTemplateId(e.target.value)}
-            required
+            onChange={(e) => {
+
+              setTemplateId(e.target.value);
+
+              setErrors({
+                ...errors,
+                templateId: ""
+              });
+
+            }}
+            className={`EmailModal-select ${errors.templateId ? "error" : ""
+              }`}
           >
+
             <option value="">
               Select Template
             </option>
 
             {templates.map(template => (
+
               <option
                 key={template.id}
                 value={template.id}
               >
                 {template.name}
               </option>
+
             ))}
+
           </select>
+
+          {errors.templateId && (
+
+            <span className="EmailModal-error">
+              {errors.templateId}
+            </span>
+
+          )}
         </div>
 
-        {/* MESSAGE */}
+        {/* MESSAGE
         <div className="EmailModal-group">
           <label>Message (optional)</label>
           <textarea
@@ -146,7 +194,7 @@ function EmailModal({
             onChange={(e) => setMessage(e.target.value)}
             className="EmailModal-textarea"
           />
-        </div>
+        </div> */}
 
         {/* ACTIONS */}
         <div className="EmailModal-actions">

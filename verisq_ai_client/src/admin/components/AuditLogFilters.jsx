@@ -80,8 +80,8 @@ function AuditLogFilters({
           Warning
         </option>
 
-        <option value="Error">
-          Error
+        <option value="Delete">
+          Delete
         </option>
 
       </select>

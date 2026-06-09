@@ -14,36 +14,159 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
 
     // validation Function (as per document rules)
     const validate = () => {
+
         let newErrors = {};
 
-        // vendor Name
+        // =====================================
+        // Vendor Name Validation
+        // =====================================
+
+        const vendorNameRegex =
+            /^[A-Za-z0-9\s&.-]+$/;
+
         if (!vendorName.trim()) {
-            newErrors.vendorName = "Vendor Name is required";
-        } else if (vendorName.trim().length < 2) {
-            newErrors.vendorName = "Vendor Name must be at least 2 characters";
+
+            newErrors.vendorName =
+                "Vendor Name is required";
+
         }
-
-        // vendor Domain
-        const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
-
-        if (!vendorDomain.trim()) {
-            newErrors.vendorDomain = "Vendor Domain is required";
-        } else if (!domainRegex.test(vendorDomain.trim())) {
-            newErrors.vendorDomain = "Enter valid domain (e.g., company.com)";
-        } else if (
-            companyDomain &&
-            vendorDomain.trim().toLowerCase() === companyDomain.toLowerCase()
+        else if (
+            vendorName.trim().length < 2
         ) {
-            newErrors.vendorDomain = "Vendor domain must be different from your company domain";
+
+            newErrors.vendorName =
+                "Vendor Name must be at least 2 characters";
+
+        }
+        else if (
+            vendorName.trim().length > 100
+        ) {
+
+            newErrors.vendorName =
+                "Vendor Name cannot exceed 100 characters";
+
+        }
+        else if (
+            !vendorNameRegex.test(
+                vendorName.trim()
+            )
+        ) {
+
+            newErrors.vendorName =
+                "Vendor Name contains invalid characters";
+
         }
 
-        //   Data Classification
+        // =====================================
+        // Vendor Domain Validation
+        // =====================================
+
+        const cleanedDomain =
+            vendorDomain
+                .trim()
+                .replace(/^https?:\/\//, "")
+                .replace(/^www\./, "")
+                .toLowerCase();
+
+        const domainRegex =
+            /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+        if (!cleanedDomain) {
+
+            newErrors.vendorDomain =
+                "Vendor Domain is required";
+
+        }
+        else if (
+            !domainRegex.test(
+                cleanedDomain
+            )
+        ) {
+
+            newErrors.vendorDomain =
+                "Enter valid domain (example.com)";
+
+        }
+        else if (
+            companyDomain &&
+            cleanedDomain ===
+            companyDomain.toLowerCase()
+        ) {
+
+            newErrors.vendorDomain =
+                "Vendor domain must be different from your company domain";
+
+        }
+
+        // =====================================
+        // Vendor Email Validation
+        // =====================================
+
+        if (sendQuestionnaire) {
+
+            if (!vendorEmail.trim()) {
+
+                newErrors.vendorEmail =
+                    "Vendor Email is required";
+
+            }
+            else {
+
+                const emailRegex =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (
+                    !emailRegex.test(
+                        vendorEmail.trim()
+                    )
+                ) {
+
+                    newErrors.vendorEmail =
+                        "Enter a valid email address";
+
+                }
+                else {
+
+                    const emailDomain =
+                        vendorEmail
+                            .split("@")[1]
+                            ?.toLowerCase();
+
+                    if (
+                        emailDomain !==
+                        cleanedDomain
+                    ) {
+
+                        newErrors.vendorEmail =
+                            "Vendor email domain must match vendor domain";
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        // =====================================
+        // Data Classification Validation
+        // =====================================
+
         if (!dataClassification) {
-            newErrors.dataClassification = "Please select data classification";
+
+            newErrors.dataClassification =
+                "Please select data classification";
+
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+
+        return (
+            Object.keys(
+                newErrors
+            ).length === 0
+        );
+
     };
 
     const handleSubmit = async () => {
@@ -67,10 +190,13 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify({
-                    name: vendorName,
-                    domain: vendorDomain,
-                    email: vendorEmail,
-                    sendQuestionnaire: sendQuestionnaire
+                    name: vendorName.trim(),
+                    domain: vendorDomain
+                        .trim()
+                        .replace(/^https?:\/\//, "")
+                        .replace(/^www\./, ""),
+                    email: vendorEmail.trim(),
+                    sendQuestionnaire
                 })
             }).then(async (res) => {
                 if (!res.ok) {
