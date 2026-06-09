@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import "../styles/otp_verification.css";
 import API_BASE_URL from "../services/api";
 
@@ -57,9 +57,11 @@ export default function Otp_verification() {
       if (!res.ok) {
         const text = await res.text();
         setError(text);
+
+        setLoading(false); // IMPORTANT
+
         return;
-        //throw new Error(text); //removed this line to avoid console error
-      }
+      }s
 
       setStep("otp");
       setTimer(60);
@@ -292,9 +294,12 @@ export default function Otp_verification() {
 
             <p className="Otp_verification_footer_note">
               Don&apos;t have an account?{" "}
-              <a href="#" className="Otp_verification_text_link">
+              <Link
+                to="/"
+                className="Otp_verification_text_link"
+              >
                 Start free trial
-              </a>
+              </Link>
             </p>
           </div>
         )}

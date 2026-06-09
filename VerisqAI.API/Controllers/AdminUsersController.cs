@@ -316,7 +316,7 @@ namespace VerisqAI.API.Controllers
         UserEmail = email!,
         EntityType = "User",
         EntityId = userId,
-        Severity = "Error",
+        Severity = "Delete",
         Source = "Admin"
     });
 
