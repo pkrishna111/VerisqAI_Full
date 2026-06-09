@@ -3,9 +3,6 @@
 ----------SEND_CODE PAGE----------
 => start free trial button click par landing page open thavu joie
 
-----------LANDING PAGE------------
-=> add login button in landing page
-
 ----------DASHBOARD---------------
 => add skeleton loading in dashboard
 => reduce padding from header and content
@@ -31,6 +28,8 @@
 => improve ui of information which is at bottom of each question card because it match with options ui so everything there seems messy
 	-> so add like a footer in each question div
 
+---------Inside Questionnaire Filling form----------
+=> if there is yes no question then if we provide something else options like select abc or xyz instead of yes or no then also it is only showing yes no and not our dynamic options
 
 ----------ADVANCE IMPROVEMENENT---------
 add back button when we hower to verisq ai logo

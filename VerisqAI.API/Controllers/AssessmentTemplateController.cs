@@ -6,6 +6,7 @@ using Verisq.API.DTOs.AssessmentTemplate;
 using VerisqAI.API.Data;
 using VerisqAI.API.DTOs.AssessmentTemplate;
 using VerisqAI.API.Models;
+using VerisqAI.API.TemplateLibrary;
 
 namespace VerisqAI.API.Controllers
 {
@@ -1189,6 +1190,203 @@ namespace VerisqAI.API.Controllers
             }
 
             return Ok(template);
+        }
+
+        [HttpGet("library")]
+        public IActionResult GetTemplateLibrary()
+        {
+            var templates =
+                ReadyMadeTemplates.Templates
+                    .Select(template => new
+                    {
+                        key = template.Key,
+                        name = template.Name,
+                        description = template.Description,
+                        sectionCount = template.Sections.Count,
+                        questionCount =
+                            template.Sections
+                                .Sum(s => s.Questions.Count)
+                    })
+                    .ToList();
+
+            return Ok(templates);
+        }
+
+        [HttpPost("library/{templateKey}")]
+        public async Task<IActionResult>
+CreateTemplateFromLibrary(
+    string templateKey)
+        {
+            var userId =
+                User.FindFirstValue(
+                    ClaimTypes.NameIdentifier
+                );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var templateCount =
+                await _context.AssessmentTemplates
+                    .CountAsync(t =>
+                        t.UserId == userId);
+
+            if (templateCount >= 5)
+            {
+                return BadRequest(
+                    "Free Trial allows maximum 5 templates."
+                );
+            }
+
+            var libraryTemplate =
+                ReadyMadeTemplates.Get(
+                    templateKey
+                );
+
+            if (libraryTemplate == null)
+            {
+                return NotFound(
+                    "Library template not found."
+                );
+            }
+
+            var template =
+                new AssessmentTemplate
+                {
+                    Name =
+                        libraryTemplate.Name,
+
+                    Description =
+                        libraryTemplate.Description,
+
+                    Version =
+                        libraryTemplate.Version,
+
+                    UserId = userId,
+
+                    IsActive = true,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+            _context.AssessmentTemplates
+                .Add(template);
+
+            await _context.SaveChangesAsync();
+
+            int sectionOrder = 1;
+
+            foreach (
+                var librarySection
+                in libraryTemplate.Sections
+            )
+            {
+                var section =
+                    new AssessmentSection
+                    {
+                        AssessmentTemplateId =
+                            template.Id,
+
+                        Title =
+                            librarySection.Title,
+
+                        Description =
+                            librarySection.Description,
+
+                        DisplayOrder =
+                            sectionOrder++
+                    };
+
+                _context.AssessmentSections
+                    .Add(section);
+
+                await _context.SaveChangesAsync();
+
+                int questionOrder = 1;
+
+                foreach (
+                    var libraryQuestion
+                    in librarySection.Questions
+                )
+                {
+                    var question =
+                        new AssessmentQuestion
+                        {
+                            AssessmentSectionId =
+                                section.Id,
+
+                            QuestionKey =
+                                Guid.NewGuid()
+                                    .ToString("N"),
+
+                            QuestionText =
+                                libraryQuestion.QuestionText,
+
+                            QuestionType =
+                                libraryQuestion.QuestionType,
+
+                            Category =
+                                libraryQuestion.Category,
+
+                            Severity =
+                                libraryQuestion.Severity,
+
+                            Weight =
+                                libraryQuestion.Weight,
+
+                            IsRequired =
+                                libraryQuestion.IsRequired,
+
+                            IsActive = true,
+
+                            DisplayOrder =
+                                questionOrder++
+                        };
+
+                    _context.AssessmentQuestions
+                        .Add(question);
+
+                    await _context.SaveChangesAsync();
+
+                    int optionOrder = 1;
+
+                    foreach (
+                        var libraryOption
+                        in libraryQuestion.Options
+                    )
+                    {
+                        _context
+                            .AssessmentQuestionOptions
+                            .Add(
+                                new AssessmentQuestionOption
+                                {
+                                    AssessmentQuestionId =
+                                        question.Id,
+
+                                    OptionText =
+                                        libraryOption.OptionText,
+
+                                    IsPreferredAnswer =
+                                        libraryOption.IsPreferredAnswer,
+
+                                    DisplayOrder =
+                                        optionOrder++
+                                });
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return Ok(new
+            {
+                message =
+                    "Template created from library.",
+                templateId =
+                    template.Id
+            });
         }
 
         // Get all templates

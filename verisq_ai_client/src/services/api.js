@@ -73,6 +73,21 @@ export const getAssessmentTemplateById = async (templateId) => {
     return apiRequest(`/api/AssessmentTemplate/${templateId}`);
 };
 
+export const getTemplateLibrary = async () => {
+    return apiRequest(
+        "/api/AssessmentTemplate/library"
+    );
+};
+
+export const createTemplateFromLibrary =
+    async (templateKey) => {
+
+        return apiRequest(
+            `/api/AssessmentTemplate/library/${templateKey}`,
+            "POST"
+        );
+    };
+
 // Create template
 export const createAssessmentTemplate = async (data) => {
     return apiRequest(

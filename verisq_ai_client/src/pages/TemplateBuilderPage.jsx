@@ -18,6 +18,9 @@ import "../styles/template-builder/templateBuilder.css";
 import CreateTemplateModal
     from "../components/template-builder/CreateTemplateModal";
 
+import TemplateLibraryModal
+    from "../components/template-builder/TemplateLibraryModal";
+
 function TemplateBuilderPage() {
 
     const [templates, setTemplates] = useState([]);
@@ -30,6 +33,10 @@ function TemplateBuilderPage() {
 
     const [editingTemplate, setEditingTemplate] =
         useState(null);
+
+    const [showLibraryModal,
+        setShowLibraryModal] =
+        useState(false);
 
     useEffect(() => {
 
@@ -71,29 +78,60 @@ function TemplateBuilderPage() {
 
             <main className="dashboard-main">
 
-                <TemplateBuilderHero
-                    onCreateClick={() => {
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px"
+                    }}
+                >
 
-                        if (
-                            templates.length >= 5
-                        ) {
+                    <TemplateBuilderHero
+                        onCreateClick={() => {
 
-                            alert(
-                                "Free Trial allows maximum 5 templates."
-                            );
+                            if (
+                                templates.length >= 5
+                            ) {
 
-                            return;
+                                alert(
+                                    "Free Trial allows maximum 5 templates."
+                                );
+
+                                return;
+                            }
+
+                            setShowCreateModal(true);
+                        }}
+
+                        usedTemplates={
+                            templates.length
                         }
 
-                        setShowCreateModal(true);
-                    }}
+                        maxTemplates={5}
+                    />
 
-                    usedTemplates={
-                        templates.length
-                    }
+                    <button
+                        className="btn-add-vendor"
+                        onClick={() => {
 
-                    maxTemplates={5}
-                />
+                            if (
+                                templates.length >= 5
+                            ) {
+
+                                alert(
+                                    "Free Trial allows maximum 5 templates."
+                                );
+
+                                return;
+                            }
+
+                            setShowLibraryModal(true);
+                        }}
+                    >
+                        Use Ready-Made Template
+                    </button>
+
+                </div>
 
                 <TemplateBuilderKpis
                     templates={templates}
@@ -130,6 +168,14 @@ function TemplateBuilderPage() {
                         setEditingTemplate(null);
                     }}
 
+                    onCreated={fetchTemplates}
+                />
+
+                <TemplateLibraryModal
+                    open={showLibraryModal}
+                    onClose={() =>
+                        setShowLibraryModal(false)
+                    }
                     onCreated={fetchTemplates}
                 />
 
