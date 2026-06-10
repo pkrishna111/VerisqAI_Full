@@ -278,3 +278,12 @@ export const deleteAssessmentTemplate =
         "DELETE"
     );
 };
+
+export const cancelQuestionnaire =
+    async (questionnaireId) => {
+
+    return apiRequest(
+        `/api/dashboard/questionnaire/${questionnaireId}/cancel`,
+        "POST"
+    );
+};
