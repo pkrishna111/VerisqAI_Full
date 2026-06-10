@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 import {
-    getTemplateLibrary,
-    createTemplateFromLibrary
+    getSectionLibrary,
+    createSectionFromLibrary
 } from "../../services/api";
 
-function TemplateLibraryModal({
+function SectionLibraryModal({
     open,
     onClose,
+    templateId,
     onCreated
 }) {
 
-    const [templates, setTemplates] =
+    const [sections, setSections] =
         useState([]);
 
     const [loading, setLoading] =
@@ -23,38 +24,39 @@ function TemplateLibraryModal({
 
         if (!open) return;
 
-        loadLibrary();
+        loadSections();
 
     }, [open]);
 
-    const loadLibrary = async () => {
+    const loadSections = async () => {
 
         try {
 
             const data =
-                await getTemplateLibrary();
+                await getSectionLibrary();
 
-            setTemplates(data);
+            setSections(data);
 
         } catch (err) {
 
             console.error(err);
 
             alert(
-                "Failed to load template library."
+                "Failed to load section library."
             );
         }
     };
 
-    const handleUseTemplate =
-        async (templateKey) => {
+    const handleAddSection =
+        async (sectionKey) => {
 
             try {
 
                 setLoading(true);
 
-                await createTemplateFromLibrary(
-                    templateKey
+                await createSectionFromLibrary(
+                    sectionKey,
+                    templateId
                 );
 
                 onCreated();
@@ -67,7 +69,7 @@ function TemplateLibraryModal({
 
                 alert(
                     err.message ||
-                    "Failed to create template."
+                    "Failed to add section."
                 );
 
             } finally {
@@ -82,13 +84,13 @@ function TemplateLibraryModal({
         <div className="avm-overlay">
 
             <div
-                className="avm-container template-library-modal"
+                className="avm-container section-library-modal"
             >
 
                 <div className="avm-header">
 
                     <h2 className="avm-title">
-                        Ready-Made Templates
+                        Ready-Made Sections
                     </h2>
 
                     <button
@@ -104,64 +106,73 @@ function TemplateLibraryModal({
 
                 <div className="avm-body">
 
-                    <div className="template-library-grid">
+                    <div
+                        className="section-library-grid"
+                    >
 
                         {
-                            templates.map(template => (
+                            sections.map(section => (
 
                                 <div
-                                    key={template.key}
-                                    className="template-library-card"
+                                    key={section.key}
+                                    className="section-library-card"
                                 >
 
                                     <div
-                                        className="template-library-top"
+                                        className="section-library-top"
                                     >
 
                                         <div>
 
                                             <h3>
-                                                {template.name}
+                                                {
+                                                    section.title
+                                                }
                                             </h3>
 
                                             <p>
-                                                {template.description}
+                                                {
+                                                    section.description
+                                                }
                                             </p>
 
                                         </div>
 
                                         <span
-                                            className="template-library-badge"
+                                            className="section-library-badge"
                                         >
-                                            Ready-Made
+                                            {
+                                                section.category
+                                            }
                                         </span>
 
                                     </div>
 
                                     <div
-                                        className="template-library-meta"
+                                        className="section-library-meta"
                                     >
 
                                         <span>
-                                            📂 {template.sectionCount} Sections
-                                        </span>
-
-                                        <span>
-                                            ❓ {template.questionCount} Questions
+                                            ❓
+                                            {
+                                                section.questionCount
+                                            }
+                                            {" "}
+                                            Questions
                                         </span>
 
                                     </div>
 
                                     <button
-                                        className="template-library-btn"
+                                        className="section-library-btn"
                                         disabled={loading}
                                         onClick={() =>
-                                            handleUseTemplate(
-                                                template.key
+                                            handleAddSection(
+                                                section.key
                                             )
                                         }
                                     >
-                                        Use Template
+                                        Add Section
                                     </button>
 
                                 </div>
@@ -179,4 +190,4 @@ function TemplateLibraryModal({
     );
 }
 
-export default TemplateLibraryModal;
+export default SectionLibraryModal;

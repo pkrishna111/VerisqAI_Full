@@ -2,6 +2,7 @@ import { Plus } from "lucide-react";
 
 function TemplateBuilderHero({
     onCreateClick,
+    onLibraryClick,
     usedTemplates,
     maxTemplates
 }) {
@@ -39,19 +40,36 @@ function TemplateBuilderHero({
 
                 </div>
 
-                <button
-                    className="btn-add-vendor"
-                    onClick={onCreateClick}
-                    disabled={isLimitReached}
+                <div
+                    style={{
+                        display: "flex",
+                        gap: "12px"
+                    }}
                 >
-                    <Plus size={18} />
 
-                    {
-                        isLimitReached
-                            ? "Limit Reached"
-                            : "Create Template"
-                    }
-                </button>
+                    <button
+                        className="btn-secondary-template"
+                        onClick={onLibraryClick}
+                        disabled={isLimitReached}
+                    >
+                        📚 Template Library
+                    </button>
+
+                    <button
+                        className="btn-add-vendor"
+                        onClick={onCreateClick}
+                        disabled={isLimitReached}
+                    >
+                        <Plus size={18} />
+
+                        {
+                            isLimitReached
+                                ? "Limit Reached"
+                                : "Create Template"
+                        }
+                    </button>
+
+                </div>
 
             </div>
 

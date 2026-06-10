@@ -88,6 +88,29 @@ export const createTemplateFromLibrary =
         );
     };
 
+export const getSectionLibrary =
+    async () => {
+
+        return apiRequest(
+            "/api/AssessmentTemplate/sections/library"
+        );
+    };
+
+export const createSectionFromLibrary =
+    async (
+        sectionKey,
+        templateId
+    ) => {
+
+        return apiRequest(
+            `/api/AssessmentTemplate/sections/library/${encodeURIComponent(sectionKey)}`,
+            "POST",
+            {
+                templateId
+            }
+        );
+    };
+
 // Create template
 export const createAssessmentTemplate = async (data) => {
     return apiRequest(
