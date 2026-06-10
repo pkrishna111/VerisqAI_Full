@@ -21,6 +21,9 @@ namespace VerisqAI.API.Controllers
         // ==========================================
         // GET ALL VENDORS
         // ==========================================
+        // ==========================================
+        // GET ALL VENDORS
+        // ==========================================
         [HttpGet]
         public async Task<IActionResult> GetVendors()
         {
@@ -32,10 +35,35 @@ namespace VerisqAI.API.Controllers
                     x.Domain,
                     x.Email,
                     x.Status,
-                    x.Score,
-                    x.RiskScore,
-                    x.RiskTier,
-                    x.Findings,
+
+                    Score =
+                        x.Score ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.Score)
+                            .FirstOrDefault(),
+
+                    RiskScore =
+                        x.RiskScore ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.RiskScore)
+                            .FirstOrDefault(),
+
+                    RiskTier =
+                        x.RiskTier ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.RiskTier)
+                            .FirstOrDefault(),
+
+                    Findings =
+                        x.Findings ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.Findings.Count)
+                            .FirstOrDefault(),
+
                     x.QuestionnaireStatus,
                     x.CreatedAt,
 
@@ -51,8 +79,7 @@ namespace VerisqAI.API.Controllers
                     OwnerEmail =
                         x.User.Email
                 })
-                .OrderByDescending(
-                    x => x.CreatedAt)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             return Ok(vendors);
@@ -62,8 +89,7 @@ namespace VerisqAI.API.Controllers
         // GET VENDOR BY ID
         // ==========================================
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVendor(
-            int id)
+        public async Task<IActionResult> GetVendor(int id)
         {
             var vendor = await _context.Vendors
                 .Where(x => x.Id == id)
@@ -74,10 +100,35 @@ namespace VerisqAI.API.Controllers
                     x.Domain,
                     x.Email,
                     x.Status,
-                    x.Score,
-                    x.RiskScore,
-                    x.RiskTier,
-                    x.Findings,
+
+                    Score =
+                        x.Score ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.Score)
+                            .FirstOrDefault(),
+
+                    RiskScore =
+                        x.RiskScore ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.RiskScore)
+                            .FirstOrDefault(),
+
+                    RiskTier =
+                        x.RiskTier ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.RiskTier)
+                            .FirstOrDefault(),
+
+                    Findings =
+                        x.Findings ??
+                        x.Scorecards
+                            .OrderByDescending(s => s.CreatedAt)
+                            .Select(s => s.Findings.Count)
+                            .FirstOrDefault(),
+
                     x.QuestionnaireStatus,
                     x.CreatedAt,
 
@@ -99,8 +150,7 @@ namespace VerisqAI.API.Controllers
             {
                 return NotFound(new
                 {
-                    message =
-                        "Vendor not found"
+                    message = "Vendor not found"
                 });
             }
 

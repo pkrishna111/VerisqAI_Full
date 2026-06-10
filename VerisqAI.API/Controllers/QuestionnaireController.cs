@@ -264,6 +264,23 @@ namespace VerisqAI.API.Controllers
 
             if (vendor != null)
             {
+                vendor.Score = result.Score;
+
+                vendor.RiskScore = result.RiskScore;
+
+                vendor.RiskTier = result.RiskTier;
+
+                vendor.Findings = result.Findings.Count;
+
+                vendor.Status = "Complete";
+
+                vendor.QuestionnaireStatus = "Completed";
+
+                await _context.SaveChangesAsync();
+            }
+
+            if (vendor != null)
+            {
                 try
                 {
                     await _aiAssessmentService
@@ -403,6 +420,21 @@ namespace VerisqAI.API.Controllers
             }
 
             _context.Findings.AddRange(scoringResult.Findings);
+
+            await _context.SaveChangesAsync();
+
+            // Update Vendor Table
+            vendor.Score = scoringResult.Score;
+
+            vendor.RiskScore = scoringResult.RiskScore;
+
+            vendor.RiskTier = scoringResult.RiskTier;
+
+            vendor.Findings = scoringResult.Findings.Count;
+
+            vendor.Status = "Complete";
+
+            vendor.QuestionnaireStatus = "Completed";
 
             await _context.SaveChangesAsync();
 

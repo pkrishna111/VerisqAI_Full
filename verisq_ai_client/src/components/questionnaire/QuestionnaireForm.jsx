@@ -16,6 +16,8 @@ export default function QuestionnaireForm({
 
     const [answers, setAnswers] = useState({});
     const [currentStep, setCurrentStep] = useState(0);
+    const [submitting, setSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
 
     const currentQuestion = questions[currentStep];
 
@@ -71,7 +73,7 @@ export default function QuestionnaireForm({
         }
 
         const payload = {
-            questionnaireId: questionnaireId,
+            questionnaireId,
             vendorId,
             templateId: template.templateId,
 
@@ -86,23 +88,87 @@ export default function QuestionnaireForm({
 
         try {
 
+            setSubmitting(true);
+
             await apiRequest(
                 "/api/questionnaire/dynamic-submit",
                 "POST",
                 payload
             );
 
-            alert("Assessment submitted successfully!");
+            setSubmitSuccess(true);
 
-        } catch (err) {
+        }
+        catch (err) {
 
             alert(err.message);
+
+        }
+        finally {
+
+            if (!submitSuccess) {
+                setSubmitting(false);
+            }
+
         }
     };
 
     return (
         <div className="QuestionnaireForm-wrapper">
 
+            {(submitting || submitSuccess) && (
+
+                <div className="QuestionnaireForm-loader-overlay">
+
+                    <div className="QuestionnaireForm-loader-box">
+
+                        {!submitSuccess ? (
+
+                            <>
+                                <div className="QuestionnaireForm-spinner"></div>
+
+                                <h3>
+                                    AI is analyzing your assessment
+                                </h3>
+
+                                <p>
+                                    Generating risk score, findings and recommendations...
+                                </p>
+                            </>
+
+                        ) : (
+
+                            <>
+                                <div className="QuestionnaireForm-success-icon">
+                                    ✓
+                                </div>
+
+                                <h3>
+                                    Assessment Submitted Successfully
+                                </h3>
+
+                                <p>
+                                    Your responses have been processed successfully.
+                                    The AI scorecard and recommendations are now being generated.
+                                </p>
+
+                                <button
+                                    className="QuestionnaireForm-success-btn"
+                                    onClick={() => {
+                                        window.location.reload();
+                                    }}
+                                >
+                                    Continue
+                                </button>
+                            </>
+
+                        )}
+
+                    </div>
+
+                </div>
+
+            )}
             <div className="QuestionnaireForm-container">
 
                 {/* HEADER */}
@@ -157,7 +223,10 @@ export default function QuestionnaireForm({
                         onClick={() =>
                             setCurrentStep(prev => prev - 1)
                         }
-                        disabled={currentStep === 0}
+                        disabled={
+                            currentStep === 0 ||
+                            submitting
+                        }
                     >
                         ← Back
                     </button>
@@ -166,6 +235,7 @@ export default function QuestionnaireForm({
 
                         <button
                             className="QuestionnaireForm-btn primary"
+                            disabled={submitting}
                             onClick={() => {
 
                                 if (!validateCurrentStep())
@@ -184,11 +254,16 @@ export default function QuestionnaireForm({
                         <button
                             className="QuestionnaireForm-btn success"
                             onClick={handleSubmit}
+                            disabled={submitting}
                         >
-                            Submit ✓
+                            {submitting
+                                ? "Processing..."
+                                : "Submit ✓"}
                         </button>
 
                     )}
+
+
 
                 </div>
 
