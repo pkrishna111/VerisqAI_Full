@@ -11,7 +11,7 @@ import AiModelUsageChart from "../components/AiModelUsageChart";
 import AiActivityTable from "../components/AiActivityTable";
 
 import AiFailedRequestsTable from "../components/AiFailedRequestsTable";
-
+import AiMonitoringSkeleton from "../components/skeletons/AiMonitoringSkeleton";
 import {
   getAiStats,
   getAiActivity,
@@ -23,7 +23,8 @@ import {
 import "../styles/AiMonitoring.css";
 
 function AiMonitoring() {
-
+  const [loading, setLoading] =
+  useState(true);
   const [stats, setStats] =
     useState(null);
 
@@ -48,54 +49,95 @@ function AiMonitoring() {
   const loadData = async () => {
 
     try {
-
+  
+      setLoading(true);
+  
+      const startTime = Date.now();
+  
       const statsData =
         await getAiStats();
-
+  
       const activityData =
         await getAiActivity();
-
+  
       const modelUsageData =
         await getModelUsage();
-
+  
       const processingVolumeData =
         await getProcessingVolume();
-
+  
       const failedRequestsData =
         await getFailedRequests();
-
+  
+      const elapsed =
+        Date.now() - startTime;
+  
+      const minimumSkeletonTime = 1000;
+  
+      if (
+        elapsed <
+        minimumSkeletonTime
+      ) {
+  
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              minimumSkeletonTime - elapsed
+            )
+        );
+  
+      }
+  
       setStats(
         statsData
       );
-
+  
       setActivity(
         activityData
       );
-
+  
       setModelUsage(
         modelUsageData
       );
-
+  
       setProcessingVolume(
         processingVolumeData
       );
-
+  
       setFailedRequests(
         failedRequestsData
       );
-
+  
     }
     catch (error) {
-
+  
       console.error(
         "AI Monitoring Error:",
         error
       );
-
+  
     }
-
+    finally {
+  
+      setLoading(false);
+  
+    }
+  
   };
+  if (loading) {
 
+    return (
+  
+      <AdminLayout>
+  
+        <AiMonitoringSkeleton />
+  
+      </AdminLayout>
+  
+    );
+  
+  }
   return (
     <AdminLayout>
 

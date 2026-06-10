@@ -8,6 +8,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import UserTable from "../components/UserTable";
 import UserDetailsModal from "../components/UserDetailsModal";
 import UserStats from "../components/UserStats";
+import UsersSkeleton from "../components/skeletons/UsersSkeleton";
 
 import {
   getUsers,
@@ -84,42 +85,58 @@ function Users() {
   const loadUsers = async () => {
 
     try {
-
+  
       setLoading(true);
-
+  
+      const startTime = Date.now();
+  
       const usersData =
         await getUsers();
-
+  
       const statsData =
         await getUserStats();
-
-      setUsers(
-        usersData
-      );
-
-      setFilteredUsers(
-        usersData
-      );
-
-      setStats(
-        statsData
-      );
-
+  
+      const elapsed =
+        Date.now() - startTime;
+  
+      const minimumSkeletonTime = 1000;
+  
+      if (
+        elapsed <
+        minimumSkeletonTime
+      ) {
+  
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              minimumSkeletonTime - elapsed
+            )
+        );
+  
+      }
+  
+      setUsers(usersData);
+  
+      setFilteredUsers(usersData);
+  
+      setStats(statsData);
+  
     }
     catch (error) {
-
+  
       console.error(error);
-
+  
       showNotification(
         "Failed to load users",
         "error"
       );
-
+  
     }
     finally {
-
+  
       setLoading(false);
-
+  
     }
   };
 
@@ -421,6 +438,14 @@ function Users() {
       currentPage
       * itemsPerPage
     );
+
+    if (loading) {
+      return (
+        <AdminLayout>
+          <UsersSkeleton />
+        </AdminLayout>
+      );
+    }
 
   return (
 

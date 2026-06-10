@@ -1,0 +1,38 @@
+.dashboard-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .dashboard-skeleton__hero {
+    height: 180px;
+    border-radius: 24px;
+  }
+  
+  .dashboard-skeleton__stats {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(4, 1fr);
+  
+    gap: 24px;
+  }
+  
+  .dashboard-skeleton__card {
+    height: 170px;
+    border-radius: 20px;
+  }
+  
+  .dashboard-skeleton__charts {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(2, 1fr);
+  
+    gap: 24px;
+  }
+  
+  .dashboard-skeleton__chart {
+    height: 400px;
+    border-radius: 24px;
+  }

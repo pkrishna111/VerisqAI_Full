@@ -182,7 +182,7 @@ function EmailModal({
               {errors.templateId}
             </span>
 
-          )}z
+          )}
         </div>
 
         {/* MESSAGE

@@ -8,50 +8,35 @@ import AdminLayout from "../layouts/AdminLayout";
 import VendorTable from "../components/VendorTable";
 import VendorDetailsModal from "../components/VendorDetailsModal";
 import VendorStats from "../components/VendorStats";
+import VendorsSkeleton from "../components/skeletons/VendorsSkeleton";
 
 import {
   getVendors,
   getVendorById,
   deleteVendor,
-  getVendorStats
+  getVendorStats,
 } from "../services/vendorApi";
 
 import "../styles/Vendors.css";
 
 function Vendors() {
+  const [vendors, setVendors] = useState([]);
 
-  const [vendors, setVendors] =
-    useState([]);
+  const [filteredVendors, setFilteredVendors] = useState([]);
 
-  const [filteredVendors,
-    setFilteredVendors] =
-    useState([]);
+  const [stats, setStats] = useState(null);
 
-  const [stats, setStats] =
-    useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [selectedVendor, setSelectedVendor] = useState(null);
 
-  const [selectedVendor,
-    setSelectedVendor] =
-    useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const [searchQuery,
-    setSearchQuery] =
-    useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
-  const [statusFilter,
-    setStatusFilter] =
-    useState("");
+  const [riskFilter, setRiskFilter] = useState("");
 
-  const [riskFilter,
-    setRiskFilter] =
-    useState("");
-
-  const [currentPage,
-    setCurrentPage] =
-    useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
 
@@ -60,525 +45,276 @@ function Vendors() {
   }, []);
 
   const loadVendors = async () => {
-
     try {
-
       setLoading(true);
 
-      const vendorsData =
-        await getVendors();
+      const startTime = Date.now();
 
-      const statsData =
-        await getVendorStats();
+      const vendorsData = await getVendors();
 
-      setVendors(
-        vendorsData
-      );
+      const statsData = await getVendorStats();
 
-      setFilteredVendors(
-        vendorsData
-      );
+      const elapsed = Date.now() - startTime;
 
-      setStats(
-        statsData
-      );
+      const minimumSkeletonTime = 1000;
 
-    }
-    catch (error) {
+      if (elapsed < minimumSkeletonTime) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, minimumSkeletonTime - elapsed)
+        );
+      }
 
-      console.error(
-        "Vendor Error:",
-        error
-      );
+      setVendors(vendorsData);
 
-    }
-    finally {
+      setFilteredVendors(vendorsData);
 
+      setStats(statsData);
+    } catch (error) {
+      console.error("Vendor Error:", error);
+    } finally {
       setLoading(false);
-
     }
-
   };
 
   // ==========================================
   // FILTERS
   // ==========================================
 
-  const applyFilters = (
-    search,
-    status,
-    risk
-  ) => {
-
-    let result =
-      [...vendors];
+  const applyFilters = (search, status, risk) => {
+    let result = [...vendors];
 
     if (search) {
-
-      result =
-        result.filter(
-          vendor =>
-
-            vendor.name
-              ?.toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-
-            ||
-
-            vendor.email
-              ?.toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-
-            ||
-
-            vendor.domain
-              ?.toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-
-            ||
-
-            vendor.status
-              ?.toLowerCase()
-              .includes(
-                search.toLowerCase()
-              )
-        );
+      result = result.filter(
+        (vendor) =>
+          vendor.name?.toLowerCase().includes(search.toLowerCase()) ||
+          vendor.email?.toLowerCase().includes(search.toLowerCase()) ||
+          vendor.domain?.toLowerCase().includes(search.toLowerCase()) ||
+          vendor.status?.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
     if (status) {
-
-      result =
-        result.filter(
-          vendor =>
-            vendor.status ===
-            status
-        );
+      result = result.filter((vendor) => vendor.status === status);
     }
 
     if (risk) {
-
-      result =
-        result.filter(
-          vendor =>
-            String(
-              vendor.riskTier
-            ) === risk
-        );
+      result = result.filter((vendor) => String(vendor.riskTier) === risk);
     }
 
-    setFilteredVendors(
-      result
-    );
+    setFilteredVendors(result);
   };
 
-  const handleSearch =
-    (value) => {
+  const handleSearch = (value) => {
+    setCurrentPage(1);
 
-      setCurrentPage(1);
+    setSearchQuery(value);
 
-      setSearchQuery(
-        value
-      );
+    applyFilters(value, statusFilter, riskFilter);
+  };
 
-      applyFilters(
-        value,
-        statusFilter,
-        riskFilter
-      );
-    };
+  const handleStatusFilter = (value) => {
+    setCurrentPage(1);
 
-  const handleStatusFilter =
-    (value) => {
+    setStatusFilter(value);
 
-      setCurrentPage(1);
+    applyFilters(searchQuery, value, riskFilter);
+  };
 
-      setStatusFilter(
-        value
-      );
+  const handleRiskFilter = (value) => {
+    setCurrentPage(1);
 
-      applyFilters(
-        searchQuery,
-        value,
-        riskFilter
-      );
-    };
+    setRiskFilter(value);
 
-  const handleRiskFilter =
-    (value) => {
-
-      setCurrentPage(1);
-
-      setRiskFilter(
-        value
-      );
-
-      applyFilters(
-        searchQuery,
-        statusFilter,
-        value
-      );
-    };
+    applyFilters(searchQuery, statusFilter, value);
+  };
 
   // ==========================================
   // REFRESH
   // ==========================================
 
-  const handleRefresh =
-    () => {
+  const handleRefresh = () => {
+    setCurrentPage(1);
 
-      setCurrentPage(1);
+    setSearchQuery("");
 
-      setSearchQuery("");
+    setStatusFilter("");
 
-      setStatusFilter("");
+    setRiskFilter("");
 
-      setRiskFilter("");
-
-      loadVendors();
-    };
+    loadVendors();
+  };
 
   // ==========================================
   // EXPORT PDF
   // ==========================================
 
-  const handleExportPdf =
-    () => {
+  const handleExportPdf = () => {
+    const doc = new jsPDF();
 
-      const doc =
-        new jsPDF();
+    doc.setFontSize(20);
 
-      doc.setFontSize(20);
+    doc.text("VerisqAI Vendor Report", 14, 20);
 
-      doc.text(
-        "VerisqAI Vendor Report",
-        14,
-        20
-      );
+    doc.setFontSize(10);
 
-      doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
 
-      doc.text(
-        `Generated: ${new Date().toLocaleString()}`,
-        14,
-        28
-      );
+    autoTable(doc, {
+      startY: 35,
 
-      autoTable(
-        doc,
-        {
-          startY: 35,
+      head: [["Name", "Email", "Domain", "Status", "Risk Tier", "Score"]],
 
-          head: [[
-            "Name",
-            "Email",
-            "Domain",
-            "Status",
-            "Risk Tier",
-            "Score"
-          ]],
+      body: filteredVendors.map((vendor) => [
+        vendor.name || "",
 
-          body:
-            filteredVendors.map(
-              vendor => [
+        vendor.email || "",
 
-                vendor.name || "",
+        vendor.domain || "",
 
-                vendor.email || "",
+        vendor.status || "",
 
-                vendor.domain || "",
+        vendor.riskTier || "",
 
-                vendor.status || "",
+        vendor.score || "",
+      ]),
+    });
 
-                vendor.riskTier || "",
-
-                vendor.score || ""
-              ]
-            )
-        }
-      );
-
-      doc.save(
-        "VendorReport.pdf"
-      );
-    };
+    doc.save("VendorReport.pdf");
+  };
 
   // ==========================================
   // VIEW VENDOR
   // ==========================================
 
-  const handleViewVendor =
-    async (vendorId) => {
+  const handleViewVendor = async (vendorId) => {
+    try {
+      const vendor = await getVendorById(vendorId);
 
-      try {
-
-        const vendor =
-          await getVendorById(
-            vendorId
-          );
-
-        setSelectedVendor(
-          vendor
-        );
-
-      }
-      catch (error) {
-
-        console.error(
-          "View Vendor Error:",
-          error
-        );
-
-      }
-
-    };
+      setSelectedVendor(vendor);
+    } catch (error) {
+      console.error("View Vendor Error:", error);
+    }
+  };
 
   // ==========================================
   // DELETE
   // ==========================================
 
-  const handleDelete =
-    async (vendorId) => {
+  const handleDelete = async (vendorId) => {
+    const confirmed = window.confirm("Delete this vendor?");
 
-      const confirmed =
-        window.confirm(
-          "Delete this vendor?"
-        );
+    if (!confirmed) {
+      return;
+    }
 
-      if (!confirmed) {
-        return;
-      }
+    try {
+      await deleteVendor(vendorId);
 
-      try {
-
-        await deleteVendor(
-          vendorId
-        );
-
-        await loadVendors();
-
-      }
-      catch (error) {
-
-        console.error(
-          "Delete Vendor Error:",
-          error
-        );
-
-      }
-
-    };
+      await loadVendors();
+    } catch (error) {
+      console.error("Delete Vendor Error:", error);
+    }
+  };
 
   // ==========================================
   // LOADING
   // ==========================================
 
   if (loading) {
-
     return (
-
       <AdminLayout>
-
-        <div className="vendors-loading">
-
-          Loading vendors...
-
-        </div>
-
+        <VendorsSkeleton />
       </AdminLayout>
-
     );
   }
 
-  const totalPages =
-    Math.ceil(
-      filteredVendors.length /
-      itemsPerPage
-    );
+  const totalPages = Math.ceil(filteredVendors.length / itemsPerPage);
 
-  const startIndex =
-    (currentPage - 1) *
-    itemsPerPage;
+  const startIndex = (currentPage - 1) * itemsPerPage;
 
-  const paginatedVendors =
-    filteredVendors.slice(
-      startIndex,
-      startIndex + itemsPerPage
-    );
+  const paginatedVendors = filteredVendors.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
-
     <AdminLayout>
-
       <div className="vendors">
-
         <div className="vendors-header">
-
-          <h1>
-            Vendor Management
-          </h1>
-
+          <h1>Vendor Management</h1>
         </div>
 
-        {stats && (
-
-          <VendorStats
-            stats={stats}
-          />
-
-        )}
+        {stats && <VendorStats stats={stats} />}
 
         <div className="vendors-toolbar">
-
           <div className="vendors-search">
-
             <input
               type="text"
               placeholder="Search Vendor..."
               value={searchQuery}
-              onChange={(e) =>
-                handleSearch(
-                  e.target.value
-                )
-              }
+              onChange={(e) => handleSearch(e.target.value)}
             />
-
           </div>
 
           <select
             className="vendors-filter"
             value={statusFilter}
-            onChange={(e) =>
-              handleStatusFilter(
-                e.target.value
-              )
-            }
+            onChange={(e) => handleStatusFilter(e.target.value)}
           >
-            <option value="">
-              All Status
-            </option>
+            <option value="">All Status</option>
 
-            <option value="Queued">
-              Queued
-            </option>
+            <option value="Queued">Queued</option>
 
-            <option value="Complete">
-              Complete
-            </option>
-
+            <option value="Complete">Complete</option>
           </select>
 
           <select
             className="vendors-filter"
             value={riskFilter}
-            onChange={(e) =>
-              handleRiskFilter(
-                e.target.value
-              )
-            }
+            onChange={(e) => handleRiskFilter(e.target.value)}
           >
-            <option value="">
-              All Risk
-            </option>
+            <option value="">All Risk</option>
 
-            <option value="1">
-              Low
-            </option>
+            <option value="1">Low</option>
 
-            <option value="2">
-              Medium
-            </option>
+            <option value="2">Medium</option>
 
-            <option value="3">
-              High
-            </option>
-
+            <option value="3">High</option>
           </select>
 
-          <button
-            className="vendors-refresh-btn"
-            onClick={
-              handleRefresh
-            }
-          >
+          <button className="vendors-refresh-btn" onClick={handleRefresh}>
             Refresh
           </button>
 
           <button
             className="vendors-pdf-btn"
-            onClick={
-              handleExportPdf
-            }
-            disabled={
-              !filteredVendors.length
-            }
+            onClick={handleExportPdf}
+            disabled={!filteredVendors.length}
           >
             Export PDF
           </button>
-
         </div>
 
         <div className="vendors-count">
-
-          Showing
-          {" "}
-          {filteredVendors.length}
-          {" "}
-          vendor(s)
-
+          Showing {filteredVendors.length} vendor(s)
         </div>
 
-        {
-
-          filteredVendors.length > 0
-
-            ? (
-
-              <VendorTable
-                vendors={
-                  paginatedVendors
-                }
-                onViewVendor={
-                  handleViewVendor
-                }
-                onDelete={
-                  handleDelete
-                }
-              />
-            )
-
-            : (
-
-              <div
-                className="vendors-empty"
-              >
-                No vendors found
-              </div>
-
-            )
-
-        }
+        {filteredVendors.length > 0 ? (
+          <VendorTable
+            vendors={paginatedVendors}
+            onViewVendor={handleViewVendor}
+            onDelete={handleDelete}
+          />
+        ) : (
+          <div className="vendors-empty">No vendors found</div>
+        )}
 
         <VendorDetailsModal
-          vendor={
-            selectedVendor
-          }
-          onClose={() =>
-            setSelectedVendor(
-              null
-            )
-          }
+          vendor={selectedVendor}
+          onClose={() => setSelectedVendor(null)}
         />
-
       </div>
-
     </AdminLayout>
-
   );
 }
 

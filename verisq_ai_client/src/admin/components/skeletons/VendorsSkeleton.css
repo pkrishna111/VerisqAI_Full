@@ -1,0 +1,129 @@
+.vendors-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* Header */
+  
+  .vendors-skeleton-header {
+    height: 80px;
+    border-radius: 20px;
+  }
+  
+  /* Stats */
+  
+  .vendors-skeleton-stats {
+    display: grid;
+  
+    grid-template-columns:
+      repeat(4, 1fr);
+  
+    gap: 20px;
+  }
+  
+  .vendors-skeleton-stat-card {
+    height: 140px;
+  
+    border-radius: 20px;
+  }
+  
+  /* Toolbar */
+  
+  .vendors-skeleton-toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .vendors-skeleton-search {
+    width: 320px;
+    height: 50px;
+  
+    border-radius: 12px;
+  }
+  
+  .vendors-skeleton-filter {
+    width: 180px;
+    height: 50px;
+  
+    border-radius: 12px;
+  }
+  
+  .vendors-skeleton-btn {
+    width: 140px;
+    height: 50px;
+  
+    border-radius: 12px;
+  }
+  
+  /* Count */
+  
+  .vendors-skeleton-count {
+    width: 220px;
+    height: 20px;
+  
+    border-radius: 8px;
+  }
+  
+  /* Table */
+  
+  .vendors-skeleton-table {
+    background: white;
+  
+    border-radius: 20px;
+  
+    padding: 20px;
+  
+    display: flex;
+    flex-direction: column;
+  
+    gap: 12px;
+  }
+  
+  .vendors-skeleton-row {
+    display: grid;
+  
+    grid-template-columns:
+      1.5fr
+      1fr
+      1fr
+      1fr
+      1fr
+      1fr;
+  
+    gap: 12px;
+  }
+  
+  .vendors-skeleton-cell {
+    height: 48px;
+  
+    border-radius: 10px;
+  }
+  
+  /* Responsive */
+  
+  @media (max-width: 1200px) {
+  
+    .vendors-skeleton-stats {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+  
+  }
+  
+  @media (max-width: 768px) {
+  
+    .vendors-skeleton-stats {
+      grid-template-columns: 1fr;
+    }
+  
+    .vendors-skeleton-toolbar {
+      flex-wrap: wrap;
+    }
+  
+    .vendors-skeleton-search {
+      width: 100%;
+    }
+  
+  }
