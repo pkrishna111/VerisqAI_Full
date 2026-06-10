@@ -36,9 +36,11 @@ function Vendors() {
 
   const [riskFilter, setRiskFilter] = useState("");
 
+  const [userFilter, setUserFilter] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   useEffect(() => {
     loadVendors();
@@ -80,7 +82,12 @@ function Vendors() {
   // FILTERS
   // ==========================================
 
-  const applyFilters = (search, status, risk) => {
+  const applyFilters = (
+    search,
+    status,
+    risk,
+    user
+  ) => {
     let result = [...vendors];
 
     if (search) {
@@ -101,6 +108,13 @@ function Vendors() {
       result = result.filter((vendor) => String(vendor.riskTier) === risk);
     }
 
+    if (user) {
+      result = result.filter(
+        (vendor) =>
+          vendor.ownerName === user
+      );
+    }
+
     setFilteredVendors(result);
   };
 
@@ -109,7 +123,12 @@ function Vendors() {
 
     setSearchQuery(value);
 
-    applyFilters(value, statusFilter, riskFilter);
+    applyFilters(
+      value,
+      statusFilter,
+      riskFilter,
+      userFilter
+    );
   };
 
   const handleStatusFilter = (value) => {
@@ -117,7 +136,12 @@ function Vendors() {
 
     setStatusFilter(value);
 
-    applyFilters(searchQuery, value, riskFilter);
+    applyFilters(
+      searchQuery,
+      value,
+      riskFilter,
+      userFilter
+    );
   };
 
   const handleRiskFilter = (value) => {
@@ -125,7 +149,28 @@ function Vendors() {
 
     setRiskFilter(value);
 
-    applyFilters(searchQuery, statusFilter, value);
+    applyFilters(
+      searchQuery,
+      statusFilter,
+      value,
+      userFilter
+    );
+  };
+
+  const handleUserFilter = (
+    value
+  ) => {
+
+    setCurrentPage(1);
+
+    setUserFilter(value);
+
+    applyFilters(
+      searchQuery,
+      statusFilter,
+      riskFilter,
+      value
+    );
   };
 
   // ==========================================
@@ -140,6 +185,8 @@ function Vendors() {
     setStatusFilter("");
 
     setRiskFilter("");
+
+    setUserFilter("");
 
     loadVendors();
   };
@@ -237,6 +284,14 @@ function Vendors() {
     startIndex + itemsPerPage
   );
 
+  const users = [
+    ...new Set(
+      vendors
+        .map(v => v.ownerName)
+        .filter(Boolean)
+    )
+  ];
+
   return (
     <AdminLayout>
       <div className="vendors">
@@ -266,6 +321,29 @@ function Vendors() {
             <option value="Queued">Queued</option>
 
             <option value="Complete">Complete</option>
+          </select>
+
+          <select
+            className="vendors-filter"
+            value={userFilter}
+            onChange={(e) =>
+              handleUserFilter(
+                e.target.value
+              )
+            }
+          >
+            <option value="">
+              All Users
+            </option>
+
+            {users.map(user => (
+              <option
+                key={user}
+                value={user}
+              >
+                {user}
+              </option>
+            ))}
           </select>
 
           <select
@@ -302,15 +380,49 @@ function Vendors() {
         </div>
 
         {filteredVendors.length > 0 ? (
-          <VendorTable
-            vendors={paginatedVendors}
-            onViewVendor={handleViewVendor}
-            onDelete={handleDelete}
-          />
-        ) : (
-          <div className="vendors-empty">No vendors found</div>
-        )}
+          <>
+            <VendorTable
+              vendors={paginatedVendors}
+              onViewVendor={handleViewVendor}
+              onDelete={handleDelete}
+              startIndex={startIndex}
+            />
 
+            {totalPages > 1 && (
+
+              <div className="vendors-pagination">
+
+                <button
+                  onClick={() =>
+                    setCurrentPage(prev => prev - 1)
+                  }
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                  onClick={() =>
+                    setCurrentPage(prev => prev + 1)
+                  }
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+
+              </div>
+
+            )}
+          </>
+        ) : (
+          <div className="vendors-empty">
+            No vendors found
+          </div>
+        )}
         <VendorDetailsModal
           vendor={selectedVendor}
           onClose={() => setSelectedVendor(null)}

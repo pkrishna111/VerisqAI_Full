@@ -3,7 +3,8 @@ import "../styles/VendorTable.css";
 function VendorTable({
   vendors = [],
   onViewVendor,
-  onDelete
+  onDelete,
+  startIndex = 0
 }) {
 
   const getRiskTierLabel = (
@@ -76,7 +77,7 @@ function VendorTable({
                 <tr key={vendor.id}>
 
                   <td>
-                    {index + 1}
+                    {startIndex + index + 1}
                   </td>
 
                   <td
@@ -123,7 +124,7 @@ function VendorTable({
                   <td>
 
                     {vendor.score !== null &&
-                    vendor.score !== undefined
+                      vendor.score !== undefined
 
                       ? vendor.score
 

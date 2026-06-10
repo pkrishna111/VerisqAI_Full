@@ -85,27 +85,27 @@ function Users() {
   const loadUsers = async () => {
 
     try {
-  
+
       setLoading(true);
-  
+
       const startTime = Date.now();
-  
+
       const usersData =
         await getUsers();
-  
+
       const statsData =
         await getUserStats();
-  
+
       const elapsed =
         Date.now() - startTime;
-  
+
       const minimumSkeletonTime = 1000;
-  
+
       if (
         elapsed <
         minimumSkeletonTime
       ) {
-  
+
         await new Promise(
           resolve =>
             setTimeout(
@@ -113,30 +113,30 @@ function Users() {
               minimumSkeletonTime - elapsed
             )
         );
-  
+
       }
-  
+
       setUsers(usersData);
-  
+
       setFilteredUsers(usersData);
-  
+
       setStats(statsData);
-  
+
     }
     catch (error) {
-  
+
       console.error(error);
-  
+
       showNotification(
         "Failed to load users",
         "error"
       );
-  
+
     }
     finally {
-  
+
       setLoading(false);
-  
+
     }
   };
 
@@ -430,22 +430,22 @@ function Users() {
       itemsPerPage
     );
 
+  const startIndex =
+    (currentPage - 1) * itemsPerPage;
+
   const paginatedUsers =
     filteredUsers.slice(
-      (currentPage - 1)
-      * itemsPerPage,
-
-      currentPage
-      * itemsPerPage
+      startIndex,
+      startIndex + itemsPerPage
     );
 
-    if (loading) {
-      return (
-        <AdminLayout>
-          <UsersSkeleton />
-        </AdminLayout>
-      );
-    }
+  if (loading) {
+    return (
+      <AdminLayout>
+        <UsersSkeleton />
+      </AdminLayout>
+    );
+  }
 
   return (
 
@@ -549,21 +549,12 @@ function Users() {
         </div>
 
         <UserTable
-          users={
-            paginatedUsers
-          }
-          onViewUser={
-            handleViewUser
-          }
-          onApprove={
-            handleApprove
-          }
-          onReject={
-            handleReject
-          }
-          onDelete={
-            handleDelete
-          }
+          users={paginatedUsers}
+          onViewUser={handleViewUser}
+          onApprove={handleApprove}
+          onReject={handleReject}
+          onDelete={handleDelete}
+          startIndex={startIndex}
         />
 
         {totalPages > 1 && (
