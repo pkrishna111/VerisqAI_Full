@@ -280,6 +280,8 @@ function Vendors() {
             <option value="2">Medium</option>
 
             <option value="3">High</option>
+
+            <option value="4">Critical</option>
           </select>
 
           <button className="vendors-refresh-btn" onClick={handleRefresh}>
