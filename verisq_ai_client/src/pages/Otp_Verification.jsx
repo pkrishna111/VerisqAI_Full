@@ -61,7 +61,7 @@ export default function Otp_verification() {
         setLoading(false); // IMPORTANT
 
         return;
-      }s
+      }
 
       setStep("otp");
       setTimer(60);
