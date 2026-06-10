@@ -47,6 +47,9 @@ import CreateQuestionModal
 import CreateOptionModal
     from "../components/template-builder/CreateOptionModal";
 
+import SectionLibraryModal
+    from "../components/template-builder/SectionLibraryModal";
+
 import { updateAssessmentQuestion } from "../services/api";
 
 function TemplateDetailsPage() {
@@ -62,6 +65,10 @@ function TemplateDetailsPage() {
         useState(true);
 
     const [showSectionModal, setShowSectionModal] =
+        useState(false);
+
+    const [showSectionLibraryModal,
+        setShowSectionLibraryModal] =
         useState(false);
 
     const [selectedSectionId, setSelectedSectionId] =
@@ -555,15 +562,33 @@ function TemplateDetailsPage() {
 
                     </div>
 
-                    <button
-                        className="btn-add-vendor"
-                        onClick={() =>
-                            setShowSectionModal(true)
-                        }
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: "12px"
+                        }}
                     >
-                        <Plus size={18} />
-                        Add Section
-                    </button>
+
+                        <button
+                            className="btn-secondary-template"
+                            onClick={() =>
+                                setShowSectionLibraryModal(true)
+                            }
+                        >
+                            📚 Section Library
+                        </button>
+
+                        <button
+                            className="btn-add-vendor"
+                            onClick={() =>
+                                setShowSectionModal(true)
+                            }
+                        >
+                            <Plus size={18} />
+                            Add Section
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -586,26 +611,57 @@ function TemplateDetailsPage() {
 
                             </div>
 
-                            <button
-                                className="tb-sidebar-add-btn"
-                                onClick={() => {
-
-                                    if (
-                                        template.sections?.length >= 5
-                                    ) {
-
-                                        alert(
-                                            "Maximum 5 sections allowed."
-                                        );
-
-                                        return;
-                                    }
-
-                                    setShowSectionModal(true);
+                            <div
+                                style={{
+                                    display: "flex",
+                                    gap: "8px"
                                 }}
                             >
-                                <Plus size={15} />
-                            </button>
+
+                                <button
+                                    className="tb-sidebar-add-btn"
+                                    title="Section Library"
+                                    onClick={() => {
+
+                                        if (
+                                            template.sections?.length >= 5
+                                        ) {
+
+                                            alert(
+                                                "Maximum 5 sections allowed."
+                                            );
+
+                                            return;
+                                        }
+
+                                        setShowSectionLibraryModal(true);
+                                    }}
+                                >
+                                    📚
+                                </button>
+
+                                <button
+                                    className="tb-sidebar-add-btn"
+                                    onClick={() => {
+
+                                        if (
+                                            template.sections?.length >= 5
+                                        ) {
+
+                                            alert(
+                                                "Maximum 5 sections allowed."
+                                            );
+
+                                            return;
+                                        }
+
+                                        setShowSectionModal(true);
+                                    }}
+                                >
+                                    <Plus size={15} />
+                                </button>
+
+                            </div>
 
                         </div>
 
@@ -1095,6 +1151,19 @@ function TemplateDetailsPage() {
                         setShowSectionModal(false)
                     }
                     templateId={id}
+                    onCreated={fetchTemplate}
+                />
+
+                <SectionLibraryModal
+                    open={
+                        showSectionLibraryModal
+                    }
+                    onClose={() =>
+                        setShowSectionLibraryModal(
+                            false
+                        )
+                    }
+                    templateId={template.id}
                     onCreated={fetchTemplate}
                 />
 

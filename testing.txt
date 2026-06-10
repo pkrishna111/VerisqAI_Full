@@ -1,7 +1,5 @@
 => check all pages with authorization - complete it
 
-----------SEND_CODE PAGE----------
-=> start free trial button click par landing page open thavu joie
 
 ----------DASHBOARD---------------
 => add skeleton loading in dashboard

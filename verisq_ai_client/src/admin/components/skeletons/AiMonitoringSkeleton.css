@@ -1,0 +1,80 @@
+.ai-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .ai-skeleton-header {
+    height: 80px;
+    border-radius: 20px;
+  }
+  
+  .ai-skeleton-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .ai-skeleton-card {
+    height: 140px;
+    border-radius: 20px;
+  }
+  
+  .ai-skeleton-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .ai-skeleton-chart {
+    height: 380px;
+    border-radius: 20px;
+  }
+  
+  .ai-skeleton-table {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+  
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .ai-skeleton-row {
+    display: grid;
+  
+    grid-template-columns:
+      1.5fr
+      1fr
+      1fr
+      1fr;
+  
+    gap: 12px;
+  }
+  
+  .ai-skeleton-cell {
+    height: 48px;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 1200px) {
+  
+    .ai-skeleton-stats {
+      grid-template-columns:
+        repeat(2, 1fr);
+    }
+  
+    .ai-skeleton-charts {
+      grid-template-columns: 1fr;
+    }
+  
+  }
+  
+  @media (max-width: 768px) {
+  
+    .ai-skeleton-stats {
+      grid-template-columns: 1fr;
+    }
+  
+  }

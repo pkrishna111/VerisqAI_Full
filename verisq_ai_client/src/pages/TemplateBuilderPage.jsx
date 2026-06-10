@@ -78,60 +78,47 @@ function TemplateBuilderPage() {
 
             <main className="dashboard-main">
 
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px"
-                    }}
-                >
 
-                    <TemplateBuilderHero
-                        onCreateClick={() => {
 
-                            if (
-                                templates.length >= 5
-                            ) {
+                <TemplateBuilderHero
+                    onCreateClick={() => {
 
-                                alert(
-                                    "Free Trial allows maximum 5 templates."
-                                );
+                        if (
+                            templates.length >= 5
+                        ) {
 
-                                return;
-                            }
+                            alert(
+                                "Free Trial allows maximum 5 templates."
+                            );
 
-                            setShowCreateModal(true);
-                        }}
-
-                        usedTemplates={
-                            templates.length
+                            return;
                         }
 
-                        maxTemplates={5}
-                    />
+                        setShowCreateModal(true);
+                    }}
 
-                    <button
-                        className="btn-add-vendor"
-                        onClick={() => {
+                    onLibraryClick={() => {
 
-                            if (
-                                templates.length >= 5
-                            ) {
+                        if (
+                            templates.length >= 5
+                        ) {
 
-                                alert(
-                                    "Free Trial allows maximum 5 templates."
-                                );
+                            alert(
+                                "Free Trial allows maximum 5 templates."
+                            );
 
-                                return;
-                            }
+                            return;
+                        }
 
-                            setShowLibraryModal(true);
-                        }}
-                    >
-                        Use Ready-Made Template
-                    </button>
+                        setShowLibraryModal(true);
+                    }}
 
-                </div>
+                    usedTemplates={
+                        templates.length
+                    }
+
+                    maxTemplates={5}
+                />
 
                 <TemplateBuilderKpis
                     templates={templates}
