@@ -10,7 +10,7 @@ import {
 
 import DashboardHeader
     from "../components/dashboard/Header";
-
+import TemplateDetailsSkeleton from "../components/skeletons/TemplateDetailsSkeleton";
 import {
     Layers3,
     Plus,
@@ -450,42 +450,67 @@ function TemplateDetailsPage() {
             }
         };
 
-    const fetchTemplate = async () => {
+        const fetchTemplate = async () => {
 
-        try {
-
-            setLoading(true);
-
-            const response =
-                await getAssessmentTemplateById(id);
-
-            setTemplate(response);
-
-        } catch (err) {
-
-            console.error(err);
-
-            if (
-                err.message?.includes("deactivated")
-            ) {
-
+            try {
+        
+                setLoading(true);
+        
+                const startTime =
+                    Date.now();
+        
+                const response =
+                    await getAssessmentTemplateById(id);
+        
+                const elapsed =
+                    Date.now() - startTime;
+        
+                const minimumSkeletonTime =
+                    1000;
+        
+                if (
+                    elapsed <
+                    minimumSkeletonTime
+                ) {
+        
+                    await new Promise(
+                        resolve =>
+                            setTimeout(
+                                resolve,
+                                minimumSkeletonTime - elapsed
+                            )
+                    );
+        
+                }
+        
+                setTemplate(response);
+        
+            } catch (err) {
+        
+                console.error(err);
+        
+                if (
+                    err.message?.includes("deactivated")
+                ) {
+        
+                    alert(
+                        "This template has been deactivated. Create a copy to continue using it."
+                    );
+        
+                    navigate("/template-builder");
+        
+                    return;
+                }
+        
                 alert(
-                    "This template has been deactivated. Create a copy to continue using it."
+                    "Failed to load template."
                 );
-
-                navigate("/template-builder");
-
-                return;
+        
+            } finally {
+        
+                setLoading(false);
             }
-
-            alert(
-                "Failed to load template."
-            );
-        } finally {
-
-            setLoading(false);
-        }
-    };
+        };
     useEffect(() => {
 
         fetchTemplate();
@@ -511,14 +536,16 @@ function TemplateDetailsPage() {
         return (
             <>
                 <DashboardHeader />
-
+    
                 <main className="dashboard-main">
-                    Loading template...
+    
+                    <TemplateDetailsSkeleton />
+    
                 </main>
+    
             </>
         );
     }
-
     if (!template) {
 
         return (
