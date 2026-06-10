@@ -6,6 +6,7 @@ using VerisqAI.API.DTOs;
 using VerisqAI.API.DTOs.DynamicAssessment;
 using VerisqAI.API.Models;
 using VerisqAI.API.Services;
+using VerisqAI.API.DTOs.Questionnaire;
 
 namespace VerisqAI.API.Controllers
 {
@@ -35,6 +36,58 @@ namespace VerisqAI.API.Controllers
 
             if (questionnaire == null)
                 return NotFound();
+
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been declined."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Assessment already completed."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Expired"
+            )
+            {
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
+
+            if (IsExpired(questionnaire))
+            {
+                questionnaire.Status =
+                    "Expired";
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
 
             if (questionnaire.AssessmentTemplateId <= 0)
             {
@@ -190,6 +243,58 @@ namespace VerisqAI.API.Controllers
             if (questionnaire == null)
                 return NotFound();
 
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been declined."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Assessment already completed."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Expired"
+            )
+            {
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
+
+            if (IsExpired(questionnaire))
+            {
+                questionnaire.Status =
+                    "Expired";
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
+
             // map DTO to entityt
             var entities = responses.Select(r => new QuestionnaireResponse
             {
@@ -206,19 +311,19 @@ namespace VerisqAI.API.Controllers
             await _context.SaveChangesAsync();
 
             _context.AuditLogs.Add(
-    new AuditLog
-    {
-        EventType = "Questionnaire",
-        Title = "Questionnaire Completed",
-        Description =
-            $"Questionnaire {questionnaire.Id} completed",
+            new AuditLog
+            {
+                EventType = "Questionnaire",
+                Title = "Questionnaire Completed",
+                Description =
+                    $"Questionnaire {questionnaire.Id} completed",
 
-        EntityType = "Questionnaire",
-        EntityId = questionnaire.Id.ToString(),
+                EntityType = "Questionnaire",
+                EntityId = questionnaire.Id.ToString(),
 
-        Severity = "Info",
-        Source = "Vendor"
-    });
+                Severity = "Info",
+                Source = "Vendor"
+            });
 
             await _context.SaveChangesAsync();
 
@@ -302,7 +407,7 @@ namespace VerisqAI.API.Controllers
 
         [HttpPost("dynamic-submit")]
         public async Task<IActionResult> SubmitDynamicAssessment(
-    [FromBody] SubmitDynamicAssessmentDto dto)
+            [FromBody] SubmitDynamicAssessmentDto dto)
         {
             if (dto == null || dto.Answers == null || !dto.Answers.Any())
             {
@@ -325,6 +430,58 @@ namespace VerisqAI.API.Controllers
             if (questionnaire == null)
             {
                 return NotFound("Questionnaire not found.");
+            }
+
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been declined."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Assessment already completed."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Expired"
+            )
+            {
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
+
+            if (IsExpired(questionnaire))
+            {
+                questionnaire.Status =
+                    "Expired";
+
+                await _context.SaveChangesAsync();
+
+                return BadRequest(
+                    "Assessment has expired."
+                );
             }
 
             questionnaire.Status = "Completed";
@@ -397,19 +554,19 @@ namespace VerisqAI.API.Controllers
             await _context.SaveChangesAsync();
 
             _context.AuditLogs.Add(
-    new AuditLog
-    {
-        EventType = "Assessment",
-        Title = "Scorecard Generated",
-        Description =
-            $"Scorecard {scorecard.Id} generated",
+            new AuditLog
+            {
+                EventType = "Assessment",
+                Title = "Scorecard Generated",
+                Description =
+                    $"Scorecard {scorecard.Id} generated",
 
-        EntityType = "Scorecard",
-        EntityId = scorecard.Id.ToString(),
+                EntityType = "Scorecard",
+                EntityId = scorecard.Id.ToString(),
 
-        Severity = "Success",
-        Source = "System"
-    });
+                Severity = "Success",
+                Source = "System"
+            });
 
             await _context.SaveChangesAsync();
 
@@ -455,19 +612,19 @@ namespace VerisqAI.API.Controllers
             }
 
             _context.AuditLogs.Add(
-    new AuditLog
-    {
-        EventType = "AI Analysis",
-        Title = "AI Assessment Generated",
-        Description =
-            $"AI assessment generated for Vendor {vendor.Name}",
+            new AuditLog
+            {
+                EventType = "AI Analysis",
+                Title = "AI Assessment Generated",
+                Description =
+                    $"AI assessment generated for Vendor {vendor.Name}",
 
-        EntityType = "Vendor",
-        EntityId = vendor.Id.ToString(),
+                EntityType = "Vendor",
+                EntityId = vendor.Id.ToString(),
 
-        Severity = "Success",
-        Source = "AI Engine"
-    });
+                Severity = "Success",
+                Source = "AI Engine"
+            });
 
             await _context.SaveChangesAsync();
 
@@ -477,6 +634,169 @@ namespace VerisqAI.API.Controllers
                 questionnaireId = questionnaire.Id,
                 scorecardId = scorecard.Id
             });
+        }
+
+        [HttpPost("start/{token}")]
+        public async Task<IActionResult>
+        StartAssessment(string token)
+        {
+            var questionnaire =
+                await _context.Questionnaires
+                    .FirstOrDefaultAsync(
+                        q => q.Token == token
+                    );
+
+            if (questionnaire == null)
+            {
+                return NotFound(
+                    "Questionnaire not found."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Assessment already completed."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been declined."
+                );
+            }
+
+            if (IsExpired(questionnaire))
+            {
+                questionnaire.Status =
+                    "Expired";
+
+                await _context
+                    .SaveChangesAsync();
+
+                return BadRequest(
+                    "Assessment has expired."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Sent"
+            )
+            {
+                questionnaire.Status =
+                    "In Progress";
+
+                questionnaire.StartedAt =
+                    DateTime.UtcNow;
+
+                await _context
+                    .SaveChangesAsync();
+            }
+
+            return Ok(
+                new
+                {
+                    status =
+                        questionnaire.Status
+                });
+        }
+
+        [HttpPost("decline/{token}")]
+        public async Task<IActionResult>
+        DeclineAssessment(
+            string token,
+            DeclineQuestionnaireDto dto)
+        {
+            var questionnaire =
+                await _context.Questionnaires
+                    .FirstOrDefaultAsync(
+                        q => q.Token == token
+                    );
+
+            if (questionnaire == null)
+            {
+                return NotFound(
+                    "Questionnaire not found."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Assessment already completed."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment has been cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Assessment already declined."
+                );
+            }
+
+            questionnaire.Status =
+                "Declined";
+
+            questionnaire.DeclinedAt =
+                DateTime.UtcNow;
+
+            questionnaire.DeclineReason =
+                string.IsNullOrWhiteSpace(
+                    dto.AdditionalComments
+                )
+                ? dto.Reason
+                : $"{dto.Reason}: {dto.AdditionalComments}";
+
+            await _context.SaveChangesAsync();
+
+            return Ok(
+                new
+                {
+                    message =
+                        "Assessment declined."
+                });
+        }
+
+        private bool IsExpired(
+        Questionnaire questionnaire)
+        {
+            return
+                questionnaire.ExpiresAt <=
+                DateTime.UtcNow;
         }
     }
 }

@@ -82,7 +82,8 @@ namespace VerisqAI.API.Controllers
                 }
                 else
                 {
-                    questionnaireStatus = "Pending";
+                    questionnaireStatus =
+                        latestQuestionnaire.Status;
                 }
 
                 return new
@@ -174,7 +175,9 @@ namespace VerisqAI.API.Controllers
                         VendorId = vendor.Id,
                         AssessmentTemplateId = dto.TemplateId.Value,
                         ContactEmail = dto.Email,
-                        Status = "Pending"
+                        Status = "Sent",
+                        SentAt = DateTime.UtcNow,
+                        ExpiresAt = DateTime.UtcNow.AddDays(7)
                     };
 
                     _context.Questionnaires.Add(questionnaire);
@@ -257,7 +260,11 @@ namespace VerisqAI.API.Controllers
                     .OrderByDescending(q => q.SentAt)
                     .FirstOrDefault();
 
-                return latest != null && latest.Status == "Pending";
+                return latest != null &&
+                (
+                    latest.Status == "Sent" ||
+                    latest.Status == "In Progress"
+                );
             });
 
             return Ok(new
@@ -310,11 +317,16 @@ namespace VerisqAI.API.Controllers
                 .FirstOrDefaultAsync();
 
             // only block if latest questionnaire is still pending
-            if (latestQuestionnaire != null &&
-                latestQuestionnaire.Status == "Pending")
+            if (
+                latestQuestionnaire != null &&
+                (
+                    latestQuestionnaire.Status == "Sent" ||
+                    latestQuestionnaire.Status == "In Progress"
+                )
+            )
             {
                 return BadRequest(
-                    "Questionnaire already pending for this vendor."
+                    "An active questionnaire already exists for this vendor."
                 );
             }
 
@@ -323,7 +335,9 @@ namespace VerisqAI.API.Controllers
                 VendorId = vendorId,
                 AssessmentTemplateId = dto.TemplateId,
                 ContactEmail = email,
-                Status = "Pending"
+                Status = "Sent",
+                SentAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(7)
             };
 
             _context.Questionnaires.Add(questionnaire);
@@ -450,8 +464,8 @@ namespace VerisqAI.API.Controllers
         QuestionnaireId = scorecard.QuestionnaireId,
 
         QuestionnaireStatus = scorecard.Questionnaire != null
-            ? scorecard.Questionnaire.Status
-            : "Unknown",
+        ? scorecard.Questionnaire.Status
+        : "Unknown",
 
         ScorecardId = scorecard.Id,
 
@@ -465,8 +479,39 @@ namespace VerisqAI.API.Controllers
 
         CreatedAt = scorecard.CreatedAt,
 
-        CompletedAt = scorecard.Questionnaire != null
+        CompletedAt =
+        scorecard.Questionnaire != null
             ? scorecard.Questionnaire.CompletedAt
+            : null,
+
+        SentAt =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.SentAt
+            : null,
+
+        StartedAt =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.StartedAt
+            : null,
+
+        DeclinedAt =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.DeclinedAt
+            : null,
+
+        CancelledAt =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.CancelledAt
+            : null,
+
+        ExpiresAt =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.ExpiresAt
+            : null,
+
+        DeclineReason =
+        scorecard.Questionnaire != null
+            ? scorecard.Questionnaire.DeclineReason
             : null
     })
     .ToListAsync();
@@ -491,9 +536,30 @@ namespace VerisqAI.API.Controllers
                             : new QuestionnaireDto
                             {
                                 Id = questionnaire.Id,
-                                Status = questionnaire.Status,
-                                SentAt = questionnaire.SentAt,
-                                CompletedAt = questionnaire.CompletedAt
+
+                                Status =
+                                    questionnaire.Status,
+
+                                SentAt =
+                                    questionnaire.SentAt,
+
+                                StartedAt =
+                                    questionnaire.StartedAt,
+
+                                CompletedAt =
+                                    questionnaire.CompletedAt,
+
+                                DeclinedAt =
+                                    questionnaire.DeclinedAt,
+
+                                CancelledAt =
+                                    questionnaire.CancelledAt,
+
+                                ExpiresAt =
+                                    questionnaire.ExpiresAt,
+
+                                DeclineReason =
+                                    questionnaire.DeclineReason
                             },
 
                         Scorecard = scorecard == null
@@ -621,7 +687,8 @@ namespace VerisqAI.API.Controllers
                     scorecard.Questionnaire != null
                         ? new QuestionnaireDto
                         {
-                            Id = scorecard.Questionnaire.Id,
+                            Id =
+                                scorecard.Questionnaire.Id,
 
                             Status =
                                 scorecard.Questionnaire.Status,
@@ -629,8 +696,23 @@ namespace VerisqAI.API.Controllers
                             SentAt =
                                 scorecard.Questionnaire.SentAt,
 
+                            StartedAt =
+                                scorecard.Questionnaire.StartedAt,
+
                             CompletedAt =
-                                scorecard.Questionnaire.CompletedAt
+                                scorecard.Questionnaire.CompletedAt,
+
+                            DeclinedAt =
+                                scorecard.Questionnaire.DeclinedAt,
+
+                            CancelledAt =
+                                scorecard.Questionnaire.CancelledAt,
+
+                            ExpiresAt =
+                                scorecard.Questionnaire.ExpiresAt,
+
+                            DeclineReason =
+                                scorecard.Questionnaire.DeclineReason
                         }
                         : null,
 
@@ -770,6 +852,92 @@ namespace VerisqAI.API.Controllers
                 .ToListAsync();
 
             return Ok(findings);
+        }
+
+        [HttpPost("questionnaire/{id}/cancel")]
+        public async Task<IActionResult>
+CancelQuestionnaire(int id)
+        {
+            var userId =
+                User.FindFirst(
+                    ClaimTypes.NameIdentifier
+                )?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var questionnaire =
+                await _context.Questionnaires
+                    .Include(q => q.Vendor)
+                    .FirstOrDefaultAsync(
+                        q =>
+                            q.Id == id &&
+                            q.Vendor.UserId == userId
+                    );
+
+            if (questionnaire == null)
+            {
+                return NotFound(
+                    "Questionnaire not found."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Completed"
+            )
+            {
+                return BadRequest(
+                    "Completed assessments cannot be cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Declined"
+            )
+            {
+                return BadRequest(
+                    "Declined assessments cannot be cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Expired"
+            )
+            {
+                return BadRequest(
+                    "Expired assessments cannot be cancelled."
+                );
+            }
+
+            if (
+                questionnaire.Status ==
+                "Cancelled"
+            )
+            {
+                return BadRequest(
+                    "Assessment already cancelled."
+                );
+            }
+
+            questionnaire.Status =
+                "Cancelled";
+
+            questionnaire.CancelledAt =
+                DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(
+                new
+                {
+                    message =
+                        "Assessment cancelled successfully."
+                });
         }
     }
 }

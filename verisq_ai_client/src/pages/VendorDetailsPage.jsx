@@ -9,7 +9,11 @@ import AssessmentCards from "../components/vendor-details/AssessmentCards";
 import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline";
 import AssessmentIntelligenceTabs from "../components/vendor-details/AssessmentIntelligenceTabs";
 import EmailModal from "../components/dashboard/EmailModal";
-import { apiRequest, getAssessmentDetails } from "../services/api";
+import {
+    apiRequest,
+    getAssessmentDetails,
+    cancelQuestionnaire
+} from "../services/api";
 import API_BASE_URL from "../services/api";
 
 export default function VendorDetailsPage() {
@@ -189,9 +193,6 @@ export default function VendorDetailsPage() {
         }
     };
 
-    const canSendQuestionnaire =
-        questionnaire?.status === "Completed";
-
     return (
         <>
             <DashboardHeader />
@@ -201,16 +202,51 @@ export default function VendorDetailsPage() {
                 <VendorHeader
                     vendor={data.vendor}
                     scorecard={scorecard}
+                    questionnaire={questionnaire}
 
                     onRefresh={handleRefresh}
-
-                    canSendQuestionnaire={
-                        canSendQuestionnaire
-                    }
 
                     onSendQuestionnaire={
                         handleSendQuestionnaire
                     }
+
+                    onCancelQuestionnaire={async () => {
+
+                        if (!questionnaire) {
+                            return;
+                        }
+
+                        const confirmed =
+                            window.confirm(
+                                "Are you sure you want to cancel this questionnaire? The vendor will no longer be able to access it."
+                            );
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+                        try {
+
+                            await cancelQuestionnaire(
+                                questionnaire.id
+                            );
+
+                            await fetchVendor();
+
+                            alert(
+                                "Questionnaire cancelled successfully."
+                            );
+
+                        } catch (err) {
+
+                            console.error(err);
+
+                            alert(
+                                err.message ||
+                                "Failed to cancel questionnaire."
+                            );
+                        }
+                    }}
 
                     onDownloadReport={
                         handleDownloadReport

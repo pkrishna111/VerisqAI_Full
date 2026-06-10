@@ -243,3 +243,13 @@
 
   cursor: not-allowed;
 }
+
+.vd-header-btn--danger {
+  background: #dc2626;
+
+  color: white;
+}
+
+.vd-header-btn--danger:hover {
+  background: #b91c1c;
+}

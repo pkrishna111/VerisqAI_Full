@@ -15,6 +15,7 @@ namespace VerisqAI.API.Services
             _settings = settings.Value;
         }
 
+
         public async Task SendEmailAsync(
             string toEmail,
             string subject,

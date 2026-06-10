@@ -35,6 +35,17 @@ namespace VerisqAI.API.Models
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
         public DateTime? CompletedAt { get; set; }
 
+        public DateTime ExpiresAt { get; set; }
+
+        public DateTime? StartedAt { get; set; }
+
+        public DateTime? DeclinedAt { get; set; }
+
+        public DateTime? CancelledAt { get; set; }
+
+        [MaxLength(1000)]
+        public string? DeclineReason { get; set; }
+
         public ICollection<QuestionnaireResponse> Responses { get; set; } = new List<QuestionnaireResponse>();
     }
 }

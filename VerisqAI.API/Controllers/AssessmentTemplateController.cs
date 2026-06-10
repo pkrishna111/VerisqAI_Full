@@ -1214,8 +1214,8 @@ namespace VerisqAI.API.Controllers
 
         [HttpPost("library/{templateKey}")]
         public async Task<IActionResult>
-CreateTemplateFromLibrary(
-    string templateKey)
+        CreateTemplateFromLibrary(
+            string templateKey)
         {
             var userId =
                 User.FindFirstValue(
@@ -1387,6 +1387,199 @@ CreateTemplateFromLibrary(
                 templateId =
                     template.Id
             });
+        }
+
+        [HttpGet("sections/library")]
+        public IActionResult GetSectionLibrary()
+        {
+            var sections =
+                ReadyMadeSections.Sections
+                .Select(section => new
+                {
+                    key = section.Title
+                        .ToLower()
+                        .Replace(" ", "-"),
+
+                    title = section.Title,
+
+                    description =
+                        section.Description,
+
+                    questionCount =
+                        section.Questions.Count,
+
+                    category =
+                        section.Questions
+                            .FirstOrDefault()
+                            ?.Category
+                });
+
+            return Ok(sections);
+        }
+
+        [HttpPost("sections/library/{sectionKey}")]
+        public async Task<IActionResult>
+        AddSectionFromLibrary(
+            string sectionKey,
+            AddSectionFromLibraryDto dto)
+                {
+
+                    var userId =
+            User.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var sectionDefinition =
+                ReadyMadeSections.Get(sectionKey);
+
+            if (sectionDefinition == null)
+            {
+                return NotFound(
+                    "Section not found."
+                );
+            }
+
+            var template =
+                await _context.AssessmentTemplates
+                    .Include(t => t.Sections)
+                    .FirstOrDefaultAsync(
+                        t => t.Id == dto.TemplateId
+                    );
+
+            if (template == null)
+            {
+                return NotFound(
+                    "Template not found."
+                );
+            }
+
+            if (
+                template.UserId != userId
+            )
+            {
+                return Forbid();
+            }
+
+            if (
+                template.Sections.Count >= 5
+            )
+            {
+                return BadRequest(
+                    "Maximum 5 sections allowed."
+                );
+            }
+
+            var newSection =
+                new AssessmentSection
+                {
+                    AssessmentTemplateId =
+                        template.Id,
+
+                    Title =
+                        sectionDefinition.Title,
+
+                    Description =
+                        sectionDefinition.Description,
+
+                    DisplayOrder =
+                        template.Sections.Count + 1
+                };
+
+            _context.AssessmentSections
+                .Add(newSection);
+
+            await _context.SaveChangesAsync();
+
+            foreach (
+                var questionDefinition
+                in sectionDefinition.Questions
+            )
+            {
+                var question =
+                    new AssessmentQuestion
+                    {
+                        AssessmentSectionId =
+                            newSection.Id,
+
+                        QuestionKey =
+                            $"Q-{Guid.NewGuid():N}",
+
+                        QuestionText =
+                            questionDefinition.QuestionText,
+
+                        QuestionType =
+                            questionDefinition.QuestionType,
+
+                        Category =
+                            questionDefinition.Category,
+
+                        Severity =
+                            questionDefinition.Severity,
+
+                        Weight =
+                            questionDefinition.Weight,
+
+                        IsRequired =
+                            questionDefinition.IsRequired,
+
+                        DisplayOrder =
+                            sectionDefinition
+                                .Questions
+                                .IndexOf(
+                                    questionDefinition
+                                ) + 1
+                    };
+
+                _context.AssessmentQuestions
+                    .Add(question);
+
+                await _context.SaveChangesAsync();
+
+                foreach (
+                    var optionDefinition
+                    in questionDefinition.Options
+                )
+                {
+                    _context
+                        .AssessmentQuestionOptions
+                        .Add(
+                            new AssessmentQuestionOption
+                            {
+                                AssessmentQuestionId =
+                                    question.Id,
+
+                                OptionText =
+                                    optionDefinition.OptionText,
+
+                                IsPreferredAnswer =
+                                    optionDefinition
+                                        .IsPreferredAnswer,
+
+                                DisplayOrder =
+                                    questionDefinition
+                                        .Options
+                                        .IndexOf(
+                                            optionDefinition
+                                        ) + 1
+                            }
+                        );
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(
+                new
+                {
+                    message =
+                        "Section added successfully."
+                }
+            );
         }
 
         // Get all templates

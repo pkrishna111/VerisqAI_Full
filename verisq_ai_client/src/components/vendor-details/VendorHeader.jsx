@@ -19,13 +19,10 @@ import "../../styles/vendor-details/vendorHeader.css";
 const VendorHeader = ({
   vendor,
   scorecard,
-
+  questionnaire,
   onRefresh,
-
-  canSendQuestionnaire,
-
   onSendQuestionnaire,
-
+  onCancelQuestionnaire,
   onDownloadReport
 }) => {
   const initials = vendor.name
@@ -42,6 +39,28 @@ const VendorHeader = ({
   const tierLabel = getRiskTierLabel(
     scorecard?.riskTier
   );
+
+  const activeStatuses = [
+    "Sent",
+    "In Progress"
+  ];
+
+  const canCancelQuestionnaire =
+    questionnaire &&
+    activeStatuses.includes(
+      questionnaire.status
+    );
+
+  const canSendQuestionnaire =
+    !questionnaire ||
+    [
+      "Completed",
+      "Cancelled",
+      "Declined",
+      "Expired"
+    ].includes(
+      questionnaire.status
+    );
 
   return (
     <section className="vd-header">
@@ -102,21 +121,32 @@ const VendorHeader = ({
             <span>Refresh</span>
           </button>
 
-          <button
-            className={`vd-header-btn 
-              ${canSendQuestionnaire
-                ? "vd-header-btn--primary"
-                : "vd-header-btn--disabled"
-              }`}
-            disabled={!canSendQuestionnaire}
-            onClick={onSendQuestionnaire}
-          >
-            <Send size={16} />
+          {canCancelQuestionnaire ? (
 
-            <span>
-              Send Questionnaire
-            </span>
-          </button>
+            <button
+              className="vd-header-btn vd-header-btn--danger"
+              onClick={onCancelQuestionnaire}
+            >
+              <span>
+                Cancel Questionnaire
+              </span>
+            </button>
+
+          ) : (
+
+            <button
+              className="vd-header-btn vd-header-btn--primary"
+              onClick={onSendQuestionnaire}
+              disabled={!canSendQuestionnaire}
+            >
+              <Send size={16} />
+
+              <span>
+                Send Questionnaire
+              </span>
+            </button>
+
+          )}
 
           <button className="vd-header__button"
             onClick={onDownloadReport}>

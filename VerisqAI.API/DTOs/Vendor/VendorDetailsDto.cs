@@ -47,7 +47,17 @@ namespace VerisqAI.API.DTOs.Vendor
 
         public DateTime SentAt { get; set; }
 
+        public DateTime? StartedAt { get; set; }
+
         public DateTime? CompletedAt { get; set; }
+
+        public DateTime? DeclinedAt { get; set; }
+
+        public DateTime? CancelledAt { get; set; }
+
+        public DateTime ExpiresAt { get; set; }
+
+        public string? DeclineReason { get; set; }
     }
 
     public class ScorecardDto

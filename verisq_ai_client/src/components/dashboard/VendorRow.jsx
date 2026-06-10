@@ -104,30 +104,62 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
 
       {/* Questionnaire */}
       <td>
-        {vendor.questionnaire === "Pending" && (
-          <div className="questionnaire pending">
-            <Clock size={16} />
-            Pending Response
-          </div>
-        )}
+
+        {(vendor.questionnaire === "Sent" ||
+          vendor.questionnaire === "In Progress") && (
+
+            <div
+              className="questionnaire completed"
+              style={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center"
+              }}
+            >
+              <span>{vendor.questionnaire}</span>
+            </div>
+          )}
 
         {vendor.questionnaire === "Completed" && (
-          <div className="questionnaire completed" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+
+          <div
+            className="questionnaire completed"
+            style={{
+              display: "flex",
+              gap: "8px",
+              alignItems: "center"
+            }}
+          >
             <span>Completed</span>
 
-            <button className="send-btn" onClick={() => onSendClick(vendor.id)}>
+            <button
+              className="send-btn"
+              onClick={() =>
+                onSendClick(vendor.id)
+              }
+            >
               <Send size={16} />
               Resend
             </button>
           </div>
         )}
 
-        {vendor.questionnaire === "Send" && (
-          <button className="send-btn" onClick={() => onSendClick(vendor.id)}>
-            <Send size={16} />
-            Send
-          </button>
-        )}
+        {(vendor.questionnaire === "Cancelled" ||
+          vendor.questionnaire === "Declined" ||
+          vendor.questionnaire === "Expired" ||
+          vendor.questionnaire === "Send") && (
+
+            <button
+              className="send-btn"
+              onClick={() =>
+                onSendClick(vendor.id)
+              }
+            >
+              <Send size={16} />
+              Send
+            </button>
+          )}
+
       </td>
 
       {/* Risk Score */}
