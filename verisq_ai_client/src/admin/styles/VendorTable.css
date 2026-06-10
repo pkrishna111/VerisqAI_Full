@@ -67,33 +67,54 @@
     color: #1d4ed8;
 }
 
+/* ==================================
+   RISK TIER BADGES
+================================== */
+
 .risk-tier {
-    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 56px;
+
+    padding: 6px 14px;
+
     border-radius: 999px;
-    font-size: 12px;
+
+    font-size: 13px;
     font-weight: 600;
+
+    border: 1px solid transparent;
 }
 
+/* LOW */
 .risk-tier-1 {
     background: #dcfce7;
-    color: #166534;
+    color: #15803d;
+    border-color: #bbf7d0;
 }
 
+/* MEDIUM */
 .risk-tier-2 {
     background: #fef3c7;
-    color: #92400e;
+    color: #b45309;
+    border-color: #fde68a;
 }
 
+/* HIGH */
 .risk-tier-3 {
     background: #fee2e2;
-    color: #b91c1c;
+    color: #dc2626;
+    border-color: #fecaca;
 }
 
+/* CRITICAL */
 .risk-tier-4 {
-    background: #7f1d1d;
-    color: white;
+    background: #fef2f2;
+    color: #991b1b;
+    border-color: #fecaca;
 }
-
 .vendortable-empty {
     text-align: center;
     padding: 24px;

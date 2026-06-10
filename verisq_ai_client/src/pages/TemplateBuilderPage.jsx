@@ -14,6 +14,7 @@ import TemplatesTable
 import { getAssessmentTemplates } from "../services/api";
 
 import "../styles/template-builder/templateBuilder.css";
+import TemplateBuilderSkeleton from "../components/skeletons/TemplateBuilderSkeleton";
 
 import CreateTemplateModal
     from "../components/template-builder/CreateTemplateModal";
@@ -47,30 +48,75 @@ function TemplateBuilderPage() {
     const fetchTemplates = async () => {
 
         try {
-
-            setLoading(true);
-
-            setError("");
-
-            const response =
-                await getAssessmentTemplates();
-
-            setTemplates(response || []);
-
-        } catch (err) {
-
-            console.error(err);
-
-            setError(
-                "Failed to load assessment templates."
+      
+          setLoading(true);
+      
+          const startTime =
+            Date.now();
+      
+          setError("");
+      
+          const response =
+            await getAssessmentTemplates();
+      
+          const elapsed =
+            Date.now() - startTime;
+      
+          const minimumSkeletonTime =
+            1000;
+      
+          if (
+            elapsed <
+            minimumSkeletonTime
+          ) {
+      
+            await new Promise(
+              resolve =>
+                setTimeout(
+                  resolve,
+                  minimumSkeletonTime - elapsed
+                )
             );
-
-        } finally {
-
-            setLoading(false);
-
+      
+          }
+      
+          setTemplates(
+            response || []
+          );
+      
         }
-    };
+        catch (err) {
+      
+          console.error(err);
+      
+          setError(
+            "Failed to load assessment templates."
+          );
+      
+        }
+        finally {
+      
+          setLoading(false);
+      
+        }
+      
+      };
+      if (loading) {
+
+        return (
+            <>
+                <DashboardHeader />
+    
+                <main className="dashboard-main">
+    
+                    <TemplateBuilderSkeleton />
+    
+                </main>
+    
+            </>
+        );
+    
+    }
 
     return (
         <>

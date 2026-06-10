@@ -5,7 +5,8 @@ function UserTable({
   onViewUser,
   onApprove,
   onReject,
-  onDelete
+  onDelete,
+  startIndex = 0
 }) {
 
   const getStatusClass = (
@@ -104,7 +105,7 @@ function UserTable({
                 <tr key={user.id}>
 
                   <td>
-                    {index + 1}
+                    {startIndex + index + 1}
                   </td>
 
                   <td>
