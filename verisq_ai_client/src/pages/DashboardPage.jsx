@@ -11,8 +11,9 @@ import FindingsModal from "../components/dashboard/FindingsModal";
 import EmailModal from "../components/dashboard/EmailModal";
 import { useEffect } from "react";
 import { apiRequest } from "../services/api";
-
+import UserDashboardSkeleton from "../components/skeletons/UserDashboardSkeleton";
 function DashboardPage() {
+  
   const [usedVendors, setUsedVendors] = useState(0);
   const [vendors, setVendors] = useState([]);
   const [isEmailOpen, setIsEmailOpen] = useState(false);
@@ -29,21 +30,70 @@ function DashboardPage() {
   //to handle token
   const fetchDashboardData = async () => {
     try {
+  
       setLoading(true);
-
-      const vendorRes = await apiRequest("/api/dashboard/vendors");
-      setVendors(vendorRes);
-      setUsedVendors(vendorRes.length);
-
-      const statsRes = await apiRequest("/api/dashboard/stats");
-      setStats(statsRes);
-
-    } catch (err) {
-      console.error("ERROR:", err);
-    } finally {
+  
+      const startTime = Date.now();
+  
+      const vendorRes =
+        await apiRequest(
+          "/api/dashboard/vendors"
+        );
+  
+      const statsRes =
+        await apiRequest(
+          "/api/dashboard/stats"
+        );
+  
+      const elapsed =
+        Date.now() - startTime;
+  
+      const minimumSkeletonTime =
+        1000;
+  
+      if (
+        elapsed <
+        minimumSkeletonTime
+      ) {
+  
+        await new Promise(
+          resolve =>
+            setTimeout(
+              resolve,
+              minimumSkeletonTime - elapsed
+            )
+        );
+  
+      }
+  
+      setVendors(
+        vendorRes
+      );
+  
+      setUsedVendors(
+        vendorRes.length
+      );
+  
+      setStats(
+        statsRes
+      );
+  
+    }
+    catch (err) {
+  
+      console.error(
+        "ERROR:",
+        err
+      );
+  
+    }
+    finally {
+  
       setLoading(false);
+  
     }
   };
+ 
 
   useEffect(() => {
     fetchDashboardData();
@@ -63,6 +113,14 @@ function DashboardPage() {
       window.removeEventListener("popstate", handlePopState);
     };
   }, []);
+  if (loading) {
+  return (
+    <>
+      <DashboardHeader />
+      <UserDashboardSkeleton />
+    </>
+  );
+}
 
   // ✅ Close modal
   const handleCloseModal = async (refresh = false) => {

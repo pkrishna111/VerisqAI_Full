@@ -1,0 +1,37 @@
+.user-dashboard-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .user-dashboard-header {
+    height: 180px;
+    border-radius: 24px;
+  }
+  
+  .user-dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .user-dashboard-kpi {
+    height: 150px;
+    border-radius: 20px;
+  }
+  
+  .user-dashboard-table {
+    height: 420px;
+    border-radius: 24px;
+  }
+  
+  .user-dashboard-bottom {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .user-dashboard-card {
+    height: 300px;
+    border-radius: 24px;
+  }
