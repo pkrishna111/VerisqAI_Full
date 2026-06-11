@@ -1,0 +1,126 @@
+/* ===================================================== */
+/* QUESTIONNAIRE DETAILS CARD */
+/* ===================================================== */
+
+.questionnaire-details-card {
+  background: #fff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+  padding: 1.25rem 1.5rem;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+
+  margin-top: 1rem;
+}
+
+.questionnaire-details-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding-bottom: 12px;
+
+  margin-bottom: 16px;
+
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.questionnaire-details-header h3 {
+  font-size: 15px;
+
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.questionnaire-details-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 16px 28px;
+}
+
+.detail-item {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.detail-item-full {
+  grid-column: span 3;
+}
+
+.detail-label {
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+
+  color: #94a3b8;
+
+  font-weight: 700;
+}
+
+.detail-value {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #0f172a;
+
+  line-height: 1.4;
+}
+
+.questionnaire-status-badge {
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+.questionnaire-status-sent {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.questionnaire-status-in-progress {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.questionnaire-status-completed {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.questionnaire-status-declined {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.questionnaire-status-cancelled {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.questionnaire-status-expired {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+
+.questionnaire-details-card:hover {
+  border-color: #dbeafe;
+}

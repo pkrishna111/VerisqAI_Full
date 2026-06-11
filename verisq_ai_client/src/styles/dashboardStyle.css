@@ -1517,3 +1517,55 @@ body {
   backdrop-filter: blur(10px);
 }
 
+/* Questionnaire Status Badges */
+
+.questionnaire-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.questionnaire-sent {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.questionnaire-progress {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.questionnaire-completed {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.questionnaire-declined {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.questionnaire-cancelled {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.questionnaire-expired {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.questionnaire-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

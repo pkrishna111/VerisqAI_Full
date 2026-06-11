@@ -103,65 +103,86 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
       </td>
 
       {/* Questionnaire */}
+      {/* Questionnaire */}
       <td>
 
-        {(vendor.questionnaire === "Sent" ||
-          vendor.questionnaire === "In Progress") && (
-
-            <div
-              className="questionnaire completed"
-              style={{
-                display: "flex",
-                gap: "8px",
-                alignItems: "center"
-              }}
-            >
-              <span>{vendor.questionnaire}</span>
-            </div>
-          )}
-
-        {vendor.questionnaire === "Completed" && (
-
-          <div
-            className="questionnaire completed"
-            style={{
-              display: "flex",
-              gap: "8px",
-              alignItems: "center"
-            }}
+        {vendor.questionnaire === "Send" && (
+          <button
+            className="send-btn"
+            onClick={() => onSendClick(vendor.id)}
           >
-            <span>Completed</span>
-
-            <button
-              className="send-btn"
-              onClick={() =>
-                onSendClick(vendor.id)
-              }
-            >
-              <Send size={16} />
-              Resend
-            </button>
-          </div>
+            <Send size={16} />
+            Send
+          </button>
         )}
 
-        {(vendor.questionnaire === "Cancelled" ||
-          vendor.questionnaire === "Declined" ||
-          vendor.questionnaire === "Expired" ||
-          vendor.questionnaire === "Send") && (
+        {vendor.questionnaire === "Sent" && (
+          <span className="questionnaire-badge questionnaire-sent">
+            Sent
+          </span>
+        )}
+
+        {vendor.questionnaire === "In Progress" && (
+          <span className="questionnaire-badge questionnaire-progress">
+            In Progress
+          </span>
+        )}
+
+        {vendor.questionnaire === "Completed" && (
+          <span className="questionnaire-badge questionnaire-completed">
+            Completed
+          </span>
+        )}
+
+        {vendor.questionnaire === "Declined" && (
+          <div className="questionnaire-action">
+            <span className="questionnaire-badge questionnaire-declined">
+              Declined
+            </span>
 
             <button
               className="send-btn"
-              onClick={() =>
-                onSendClick(vendor.id)
-              }
+              onClick={() => onSendClick(vendor.id)}
             >
               <Send size={16} />
               Send
             </button>
-          )}
+          </div>
+        )}
+
+        {vendor.questionnaire === "Cancelled" && (
+          <div className="questionnaire-action">
+            <span className="questionnaire-badge questionnaire-cancelled">
+              Cancelled
+            </span>
+
+            <button
+              className="send-btn"
+              onClick={() => onSendClick(vendor.id)}
+            >
+              <Send size={16} />
+              Send
+            </button>
+          </div>
+        )}
+
+        {vendor.questionnaire === "Expired" && (
+          <div className="questionnaire-action">
+            <span className="questionnaire-badge questionnaire-expired">
+              Expired
+            </span>
+
+            <button
+              className="send-btn"
+              onClick={() => onSendClick(vendor.id)}
+            >
+              <Send size={16} />
+              Send
+            </button>
+          </div>
+        )}
 
       </td>
-
       {/* Risk Score */}
       <td>{vendor.riskScore ?? "—"}</td>
 

@@ -417,6 +417,9 @@ namespace VerisqAI.API.Controllers
 
             // latest questionnaire
             var questionnaire = await _context.Questionnaires
+                .Include(q => q.AssessmentTemplate)
+                    .ThenInclude(t => t.Sections)
+                        .ThenInclude(s => s.Questions)
                 .Where(q => q.VendorId == id)
                 .OrderByDescending(q => q.SentAt)
                 .FirstOrDefaultAsync();
@@ -540,6 +543,17 @@ namespace VerisqAI.API.Controllers
                                 Status =
                                     questionnaire.Status,
 
+                                                                TemplateName =
+                                    questionnaire.AssessmentTemplate?.Name,
+
+                                                                QuestionCount =
+                                    questionnaire.AssessmentTemplate == null
+                                        ? 0
+                                        : questionnaire
+                                            .AssessmentTemplate
+                                            .Sections
+                                            .Sum(s => s.Questions.Count),
+
                                 SentAt =
                                     questionnaire.SentAt,
 
@@ -662,14 +676,14 @@ namespace VerisqAI.API.Controllers
             var scorecard = await _context.Scorecards
 
     .Include(s => s.Questionnaire)
-        .ThenInclude(q => q.Responses)
-
+    .ThenInclude(q => q.Responses)
+    .Include(s => s.Questionnaire)
+        .ThenInclude(q => q.AssessmentTemplate)
+            .ThenInclude(t => t.Sections)
+                .ThenInclude(s => s.Questions)
     .Include(s => s.Findings)
-
     .Include(s => s.AiAssessmentInsight)
-
     .Include(s => s.AiRecommendations)
-
     .FirstOrDefaultAsync(
         s => s.Id == scorecardId
     );
@@ -688,10 +702,23 @@ namespace VerisqAI.API.Controllers
                         ? new QuestionnaireDto
                         {
                             Id =
-                                scorecard.Questionnaire.Id,
+                            scorecard.Questionnaire.Id,
 
-                            Status =
-                                scorecard.Questionnaire.Status,
+                                                    Status =
+                            scorecard.Questionnaire.Status,
+
+                                                    TemplateName =
+                            scorecard.Questionnaire
+                                .AssessmentTemplate?.Name,
+
+                                                    QuestionCount =
+                            scorecard.Questionnaire
+                                .AssessmentTemplate == null
+                                    ? 0
+                                    : scorecard.Questionnaire
+                                        .AssessmentTemplate
+                                        .Sections
+                                        .Sum(s => s.Questions.Count),
 
                             SentAt =
                                 scorecard.Questionnaire.SentAt,

@@ -9,6 +9,7 @@ import AssessmentCards from "../components/vendor-details/AssessmentCards";
 import AssessmentTimeline from "../components/vendor-details/AssessmentTimeline";
 import AssessmentIntelligenceTabs from "../components/vendor-details/AssessmentIntelligenceTabs";
 import EmailModal from "../components/dashboard/EmailModal";
+import QuestionnaireDetailsCard from "../components/vendor-details/QuestionnaireDetailsCard";
 import {
     apiRequest,
     getAssessmentDetails,
@@ -270,6 +271,10 @@ export default function VendorDetailsPage() {
                         <AssessmentCards
                             scorecard={scorecard}
                             findings={findings}
+                            questionnaire={questionnaire}
+                        />
+
+                        <QuestionnaireDetailsCard
                             questionnaire={questionnaire}
                         />
 

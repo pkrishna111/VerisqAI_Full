@@ -173,7 +173,7 @@ function DashboardPage() {
             setVendors((prev) =>
               prev.map((v) =>
                 v.id === vendorId
-                  ? { ...v, questionnaire: "Pending" }
+                  ? { ...v, questionnaire: "Sent" }
                   : v
               )
             );
@@ -243,7 +243,7 @@ function DashboardPage() {
               setVendors((prev) =>
                 prev.map((v) =>
                   v.id === selectedVendorId
-                    ? { ...v, questionnaire: "Pending" }
+                    ? { ...v, questionnaire: "Sent" }
                     : v
                 )
               );

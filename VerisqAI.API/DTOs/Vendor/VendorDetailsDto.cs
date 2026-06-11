@@ -45,6 +45,10 @@ namespace VerisqAI.API.DTOs.Vendor
 
         public string Status { get; set; }
 
+        public string? TemplateName { get; set; }
+
+        public int QuestionCount { get; set; }
+
         public DateTime SentAt { get; set; }
 
         public DateTime? StartedAt { get; set; }
