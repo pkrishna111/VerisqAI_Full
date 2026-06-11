@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VerisqAI.API.Models;
 using VerisqAI.API.Models.Enums;
@@ -6,6 +7,7 @@ using VerisqAI.API.Services;
 
 namespace VerisqAI.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/admin")]
 

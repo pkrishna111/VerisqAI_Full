@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VerisqAI.API.Data;
+using VerisqAI.API.Models;
 using VerisqAI.API.Models.Enums;
 using VerisqAI.API.Services;
-using VerisqAI.API.Models;
 
 namespace VerisqAI.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/admin/users")]
     public class AdminUsersController : ControllerBase

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using VerisqAI.API.Models;
+using VerisqAI.API.Models.Enums;
 
 namespace VerisqAI.API.Seed
 {
@@ -25,7 +26,7 @@ namespace VerisqAI.API.Seed
             }
 
             //for default admin
-            var adminEmail = "admin@verisq.com";
+            var adminEmail = "2025024135@vnsgu.ac.in";
             var existingAdmin = await userManager
                 .FindByEmailAsync(adminEmail);
 
@@ -38,7 +39,8 @@ namespace VerisqAI.API.Seed
                     FullName = "System Administrator",
                     CompanyName = "Verisq AI",
                     CompanyDomain = "verisq.com",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    Status = UserStatus.Approved,
                 };
 
                 var result = await userManager.CreateAsync(

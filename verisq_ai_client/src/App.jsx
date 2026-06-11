@@ -27,6 +27,7 @@ import Users from './admin/pages/Users'
 import Vendors from "./admin/pages/Vendors";
 import AiMonitoring from './admin/pages/AiMonitoring'
 import AuditLogs from './admin/pages/AuditLogs'
+import AdminRoute from "./routes/AdminRoute";
 
 
 
@@ -99,11 +100,46 @@ function App() {
         <Route path="RiskTiering" element={<RiskTiering />} />
 
         {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<Users />} />
-        <Route path="/admin/vendors" element={<Vendors />} />
-        <Route path="/admin/ai-monitoring" element={<AiMonitoring />} />
-        <Route path="/admin/audit-logs" element={<AuditLogs />} />
+        <Route
+  path="/admin/dashboard"
+  element={
+    <AdminRoute>
+      <AdminDashboard />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/users"
+  element={
+    <AdminRoute>
+      <Users />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/vendors"
+  element={
+    <AdminRoute>
+      <Vendors />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/ai-monitoring"
+  element={
+    <AdminRoute>
+      <AiMonitoring />
+    </AdminRoute>
+  }
+/>
+<Route
+  path="/admin/audit-logs"
+  element={
+    <AdminRoute>
+      <AuditLogs />
+    </AdminRoute>
+  }
+/>
 
         {/* <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
