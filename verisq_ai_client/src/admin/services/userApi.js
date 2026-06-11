@@ -1,4 +1,4 @@
-import axios from "axios";
+import adminAxios from "./adminAxios";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
@@ -8,7 +8,7 @@ const API_BASE =
 // GET ALL USERS
 // ==============================
 export const getUsers = async () => {
-  const response = await axios.get(
+  const response = await adminAxios.get(
     `${API_BASE}/api/admin/users`
   );
 
@@ -21,7 +21,7 @@ export const getUsers = async () => {
 export const getUserById = async (
   userId
 ) => {
-  const response = await axios.get(
+  const response = await adminAxios.get(
     `${API_BASE}/api/admin/users/${userId}`
   );
 
@@ -34,7 +34,7 @@ export const getUserById = async (
 export const approveUser = async (
   userId
 ) => {
-  const response = await axios.post(
+  const response = await adminAxios.post(
     `${API_BASE}/api/admin/users/${userId}/approve`
   );
 
@@ -47,7 +47,7 @@ export const approveUser = async (
 export const rejectUser = async (
   userId
 ) => {
-  const response = await axios.post(
+  const response = await adminAxios.post(
     `${API_BASE}/api/admin/users/${userId}/reject`
   );
 
@@ -60,7 +60,7 @@ export const rejectUser = async (
 export const deleteUser = async (
   userId
 ) => {
-  const response = await axios.delete(
+  const response = await adminAxios.delete(
     `${API_BASE}/api/admin/users/${userId}`
   );
 
@@ -74,7 +74,7 @@ export const updateUser = async (
   userId,
   userData
 ) => {
-  const response = await axios.put(
+  const response = await adminAxios.put(
     `${API_BASE}/api/admin/users/${userId}`,
     userData
   );
@@ -86,7 +86,7 @@ export const updateUser = async (
 // USER STATS
 // ==============================
 export const getUserStats = async () => {
-  const response = await axios.get(
+  const response = await adminAxios.get(
     `${API_BASE}/api/admin/users/stats`
   );
 

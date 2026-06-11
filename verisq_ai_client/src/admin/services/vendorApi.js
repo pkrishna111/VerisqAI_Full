@@ -1,4 +1,4 @@
-import axios from "axios";
+import adminAxios from "./adminAxios";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
@@ -8,7 +8,7 @@ const API_BASE =
 // GET ALL VENDORS
 // =====================================
 export const getVendors = async () => {
-  const response = await axios.get(
+  const response = await adminAxios.get(
     `${API_BASE}/api/admin/vendors`
   );
 
@@ -21,7 +21,7 @@ export const getVendors = async () => {
 export const getVendorById = async (
   vendorId
 ) => {
-  const response = await axios.get(
+  const response = await adminAxios.get(
     `${API_BASE}/api/admin/vendors/${vendorId}`
   );
 
@@ -34,7 +34,7 @@ export const getVendorById = async (
 export const deleteVendor = async (
   vendorId
 ) => {
-  const response = await axios.delete(
+  const response = await adminAxios.delete(
     `${API_BASE}/api/admin/vendors/${vendorId}`
   );
 
@@ -45,7 +45,7 @@ export const deleteVendor = async (
 // VENDOR STATS
 // =====================================
 // export const getVendorStats = async () => {
-//   const response = await axios.get(
+//   const response = await adminAxios.get(
 //     `${API_BASE}/api/admin/vendors/stats`
 //   );
 
@@ -56,7 +56,7 @@ export const getVendorStats =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/vendors/stats`
       );
 

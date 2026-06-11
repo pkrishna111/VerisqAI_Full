@@ -43,3 +43,31 @@ export const getRole = () => {
         return null;
     }
 };
+
+export const getFullName = () => {
+    const token = getToken();
+
+    if (!token) return "";
+
+    try {
+        const decoded = jwtDecode(token);
+
+        return decoded.fullName || "";
+    }
+    catch {
+        return "";
+    }
+};
+
+export const getInitials = () => {
+    const fullName = getFullName();
+
+    if (!fullName) return "AD";
+
+    return fullName
+        .split(" ")
+        .map(x => x[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase();
+};

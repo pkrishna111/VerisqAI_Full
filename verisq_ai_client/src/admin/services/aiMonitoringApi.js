@@ -1,4 +1,4 @@
-import axios from "axios";
+import adminAxios from "./adminAxios";
 
 const API_BASE =
   "https://localhost:7183";
@@ -11,7 +11,7 @@ export const getAiStats =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/ai-monitoring/stats`
       );
 
@@ -26,7 +26,7 @@ export const getAiActivity =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/ai-monitoring/activity`
       );
 
@@ -41,7 +41,7 @@ export const getModelUsage =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/ai-monitoring/model-usage`
       );
 
@@ -56,7 +56,7 @@ export const getProcessingVolume =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/ai-monitoring/processing-volume`
       );
 
@@ -71,7 +71,7 @@ export const getFailedRequests =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/ai-monitoring/failed-requests`
       );
 

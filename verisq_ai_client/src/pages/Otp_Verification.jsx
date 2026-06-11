@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import "../styles/otp_verification.css";
 import API_BASE_URL from "../services/api";
+import { getRole } from "../utils/auth";
 
 export default function Otp_verification() {
   const [attemptsLeft, setAttemptsLeft] = useState(5);
@@ -134,7 +135,13 @@ export default function Otp_verification() {
 
       localStorage.setItem("token", data.token);
 
-      navigate("/dashboard");
+      const role = getRole();
+
+      if (role === "Admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
 
     } catch (err) {
       setError(err.message);

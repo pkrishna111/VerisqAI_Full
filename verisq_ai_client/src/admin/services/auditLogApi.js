@@ -1,4 +1,4 @@
-import axios from "axios";
+import adminAxios from "./adminAxios";
 
 const API_BASE =
   "https://localhost:7183";
@@ -11,7 +11,7 @@ export const getAuditLogs =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/audit-logs`
       );
 
@@ -26,7 +26,7 @@ export const getRecentLogs =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/audit-logs/recent`
       );
 
@@ -41,7 +41,7 @@ export const getAuditLogStats =
   async () => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/audit-logs/stats`
       );
 
@@ -56,7 +56,7 @@ export const searchAuditLogs =
   async (query) => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/audit-logs/search`,
         {
           params: {
@@ -76,7 +76,7 @@ export const getLogsByEventType =
   async (eventType) => {
 
     const response =
-      await axios.get(
+      await adminAxios.get(
         `${API_BASE}/api/admin/audit-logs/event/${eventType}`
       );
 

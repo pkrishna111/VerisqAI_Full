@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Sparkles, ChevronDown, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  getFullName,
+  getInitials
+} from "../../utils/auth";
 
 import "../styles/AdminHeader.css";
 
@@ -29,6 +33,8 @@ function AdminHeader() {
   }, []);
 
   const navigate = useNavigate();
+  const fullName = getFullName();
+  const initials = getInitials();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -88,13 +94,13 @@ function AdminHeader() {
           >
 
             <div className="admin-avatar">
-              SK
+              {initials}
             </div>
 
             <div className="admin-details">
 
               <span className="admin-name">
-                Sahil Kanjariya
+                {fullName}
               </span>
 
               <span className="admin-role">
@@ -117,7 +123,7 @@ function AdminHeader() {
               <div className="dropdown-user-info">
 
                 <h4>
-                  Sahil Kanjariya
+                  {fullName}
                 </h4>
 
                 <span>
