@@ -373,7 +373,7 @@ namespace VerisqAI.API.Services
                                         .FontSize(7).Bold().FontColor(Slate500);
 
                                     col.Item().PaddingTop(6)
-                                        .Background(tierBg).Border(1).BorderColor(tierColor)
+                                        //.Background(tierBg).Border(1).BorderColor(tierColor)
                                         .Padding(6).AlignCenter()
                                         .Text($"Tier {riskTier}")
                                         .FontSize(18).Bold().FontColor(tierColor);

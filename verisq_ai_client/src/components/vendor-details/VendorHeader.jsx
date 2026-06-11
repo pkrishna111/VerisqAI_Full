@@ -4,7 +4,8 @@ import {
   Download,
   ShieldAlert,
   RefreshCw,
-  Send
+  Send,
+  Loader2
 } from "lucide-react";
 
 import RiskBadge from "./RiskBadge";
@@ -23,8 +24,10 @@ const VendorHeader = ({
   onRefresh,
   onSendQuestionnaire,
   onCancelQuestionnaire,
-  onDownloadReport
+  onDownloadReport,
+  isSendingQuestionnaire = false
 }) => {
+
   const initials = vendor.name
     .split(" ")
     .map(word => word[0])
@@ -32,13 +35,11 @@ const VendorHeader = ({
     .slice(0, 2)
     .toUpperCase();
 
-  const tierClass = getRiskTierClass(
-    scorecard?.riskTier
-  );
+  const tierClass =
+    getRiskTierClass(scorecard?.riskTier);
 
-  const tierLabel = getRiskTierLabel(
-    scorecard?.riskTier
-  );
+  const tierLabel =
+    getRiskTierLabel(scorecard?.riskTier);
 
   const activeStatuses = [
     "Sent",
@@ -63,103 +64,150 @@ const VendorHeader = ({
     );
 
   return (
-    <section className="vd-header">
+    <>
+      {isSendingQuestionnaire && (
+        <div className="vd-loading-overlay">
+          <div className="vd-loading-card">
 
-      <div className="vd-header__content">
+            <Loader2
+              size={48}
+              className="vd-spinner"
+            />
 
-        <div className="vd-header__left">
+            <h3>
+              Sending Questionnaire
+            </h3>
 
-          <div className="vd-header__avatar">
-            {initials}
-          </div>
-
-          <div>
-            <div className="vd-header__top-row">
-
-              <h1 className="vd-header__title">
-                {vendor.name}
-              </h1>
-
-              <RiskBadge
-                label={tierLabel}
-                variant={tierClass}
-              />
-
-            </div>
-
-            <div className="vd-header__meta">
-
-              <div className="vd-header__meta-item">
-                <Globe size={16} />
-                <span>{vendor.domain}</span>
-              </div>
-
-              <div className="vd-header__meta-item">
-                <Mail size={16} />
-                <span>{vendor.email}</span>
-              </div>
-
-              <div className="vd-header__meta-item">
-                <ShieldAlert size={16} />
-                <span>Status: {vendor.status}</span>
-              </div>
-
-            </div>
+            <p>
+              Please wait while the
+              questionnaire is being
+              generated and sent to the
+              vendor.
+            </p>
 
           </div>
-
         </div>
+      )}
 
-        <div className="vd-header-actions">
+      <section className="vd-header">
 
-          <button
-            className="vd-header-btn vd-header-btn--secondary"
-            onClick={onRefresh}
-          >
-            <RefreshCw size={16} />
+        <div className="vd-header__content">
 
-            <span>Refresh</span>
-          </button>
+          <div className="vd-header__left">
 
-          {canCancelQuestionnaire ? (
+            <div className="vd-header__avatar">
+              {initials}
+            </div>
+
+            <div>
+
+              <div className="vd-header__top-row">
+
+                <h1 className="vd-header__title">
+                  {vendor.name}
+                </h1>
+
+                <RiskBadge
+                  label={tierLabel}
+                  variant={tierClass}
+                />
+
+              </div>
+
+              <div className="vd-header__meta">
+
+                <div className="vd-header__meta-item">
+                  <Globe size={16} />
+                  <span>{vendor.domain}</span>
+                </div>
+
+                <div className="vd-header__meta-item">
+                  <Mail size={16} />
+                  <span>{vendor.email}</span>
+                </div>
+
+                <div className="vd-header__meta-item">
+                  <ShieldAlert size={16} />
+                  <span>
+                    Status: {vendor.status}
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="vd-header-actions">
 
             <button
-              className="vd-header-btn vd-header-btn--danger"
-              onClick={onCancelQuestionnaire}
+              className="vd-header-btn vd-header-btn--secondary"
+              onClick={onRefresh}
+              disabled={isSendingQuestionnaire}
             >
-              <span>
+              <RefreshCw size={16} />
+              <span>Refresh</span>
+            </button>
+
+            {canCancelQuestionnaire ? (
+
+              <button
+                className="vd-header-btn vd-header-btn--danger"
+                onClick={onCancelQuestionnaire}
+                disabled={isSendingQuestionnaire}
+              >
                 Cancel Questionnaire
-              </span>
-            </button>
+              </button>
 
-          ) : (
+            ) : (
+
+              <button
+                className="vd-header-btn vd-header-btn--primary"
+                onClick={onSendQuestionnaire}
+                disabled={
+                  !canSendQuestionnaire ||
+                  isSendingQuestionnaire
+                }
+              >
+                {isSendingQuestionnaire ? (
+                  <>
+                    <Loader2
+                      size={16}
+                      className="vd-spinner"
+                    />
+                    <span>
+                      Sending...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Send size={16} />
+                    <span>
+                      Send Questionnaire
+                    </span>
+                  </>
+                )}
+              </button>
+
+            )}
 
             <button
-              className="vd-header-btn vd-header-btn--primary"
-              onClick={onSendQuestionnaire}
-              disabled={!canSendQuestionnaire}
+              className="vd-header__button"
+              onClick={onDownloadReport}
+              disabled={isSendingQuestionnaire}
             >
-              <Send size={16} />
-
-              <span>
-                Send Questionnaire
-              </span>
+              <Download size={18} />
+              Download Report
             </button>
 
-          )}
-
-          <button className="vd-header__button"
-            onClick={onDownloadReport}>
-            <Download size={18} />
-            Download Report
-          </button>
+          </div>
 
         </div>
 
-      </div>
-
-    </section>
+      </section>
+    </>
   );
-}
+};
 
 export default VendorHeader;

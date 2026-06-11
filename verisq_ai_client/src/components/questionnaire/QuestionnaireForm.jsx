@@ -152,14 +152,14 @@ export default function QuestionnaireForm({
                                     The AI scorecard and recommendations are now being generated.
                                 </p>
 
-                                <button
+                                {/* <button
                                     className="QuestionnaireForm-success-btn"
                                     onClick={() => {
                                         window.location.reload();
                                     }}
                                 >
                                     Continue
-                                </button>
+                                </button> */}
                             </>
 
                         )}
