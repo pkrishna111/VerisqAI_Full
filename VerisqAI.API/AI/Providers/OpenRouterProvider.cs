@@ -142,6 +142,18 @@ namespace VerisqAI.API.AI.Providers
                         .GetProperty("content")
                         .GetString();
 
+                Console.WriteLine("");
+                Console.WriteLine("====================================");
+                Console.WriteLine("RAW AI RESPONSE START");
+                Console.WriteLine("====================================");
+
+                Console.WriteLine(text);
+
+                Console.WriteLine("====================================");
+                Console.WriteLine("RAW AI RESPONSE END");
+                Console.WriteLine("====================================");
+                Console.WriteLine("");
+
                 if (string.IsNullOrWhiteSpace(text))
                 {
                     throw new Exception(
@@ -149,7 +161,17 @@ namespace VerisqAI.API.AI.Providers
                 }
 
                 var sanitizedJson =
-    SanitizeJsonResponse(text);
+                    SanitizeJsonResponse(text);
+
+                Console.WriteLine("");
+                Console.WriteLine("====================================");
+                Console.WriteLine("SANITIZED JSON");
+                Console.WriteLine("====================================");
+
+                Console.WriteLine(sanitizedJson);
+
+                Console.WriteLine("====================================");
+                Console.WriteLine("");
 
                 AiAssessmentResult? result = null;
 
@@ -166,9 +188,21 @@ namespace VerisqAI.API.AI.Providers
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("====================================");
+                    Console.WriteLine("JSON PARSE FAILED");
+                    Console.WriteLine("====================================");
+
+                    Console.WriteLine(sanitizedJson);
+
+                    Console.WriteLine("");
+                    Console.WriteLine(ex.ToString());
+
+                    Console.WriteLine("====================================");
+                    Console.WriteLine("");
+
                     throw new Exception(
                         $"AI response parsing failed. " +
-                        $"Sanitized response: {sanitizedJson}. " +
                         $"Error: {ex.Message}");
                 }
 
@@ -258,6 +292,16 @@ namespace VerisqAI.API.AI.Providers
             if (!response.StartsWith("{") ||
     !response.EndsWith("}"))
             {
+                Console.WriteLine("");
+                Console.WriteLine("====================================");
+                Console.WriteLine("INVALID JSON RESPONSE");
+                Console.WriteLine("====================================");
+
+                Console.WriteLine(response);
+
+                Console.WriteLine("====================================");
+                Console.WriteLine("");
+
                 throw new Exception(
                     "AI response does not contain valid JSON object.");
             }

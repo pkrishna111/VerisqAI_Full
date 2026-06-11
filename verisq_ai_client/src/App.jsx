@@ -9,6 +9,8 @@ import VendorDetailsPage from './pages/VendorDetailsPage'
 import Otp_verification from './pages/Otp_Verification'
 import AdminTrialRequests from './pages/AdminTrialRequests'
 import QuestionnairePage from './pages/QuestionnairePage'
+import QuestionnaireDeclinePage from "./pages/QuestionnaireDeclinePage";
+import QuestionnaireDeclinedPage from "./pages/QuestionnaireDeclinedPage";
 
 import Howitworks from './pages/Howitworks'
 import Scorecards from './pages/Scorecards '
@@ -17,6 +19,7 @@ import TemplateBuilderPage from './pages/TemplateBuilderPage'
 import TemplateDetailsPage from './pages/TemplateDetailsPage'
 import BreachAlerts from './pages/BreachAlerts'
 import RiskTiering from './pages/RiskTiering'
+import QuestionnaireWelcomePage from "./pages/QuestionnaireWelcomePage";
 
 //Admin Imports
 import AdminDashboard from './admin/pages/AdminDashboard'
@@ -24,6 +27,7 @@ import Users from './admin/pages/Users'
 import Vendors from "./admin/pages/Vendors";
 import AiMonitoring from './admin/pages/AiMonitoring'
 import AuditLogs from './admin/pages/AuditLogs'
+
 
 
 
@@ -87,16 +91,19 @@ function App() {
         <Route path="how-it-works" element={<Howitworks />} />
         <Route path="Scorecard" element={<Scorecards />} />
         <Route path="Questionnaires" element={<Questionnaires />} />
-        <Route path="/questionnaire/:token" element={<QuestionnairePage />} />
+        <Route path="/questionnaire/:token" element={<QuestionnaireWelcomePage />} />
+        <Route path="/questionnaire/:token/assessment" element={<QuestionnairePage />} />
+        <Route path="/questionnaire/:token/decline" element={<QuestionnaireDeclinePage />} />
+        <Route path="/questionnaire/:token/declined" element={<QuestionnaireDeclinedPage />} />
         <Route path="BreachAlerts" element={<BreachAlerts />} />
         <Route path="RiskTiering" element={<RiskTiering />} />
 
         {/* Admin Routes */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<Users />}/>
-        <Route path="/admin/vendors" element={<Vendors />}/>
-        <Route path="/admin/ai-monitoring" element={<AiMonitoring />}/>
-        <Route path="/admin/audit-logs"  element={<AuditLogs />}/>
+        <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/vendors" element={<Vendors />} />
+        <Route path="/admin/ai-monitoring" element={<AiMonitoring />} />
+        <Route path="/admin/audit-logs" element={<AuditLogs />} />
 
         {/* <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />

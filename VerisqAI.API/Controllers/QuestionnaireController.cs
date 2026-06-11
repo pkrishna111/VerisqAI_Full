@@ -32,6 +32,7 @@ namespace VerisqAI.API.Controllers
         public async Task<IActionResult> GetQuestions(string token)
         {
             var questionnaire = await _context.Questionnaires
+                .Include(q => q.Vendor)
                 .FirstOrDefaultAsync(q => q.Token == token);
 
             if (questionnaire == null)
@@ -158,7 +159,13 @@ namespace VerisqAI.API.Controllers
             {
                 questionnaireId = questionnaire.Id,
                 vendorId = questionnaire.VendorId,
-                template = result
+                status = questionnaire.Status,
+                expiresAt = questionnaire.ExpiresAt,
+                vendorName = questionnaire.Vendor?.Name,
+                vendorDomain = questionnaire.Vendor?.Domain,
+                template = result,
+                questionCount = result.Sections
+                    .Sum(s => s.Questions.Count)
             });
         }
 
