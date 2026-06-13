@@ -1,4 +1,10 @@
 Pending:
+
+apply nlogger 
+client side validate domain name
+dynamic changes on reload
+if single assessment then it should be autoselect
+
 After this builds, I actually recommend removing DynamicAssessmentSeeder entirely.
 Reason:
 Now templates are user-owned.
