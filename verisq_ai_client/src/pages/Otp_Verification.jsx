@@ -17,6 +17,7 @@ export default function Otp_verification() {
   const navigate = useNavigate();
   const emailFromUrl = searchParams.get("email");
   const [email, setEmail] = useState(emailFromUrl || "");
+  const [emailError, setEmailError] = useState("");
 
   useEffect(() => {
     if (timer <= 0) return;
@@ -41,7 +42,7 @@ export default function Otp_verification() {
   const handleSendCode = async () => {
     setError("");
 
-    if (!email) return;
+    
     // removed forced redirect to allow manual login
 
     setLoading(true);
@@ -50,9 +51,9 @@ export default function Otp_verification() {
       const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(email)   // ⚠️ IMPORTANT FORMAT
+        body: JSON.stringify(email), // ⚠️ IMPORTANT FORMAT
       });
 
       if (!res.ok) {
@@ -67,8 +68,7 @@ export default function Otp_verification() {
       setStep("otp");
       setTimer(60);
       setOtpTimer(180);
-      setAttemptsLeft(5);  // to reset attempts on new first otp
-
+      setAttemptsLeft(5); // to reset attempts on new first otp
     } catch (err) {
       setError(err.message);
     }
@@ -93,7 +93,10 @@ export default function Otp_verification() {
 
   const handleOtpPaste = (e) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
     const updated = [...otp];
     [...pasted].forEach((ch, i) => (updated[i] = ch));
     setOtp(updated);
@@ -106,12 +109,12 @@ export default function Otp_verification() {
       const res = await fetch(`${API_BASE_URL}/api/auth/verify-totp`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: email,
-          code: otp.join("")
-        })
+          code: otp.join(""),
+        }),
       });
       if (!res.ok) {
         const text = await res.text();
@@ -142,10 +145,23 @@ export default function Otp_verification() {
       } else {
         navigate("/dashboard");
       }
-
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const validateEmail = (value) => {
+    if (!value.trim()) {
+      return "Email is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(value)) {
+      return "Enter a valid email address";
+    }
+
+    return "";
   };
 
   const handleResend = async () => {
@@ -155,9 +171,9 @@ export default function Otp_verification() {
       const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(email)
+        body: JSON.stringify(email),
       });
 
       if (!res.ok) {
@@ -173,7 +189,6 @@ export default function Otp_verification() {
       setTimer(60);
       setOtpTimer(180);
       // setAttemptsLeft(5);  //enable this if want to resent attempts on resend
-
     } catch (err) {
       setError(err.message);
     }
@@ -206,7 +221,11 @@ export default function Otp_verification() {
         {/* Logo */}
         <div className="Otp_verification_logo">
           <div className="Otp_verification_logo_icon">
-            <svg viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              viewBox="0 0 40 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M20 2L4 9V22C4 31.4 11 40.1 20 42C29 40.1 36 31.4 36 22V9L20 2Z"
                 fill="var(--Otp_verification_primary)"
@@ -222,7 +241,9 @@ export default function Otp_verification() {
           </div>
           <div className="Otp_verification_logo_text">
             <span className="Otp_verification_logo_name">LIVETHREAT</span>
-            <span className="Otp_verification_logo_sub">SECURITY SCORECARD</span>
+            <span className="Otp_verification_logo_sub">
+              SECURITY SCORECARD
+            </span>
           </div>
         </div>
 
@@ -246,9 +267,18 @@ export default function Otp_verification() {
                 type="email"
                 className="Otp_verification_field_input"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setEmail(value);
+
+                  setEmailError(validateEmail(value));
+                }}
                 placeholder="you@company.com"
               />
+              {emailError && (
+                <div className="Otp_verification_error">{emailError}</div>
+              )}
               <span className="Otp_verification_field_hint">
                 {emailFromUrl
                   ? "Email is prefilled from your invitation link."
@@ -257,16 +287,16 @@ export default function Otp_verification() {
             </div>
 
             {/* to show error */}
-            {error && (
-              <div className="Otp_verification_error">
-                {error}
-              </div>
-            )}
+            {error && <div className="Otp_verification_error">{error}</div>}
 
             <button
               className="Otp_verification_primary_btn"
               onClick={handleSendCode}
-              disabled={loading || !email}
+              disabled={
+                loading ||
+                !!emailError ||
+                !email
+              }
             >
               {loading ? (
                 <span className="Otp_verification_spinner" />
@@ -301,10 +331,7 @@ export default function Otp_verification() {
 
             <p className="Otp_verification_footer_note">
               Don&apos;t have an account?{" "}
-              <Link
-                to="/"
-                className="Otp_verification_text_link"
-              >
+              <Link to="/" className="Otp_verification_text_link">
                 Start free trial
               </Link>
             </p>
@@ -341,9 +368,7 @@ export default function Otp_verification() {
             {error && (
               <div className="Otp_verification_error">
                 {error.toLowerCase().includes("too many") ? (
-                  <>
-                    Too many attempts. Try again after 10 minutes.
-                  </>
+                  <>Too many attempts. Try again after 10 minutes.</>
                 ) : (
                   error
                 )}
@@ -354,7 +379,10 @@ export default function Otp_verification() {
               Attempts left: {attemptsLeft} / 5
             </div>
 
-            <div className="Otp_verification_otp_group" onPaste={handleOtpPaste}>
+            <div
+              className="Otp_verification_otp_group"
+              onPaste={handleOtpPaste}
+            >
               {otp.map((digit, i) => (
                 <input
                   key={i}
@@ -363,8 +391,9 @@ export default function Otp_verification() {
                   inputMode="numeric"
                   maxLength={1}
                   value={digit}
-                  className={`Otp_verification_otp_cell${digit ? " Otp_verification_otp_cell_filled" : ""
-                    }`}
+                  className={`Otp_verification_otp_cell${
+                    digit ? " Otp_verification_otp_cell_filled" : ""
+                  }`}
                   onChange={(e) => handleOtpChange(e.target.value, i)}
                   onKeyDown={(e) => handleOtpKeyDown(e, i)}
                   disabled={attemptsLeft === 0}
@@ -373,8 +402,9 @@ export default function Otp_verification() {
             </div>
 
             <button
-              className={`Otp_verification_primary_btn ${attemptsLeft === 0 ? "Otp_verification_disabled" : ""
-                }`}
+              className={`Otp_verification_primary_btn ${
+                attemptsLeft === 0 ? "Otp_verification_disabled" : ""
+              }`}
               onClick={handleVerify}
               disabled={otp.some((d) => !d) || attemptsLeft === 0}
             >
@@ -384,8 +414,9 @@ export default function Otp_verification() {
             <p className="Otp_verification_footer_note">
               Didn&apos;t receive a code?{" "}
               <button
-                className={`Otp_verification_text_link Otp_verification_reset_btn ${timer > 0 ? "Otp_verification_disabled" : ""
-                  }`}
+                className={`Otp_verification_text_link Otp_verification_reset_btn ${
+                  timer > 0 ? "Otp_verification_disabled" : ""
+                }`}
                 onClick={handleResend}
                 disabled={timer > 0}
               >

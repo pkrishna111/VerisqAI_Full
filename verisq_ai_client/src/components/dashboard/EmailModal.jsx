@@ -17,18 +17,36 @@ function EmailModal({
   useEffect(() => {
     const loadTemplates = async () => {
       try {
-        const data = await getAssessmentTemplates();
-
-        setTemplates(
+  
+        const data =
+          await getAssessmentTemplates();
+  
+        const activeTemplates =
           data.filter(
             template => template.isActive
-          )
-        );
+          );
+  
+        setTemplates(activeTemplates);
+  
+        // Auto select if only one template
+        if (activeTemplates.length === 1) {
+  
+          setTemplateId(
+            activeTemplates[0].id.toString()
+          );
+  
+          setErrors(prev => ({
+            ...prev,
+            templateId: ""
+          }));
+  
+        }
+  
       } catch (err) {
         console.error(err);
       }
     };
-
+  
     loadTemplates();
   }, []);
 
@@ -87,6 +105,52 @@ function EmailModal({
 
   };
 
+  const validateField = (name, value) => {
+
+    let error = "";
+  
+    switch (name) {
+  
+      case "email":
+  
+        if (!value.trim()) {
+  
+          error = "Vendor email is required";
+  
+        } else {
+  
+          const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+          if (!emailRegex.test(value)) {
+  
+            error =
+              "Please enter a valid email address";
+  
+          }
+  
+        }
+  
+        break;
+  
+      case "templateId":
+  
+        if (!value) {
+  
+          error =
+            "Please select an assessment template";
+  
+        }
+  
+        break;
+  
+      default:
+        break;
+    }
+  
+    return error;
+  };
+
   const handleSubmit = () => {
 
     if (!validate()) return;
@@ -129,8 +193,19 @@ function EmailModal({
             placeholder="security@vendor.com"
             value={email}
             onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors({ ...errors, email: "" });
+
+              const value = e.target.value;
+            
+              setEmail(value);
+            
+              setErrors(prev => ({
+                ...prev,
+                email: validateField(
+                  "email",
+                  value
+                )
+              }));
+            
             }}
             className={`EmailModal-input ${errors.email ? "error" : ""}`}
           />
@@ -147,13 +222,18 @@ function EmailModal({
             value={templateId}
             onChange={(e) => {
 
-              setTemplateId(e.target.value);
-
-              setErrors({
-                ...errors,
-                templateId: ""
-              });
-
+              const value = e.target.value;
+            
+              setTemplateId(value);
+            
+              setErrors(prev => ({
+                ...prev,
+                templateId: validateField(
+                  "templateId",
+                  value
+                )
+              }));
+            
             }}
             className={`EmailModal-select ${errors.templateId ? "error" : ""
               }`}

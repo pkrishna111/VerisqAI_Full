@@ -28,18 +28,116 @@ function SignupForm() {
         mobilePhone: ""
     });
 
+    const validateField = (name, value, currentFormData) => {
+        const publicDomains = [
+            "gmail.com",
+            "yahoo.com",
+            "hotmail.com",
+            "outlook.com",
+            "live.com",
+            "aol.com",
+            "icloud.com"
+        ];
+    
+        let error = "";
+    
+        switch (name) {
+    
+            case "fullName":
+                if (
+                    value.trim() &&
+                    value.trim().split(" ").length < 2
+                ) {
+                    error = "Please enter your full name.";
+                }
+                break;
+    
+            case "email":
+                if (!value.trim()) {
+                    error = "Work email is required.";
+                } else {
+                    const emailDomain =
+                        value.split("@")[1]?.toLowerCase();
+    
+                    if (
+                        emailDomain &&
+                        publicDomains.includes(emailDomain)
+                    ) {
+                        error =
+                            "Public email domains are not allowed.";
+                    }
+                }
+                break;
+    
+            case "companyName":
+                if (!value.trim()) {
+                    error = "Company name is required.";
+                }
+                break;
+    
+            case "companyDomain":
+                if (!value.trim()) {
+                    error = "Company domain is required.";
+                } else {
+                    const emailDomain =
+                        currentFormData.email
+                            .split("@")[1]
+                            ?.toLowerCase();
+    
+                    const companyDomain =
+                        value
+                            .replace("https://", "")
+                            .replace("http://", "")
+                            .replace("www.", "")
+                            .toLowerCase()
+                            .trim();
+    
+                    if (
+                        emailDomain &&
+                        emailDomain !== companyDomain
+                    ) {
+                        error =
+                            "Company domain must match work email.";
+                    }
+                }
+                break;
+    
+            case "mobilePhone":
+                if (
+                    value.length > 0 &&
+                    !/^\d{10}$/.test(value)
+                ) {
+                    error =
+                        "Mobile number must be exactly 10 digits.";
+                }
+                break;
+    
+            default:
+                break;
+        }
+    
+        return error;
+    };
+
     const handleChange = (e) => {
 
-        setFormData({
+        const { name, value } = e.target;
+    
+        const updatedFormData = {
             ...formData,
-            [e.target.name]: e.target.value
-        });
-
+            [name]: value
+        };
+    
+        setFormData(updatedFormData);
+    
         setErrors({
             ...errors,
-            [e.target.name]: ""
+            [name]: validateField(
+                name,
+                value,
+                updatedFormData
+            )
         });
-
     };
 
     const handleSubmit = async (e) => {
@@ -319,25 +417,26 @@ function SignupForm() {
                             onChange={(e) => {
 
                                 const value =
-                                    e.target.value.replace(
-                                        /\D/g,
-                                        ""
-                                    );
-
+                                    e.target.value.replace(/\D/g, "");
+                            
                                 if (value.length <= 10) {
-
-                                    setFormData({
+                            
+                                    const updatedFormData = {
                                         ...formData,
                                         mobilePhone: value
-                                    });
-
+                                    };
+                            
+                                    setFormData(updatedFormData);
+                            
                                     setErrors({
                                         ...errors,
-                                        mobilePhone: ""
+                                        mobilePhone: validateField(
+                                            "mobilePhone",
+                                            value,
+                                            updatedFormData
+                                        )
                                     });
-
                                 }
-
                             }}
                         />
 
