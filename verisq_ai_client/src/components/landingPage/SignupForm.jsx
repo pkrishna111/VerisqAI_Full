@@ -317,7 +317,7 @@ function SignupForm() {
                             type="text"
                             name="fullName"
                             className={`form-input ${errors.fullName ? "error" : ""}`}
-                            placeholder="Jane Smith"
+                            placeholder="Full Name"
                             value={formData.fullName}
                             onChange={handleChange}
                         />
@@ -340,7 +340,7 @@ function SignupForm() {
                             type="email"
                             name="email"
                             className={`form-input ${errors.email ? "error" : ""}`}
-                            placeholder="jane@company.com"
+                            placeholder=" Work Email"
                             value={formData.email}
                             onChange={handleChange}
                         />
@@ -363,7 +363,7 @@ function SignupForm() {
                             type="text"
                             name="companyName"
                             className={`form-input ${errors.companyName ? "error" : ""}`}
-                            placeholder="Acme Corp"
+                            placeholder="Company Name"
                             value={formData.companyName}
                             onChange={handleChange}
                         />
@@ -386,7 +386,7 @@ function SignupForm() {
                             type="text"
                             name="companyDomain"
                             className={`form-input ${errors.companyDomain ? "error" : ""}`}
-                            placeholder="acme.com"
+                            placeholder=" Company Domain"
                             value={formData.companyDomain}
                             onChange={handleChange}
                         />
@@ -410,7 +410,7 @@ function SignupForm() {
                             name="mobilePhone"
                             className={`form-input ${errors.mobilePhone ? "error" : ""
                                 }`}
-                            placeholder="9876543210"
+                            placeholder="Mobile Phone"
                             value={formData.mobilePhone}
                             inputMode="numeric"
                             maxLength={10}

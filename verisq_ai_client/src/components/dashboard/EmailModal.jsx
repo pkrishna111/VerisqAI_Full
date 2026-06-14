@@ -190,7 +190,7 @@ function EmailModal({
           <label>Vendor Contact Email</label>
           <input
             type="email"
-            placeholder="security@vendor.com"
+            placeholder="Vendor Contact Email"
             value={email}
             onChange={(e) => {
 

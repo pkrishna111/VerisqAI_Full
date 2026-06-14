@@ -92,20 +92,13 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
   };
 
   const handleSubmit = async () => {
-    const classificationError = validateDataClassification(dataClassification);
 
-    if (classificationError) {
-      setErrors((prev) => ({
-        ...prev,
-        dataClassification: classificationError,
-      }));
-
+    const isValid = validate();
+  
+    if (!isValid) {
       return;
     }
-    if (errors.vendorName || errors.vendorDomain || errors.dataClassification) {
-      return;
-    }
-
+  
     // HANDLE EMAIL MODAL FLOW
     if (sendQuestionnaire && !vendorEmail.trim()) {
       onRequireEmail({
@@ -115,6 +108,7 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
       });
       return;
     }
+  
 
     try {
       await fetch(`${API_BASE_URL}/api/dashboard/add-vendor`, {
@@ -176,7 +170,7 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
             <input
               type="text"
               className="avm-input"
-              placeholder="e.g., Acme Solutions"
+              placeholder="Vendor Name"
               value={vendorName}
               onChange={(e) => {
                 const value = e.target.value;
@@ -217,7 +211,7 @@ function AddVendorModal({ isOpen, onClose, companyDomain, onRequireEmail }) {
             <input
               type="text"
               className="avm-input"
-              placeholder="e.g., acmesolutions.com"
+              placeholder="Vendor Domain"
               value={vendorDomain}
               onChange={(e) => {
                 const value = e.target.value;
