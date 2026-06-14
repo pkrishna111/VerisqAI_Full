@@ -121,13 +121,9 @@ function CreateSectionModal({
             });
 
         } catch (err) {
-
             console.error(err);
 
-            alert(
-                "Failed to create section."
-            );
-
+            alert(err.message);
         } finally {
 
             setLoading(false);

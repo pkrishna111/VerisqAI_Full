@@ -13,7 +13,7 @@
                 Description =
                     "SOC 2 aligned security, availability and confidentiality assessment.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

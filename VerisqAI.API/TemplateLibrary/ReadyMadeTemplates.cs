@@ -35,7 +35,7 @@ namespace VerisqAI.API.TemplateLibrary
                 Description =
                     "Standard vendor security assessment template.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

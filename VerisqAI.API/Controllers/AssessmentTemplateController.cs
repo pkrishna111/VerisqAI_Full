@@ -198,6 +198,19 @@ namespace VerisqAI.API.Controllers
                 return NotFound("Template not found.");
             }
 
+            var existingSectionCount =
+                await _context.AssessmentSections
+                    .CountAsync(x =>
+            x.AssessmentTemplateId ==
+            dto.TemplateId);
+
+            if (existingSectionCount >= 5)
+            {
+                return BadRequest(
+                    "Maximum 5 sections allowed."
+                );
+            }
+
             var section = new AssessmentSection
             {
                 AssessmentTemplateId = dto.TemplateId,

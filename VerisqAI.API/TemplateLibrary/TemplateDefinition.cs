@@ -8,7 +8,7 @@
 
         public string Description { get; set; } = "";
 
-        public string Version { get; set; } = "1";
+        public int Version { get; set; } = 1;
 
         public List<SectionDefinition> Sections { get; set; }
             = new();

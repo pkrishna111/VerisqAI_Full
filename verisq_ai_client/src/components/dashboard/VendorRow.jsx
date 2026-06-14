@@ -183,6 +183,7 @@ function VendorRow({ vendor, onSendSuccess, onViewFindings, onSendClick }) {
         )}
 
       </td>
+      
       {/* Risk Score */}
       <td>{vendor.riskScore ?? "—"}</td>
 

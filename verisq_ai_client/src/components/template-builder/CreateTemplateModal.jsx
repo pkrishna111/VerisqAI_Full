@@ -142,7 +142,7 @@ function CreateTemplateModal({
       console.error(err);
 
       alert(
-        "Failed to create template."
+        err.message || "Failed to create template."
       );
 
     } finally {

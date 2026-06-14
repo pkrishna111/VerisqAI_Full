@@ -13,7 +13,7 @@
                 Description =
                     "Assessment of privacy, consent management, retention and regulatory compliance controls.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

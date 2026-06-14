@@ -13,7 +13,7 @@
                 Description =
                     "Comprehensive vendor security risk assessment template.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

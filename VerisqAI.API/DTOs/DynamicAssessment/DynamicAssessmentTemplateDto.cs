@@ -8,7 +8,7 @@ namespace VerisqAI.API.DTOs.DynamicAssessment
 
         public string TemplateName { get; set; } = string.Empty;
 
-        public string Version { get; set; } = string.Empty;
+        public int Version { get; set; }
 
         public List<DynamicSectionDto> Sections { get; set; }
             = new();

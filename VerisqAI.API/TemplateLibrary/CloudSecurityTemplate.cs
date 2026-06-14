@@ -13,7 +13,7 @@
                 Description =
                     "Assessment of cloud infrastructure, IAM, encryption and monitoring controls.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

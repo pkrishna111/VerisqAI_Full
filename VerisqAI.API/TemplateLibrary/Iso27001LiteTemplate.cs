@@ -13,7 +13,7 @@
                 Description =
                     "ISO 27001 aligned information security assessment.",
 
-                Version = "1",
+                Version = 1,
 
                 Sections = new()
                 {

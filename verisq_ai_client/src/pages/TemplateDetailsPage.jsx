@@ -450,67 +450,67 @@ function TemplateDetailsPage() {
             }
         };
 
-        const fetchTemplate = async () => {
+    const fetchTemplate = async () => {
 
-            try {
-        
-                setLoading(true);
-        
-                const startTime =
-                    Date.now();
-        
-                const response =
-                    await getAssessmentTemplateById(id);
-        
-                const elapsed =
-                    Date.now() - startTime;
-        
-                const minimumSkeletonTime =
-                    1000;
-        
-                if (
-                    elapsed <
-                    minimumSkeletonTime
-                ) {
-        
-                    await new Promise(
-                        resolve =>
-                            setTimeout(
-                                resolve,
-                                minimumSkeletonTime - elapsed
-                            )
-                    );
-        
-                }
-        
-                setTemplate(response);
-        
-            } catch (err) {
-        
-                console.error(err);
-        
-                if (
-                    err.message?.includes("deactivated")
-                ) {
-        
-                    alert(
-                        "This template has been deactivated. Create a copy to continue using it."
-                    );
-        
-                    navigate("/template-builder");
-        
-                    return;
-                }
-        
-                alert(
-                    "Failed to load template."
+        try {
+
+            setLoading(true);
+
+            const startTime =
+                Date.now();
+
+            const response =
+                await getAssessmentTemplateById(id);
+
+            const elapsed =
+                Date.now() - startTime;
+
+            const minimumSkeletonTime =
+                1000;
+
+            if (
+                elapsed <
+                minimumSkeletonTime
+            ) {
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            minimumSkeletonTime - elapsed
+                        )
                 );
-        
-            } finally {
-        
-                setLoading(false);
+
             }
-        };
+
+            setTemplate(response);
+
+        } catch (err) {
+
+            console.error(err);
+
+            if (
+                err.message?.includes("deactivated")
+            ) {
+
+                alert(
+                    "This template has been deactivated. Create a copy to continue using it."
+                );
+
+                navigate("/template-builder");
+
+                return;
+            }
+
+            alert(
+                "Failed to load template."
+            );
+
+        } finally {
+
+            setLoading(false);
+        }
+    };
     useEffect(() => {
 
         fetchTemplate();
@@ -536,13 +536,13 @@ function TemplateDetailsPage() {
         return (
             <>
                 <DashboardHeader />
-    
+
                 <main className="dashboard-main">
-    
+
                     <TemplateDetailsSkeleton />
-    
+
                 </main>
-    
+
             </>
         );
     }
@@ -564,6 +564,14 @@ function TemplateDetailsPage() {
             section =>
                 section.id === activeSectionId
         );
+
+    const usedSections =
+        template.sections?.length || 0;
+
+    const maxSections = 5;
+
+    const isSectionLimitReached =
+        usedSections >= maxSections;
 
     return (
         <>
@@ -589,34 +597,56 @@ function TemplateDetailsPage() {
 
                     </div>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            gap: "12px"
-                        }}
-                    >
+                    <div className="vendor-counter">
 
-                        <button
-                            className="btn-secondary-template"
-                            onClick={() =>
-                                setShowSectionLibraryModal(true)
-                            }
-                        >
-                            📚 Section Library
-                        </button>
+                        <div className="counter-display">
 
-                        <button
-                            className="btn-add-vendor"
-                            onClick={() =>
-                                setShowSectionModal(true)
-                            }
+                            <div className="counter-numbers">
+                                {usedSections} / {maxSections}
+                            </div>
+
+                            <div className="counter-label">
+                                Sections Used
+                            </div>
+
+                        </div>
+
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: "12px"
+                            }}
                         >
-                            <Plus size={18} />
-                            Add Section
-                        </button>
+
+                            <button
+                                className="btn-secondary-template"
+                                onClick={() =>
+                                    setShowSectionLibraryModal(true)
+                                }
+                                disabled={isSectionLimitReached}
+                            >
+                                📚 Section Library
+                            </button>
+
+                            <button
+                                className="btn-add-vendor"
+                                onClick={() =>
+                                    setShowSectionModal(true)
+                                }
+                                disabled={isSectionLimitReached}
+                            >
+                                <Plus size={18} />
+
+                                {
+                                    isSectionLimitReached
+                                        ? "Limit Reached"
+                                        : "Add Section"
+                                }
+                            </button>
+
+                        </div>
 
                     </div>
-
                 </div>
 
                 <div className="tb-builder-layout">
@@ -648,6 +678,7 @@ function TemplateDetailsPage() {
                                 <button
                                     className="tb-sidebar-add-btn"
                                     title="Section Library"
+                                    disabled={isSectionLimitReached}
                                     onClick={() => {
 
                                         if (
@@ -669,19 +700,8 @@ function TemplateDetailsPage() {
 
                                 <button
                                     className="tb-sidebar-add-btn"
+                                    disabled={isSectionLimitReached}
                                     onClick={() => {
-
-                                        if (
-                                            template.sections?.length >= 5
-                                        ) {
-
-                                            alert(
-                                                "Maximum 5 sections allowed."
-                                            );
-
-                                            return;
-                                        }
-
                                         setShowSectionModal(true);
                                     }}
                                 >

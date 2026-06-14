@@ -14,8 +14,7 @@ namespace VerisqAI.API.Models
         public string? Description { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Version { get; set; } = "v1";
+        public int Version { get; set; } = 1;
 
         public bool IsActive { get; set; } = true;
 

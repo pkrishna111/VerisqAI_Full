@@ -31,7 +31,7 @@ namespace VerisqAI.API.Seed
             {
                 Name = "Core Security Assessment",
                 Description = "Default Verisq AI security questionnaire",
-                Version = "v1",
+                Version = 1,
                 UserId = adminUser.Id
             };
 
