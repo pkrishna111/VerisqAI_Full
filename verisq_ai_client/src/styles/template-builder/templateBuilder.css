@@ -1931,3 +1931,21 @@ textarea.avm-input {
       width: fit-content;
     }
   }
+
+  .avm-error {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  
+  .avm-input.error {
+    border-color: #dc2626;
+  }
+
+  .avm-error {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-weight: 500;
+}

@@ -274,7 +274,7 @@ export default function Otp_verification() {
 
                   setEmailError(validateEmail(value));
                 }}
-                placeholder="you@company.com"
+                placeholder="Work Email"
               />
               {emailError && (
                 <div className="Otp_verification_error">{emailError}</div>
