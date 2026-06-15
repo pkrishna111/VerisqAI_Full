@@ -255,7 +255,7 @@ function CreateQuestionModal({
                 {/* BODY */}
                 <div className="avm-body">
 
-                    <div className="avm-field">
+                    {/* <div className="avm-field">
 
                         <label className="avm-label">
                             Depends On Question
@@ -306,7 +306,7 @@ function CreateQuestionModal({
 
                             </div>
                         )
-                    }
+                    } */}
 
                     <div className="avm-field">
 
