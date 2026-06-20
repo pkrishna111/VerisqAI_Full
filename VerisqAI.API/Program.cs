@@ -163,13 +163,16 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Middleware pipeline - enable for development
-//if (app.Environment.IsDevelopment())
-//{
+if (!app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 
-app.UseHttpsRedirection();   
+if (!app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
 //to enable CORS
 app.UseCors("AllowFrontend");
