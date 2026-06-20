@@ -21,6 +21,12 @@ namespace VerisqAI.API.Services
             string subject,
             string htmlBody)
         {
+            Console.WriteLine($"SMTP Server: {_settings.SmtpServer}");
+            Console.WriteLine($"Port: {_settings.Port}");
+            Console.WriteLine($"Username: {_settings.Username}");
+            Console.WriteLine($"Sender: {_settings.SenderEmail}");
+            Console.WriteLine($"SSL: {_settings.EnableSSL}");
+
             var smtpClient = new SmtpClient(
                 _settings.SmtpServer,
                 _settings.Port)
