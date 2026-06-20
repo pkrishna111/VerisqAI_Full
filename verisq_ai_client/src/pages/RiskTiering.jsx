@@ -4,7 +4,7 @@
 import { useState } from "react";
 import "../styles/Scorecards.css";
 import { Link } from "react-router-dom";
-import "../styles/Risktiering.css"
+import "../styles/RiskTiering.css"
 import Header from "../components/landingPage/Header";
 import Footer from "../components/landingPage/Footer";
 
