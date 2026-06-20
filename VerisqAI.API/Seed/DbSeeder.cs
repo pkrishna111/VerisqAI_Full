@@ -26,7 +26,7 @@ namespace VerisqAI.API.Seed
             }
 
             //for default admin
-            var adminEmail = "sahilyash358@gmail.com";
+            var adminEmail = "krishna.lidolearning.02@gmail.com";
             var existingAdmin = await userManager
                 .FindByEmailAsync(adminEmail);
 
