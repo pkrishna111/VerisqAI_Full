@@ -2,7 +2,7 @@ import adminAxios from "./adminAxios";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://localhost:7183";
+  "https://verisqai-api.onrender.com";
 
 // ==============================
 // GET ALL USERS

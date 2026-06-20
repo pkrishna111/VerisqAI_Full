@@ -1,6 +1,6 @@
 import adminAxios from "./adminAxios";
 
-const API_BASE = "https://localhost:7183";
+const API_BASE = "https://verisqai-api.onrender.com";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");

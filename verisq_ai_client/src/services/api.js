@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://localhost:7183";
+const API_BASE_URL = "https://verisqai-api.onrender.com";
 
 export default API_BASE_URL;
 

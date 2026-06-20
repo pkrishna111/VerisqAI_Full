@@ -1,7 +1,7 @@
 import adminAxios from "./adminAxios";
 
 const API_BASE =
-  "https://localhost:7183";
+  "https://verisqai-api.onrender.com";
 
 // ==========================================
 // DASHBOARD STATS

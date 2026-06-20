@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const adminAxios = axios.create({
-  baseURL: "https://localhost:7183"
+  baseURL: "https://verisqai-api.onrender.com"
 });
 
 adminAxios.interceptors.request.use(
