@@ -136,7 +136,7 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins(
-                    "https://YOUR-VERCEL-URL.vercel.app"
+                    "https://verisq-ai-full-git-postgres-migration-pkrishna111s-projects.vercel.app"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
