@@ -136,9 +136,9 @@ builder.Services.AddCors(options =>
         {
             policy
                 .WithOrigins(
-                    "http://localhost:5173",
-                    "https://verisq-ai.vercel.app"
+                    "http://localhost:5173"
                 )
+                .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
