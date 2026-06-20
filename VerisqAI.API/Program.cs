@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
@@ -38,9 +37,9 @@ builder.Services.AddSwaggerGen();
 
 // DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+));
 
 // Identity
 builder.Services
