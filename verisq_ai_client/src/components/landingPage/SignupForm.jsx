@@ -148,7 +148,7 @@ function SignupForm() {
         setMessage("");
 
         const publicDomains = [
-            "gmail.com",
+            // "gmail.com",
             "yahoo.com",
             "hotmail.com",
             "outlook.com",
