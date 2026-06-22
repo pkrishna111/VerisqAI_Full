@@ -1,4 +1,5 @@
 # VerisqAI
+
 AI-Powered Third Party Risk Management (TPRM) Platform
 
 ## Overview
