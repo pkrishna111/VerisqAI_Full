@@ -8,7 +8,8 @@ The platform enables organizations to assess vendor security posture, automate a
 ---
 
 ## Live Demo
-Frontend: verisq-ai-full-git-postgres-migration-pkrishna111s-projects.vercel.app
+Frontend: https://verisq-ai-full-git-postgres-migration-pkrishna111s-projects.vercel.app
+
 Backend API: https://verisqai-api.onrender.com
 Swagger: https://verisqai-api.onrender.com/swagger
 
