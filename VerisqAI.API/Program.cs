@@ -14,6 +14,7 @@ using VerisqAI.API.Data;
 using VerisqAI.API.Models;
 using VerisqAI.API.Seed;
 using VerisqAI.API.Services;
+using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,9 +73,27 @@ var key = Encoding.UTF8.GetBytes(jwtSettings!.Secret);
 //TOTP Service 
 builder.Services.AddScoped<ITotpService, TotpService>();
 
-//Email Service
-builder.Services.Configure<EmailSettings>(
-    builder.Configuration.GetSection("EmailSettings"));
+//Email Service - SMTP
+//builder.Services.Configure<EmailSettings>(
+//    builder.Configuration.GetSection("EmailSettings"));
+
+//builder.Services.AddScoped<IEmailService, EmailService>();
+
+//Email Service - Resend
+builder.Services.Configure<ResendSettings>(
+    builder.Configuration.GetSection("Resend"));
+
+builder.Services.AddOptions();
+
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken =
+        builder.Configuration["Resend:ApiKey"];
+});
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddTransient<IResend, ResendClient>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
@@ -135,9 +154,10 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins(
-                    "https://verisq-ai-full-git-postgres-migration-pkrishna111s-projects.vercel.app"
-                )
+                //.WithOrigins(
+                //    "verisq-ai-full-4gexqx0je-pkrishna111s-projects.vercel.app"
+                //)
+                .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
