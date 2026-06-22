@@ -30,7 +30,7 @@ function SignupForm() {
 
     const validateField = (name, value, currentFormData) => {
         const publicDomains = [
-            "gmail.com",
+            // "gmail.com",
             "yahoo.com",
             "hotmail.com",
             "outlook.com",
