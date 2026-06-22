@@ -3,6 +3,7 @@ AI-Powered Third Party Risk Management (TPRM) Platform
 
 ## Overview
 VerisqAI is a full-stack web application designed to streamline Third Party Risk Management workflows through vendor assessments, questionnaire automation, AI-assisted analysis, risk scoring, findings generation, and risk recommendations.
+
 The platform enables organizations to assess vendor security posture, automate assessment workflows, and generate actionable risk insights.
 
 ---
@@ -11,6 +12,7 @@ The platform enables organizations to assess vendor security posture, automate a
 Frontend: https://verisq-ai-full-git-postgres-migration-pkrishna111s-projects.vercel.app
 
 Backend API: https://verisqai-api.onrender.com
+
 Swagger: https://verisqai-api.onrender.com/swagger
 
 ---
@@ -117,27 +119,37 @@ Current Database: PostgreSQL hosted on Supabase
 
 ## Deployment Architecture
 Frontend: React + Vite >>> Vercel
+
 Backend: ASP.NET Core 8 API >>> Render
+
 Database: PostgreSQL >>> Supabase
+
 AI: OpenRouter
 
 ---
 
 ## Email Service
 Current Provider: Resend
+
 Reason: Render environment was unable to establish SMTP connectivity with Gmail SMTP servers.
+
 Resend was integrated to support OTP delivery and platform notifications.
 
 ### Current Limitation
 The project currently uses Resend's testing environment.
+
 Because of Resend sandbox restrictions, OTP emails can only be delivered to the verified email address associated with the Resend account.
+
 Current verified email: [krishna.lidolearning.02@gmail.com]
+
 Attempting to send OTPs to other email addresses will fail unless a custom domain is verified within Resend.
 
 ### Demo Credentials
 
 For project demonstration and evaluation, use:
+
 Admin Email: [krishna.lidolearning.02@gmail.com]
+
 OTPs will be delivered to this address.
 
 ---
@@ -174,11 +186,14 @@ OTPs will be delivered to this address.
 MSc ICT, JP Dawer Institute of Information and Communication Technology
 
 Email: [krishna.lidolearning.02@gmail.com]
+
 GitHub: 
 
 ---
 
 ## License
 Academic Project / Educational Use
+
 Kyara Infotech, Surat
+
 Visit: kyarainfotech.com
